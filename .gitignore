@@ -1,0 +1,14 @@
+# Logs & Runtime
+logs/
+*.log
+
+# Backups & Temp files
+*.bak*
+*.tmp
+*.temp
+
+# OS / IDE
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
