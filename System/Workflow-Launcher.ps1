@@ -1163,18 +1163,20 @@ function Start-Dsh {
     Remove-Item -LiteralPath $dshOut, $dshErr -ErrorAction SilentlyContinue
     try {
         $env:DSH_HOME = $Script:DshHome
+        $dshWorkDir = Join-Path $Script:DshRoot '会话'
+        if (-not (Test-Path $dshWorkDir)) { $dshWorkDir = $Script:DshRoot }
         if (Test-Path -LiteralPath $Script:DshCliBin) {
             # 路径含空格，必须显式加引号；Start-Process -ArgumentList 数组拼接不会自动加引号
             $dshArgs = "`"$($Script:DshCliBin)`" web"
             Start-Process -FilePath 'node.exe' -ArgumentList $dshArgs `
-                -WorkingDirectory $Script:DshRoot -WindowStyle Hidden `
+                -WorkingDirectory $dshWorkDir -WindowStyle Hidden `
                 -RedirectStandardOutput $dshOut -RedirectStandardError $dshErr
-            Write-LauncherLog "后台启动命令已发出: node $dshArgs (预编译 CLI)" -Level INFO
+            Write-LauncherLog "后台启动命令已发出: node $dshArgs (预编译 CLI, 工作目录: $dshWorkDir)" -Level INFO
         } else {
             Start-Process -FilePath $Script:DshPnpmCmd -ArgumentList 'dsh', 'web' `
-                -WorkingDirectory $Script:DshRoot -WindowStyle Hidden `
+                -WorkingDirectory $dshWorkDir -WindowStyle Hidden `
                 -RedirectStandardOutput $dshOut -RedirectStandardError $dshErr
-            Write-LauncherLog "后台启动命令已发出: $Script:DshPnpmCmd dsh web (回退 pnpm)" -Level INFO
+            Write-LauncherLog "后台启动命令已发出: $Script:DshPnpmCmd dsh web (回退 pnpm, 工作目录: $dshWorkDir)" -Level INFO
         }
     } catch {
         Write-LauncherLog "启动 DeepSeek Harness 异常: $($_.Exception.Message)" -Level ERROR
