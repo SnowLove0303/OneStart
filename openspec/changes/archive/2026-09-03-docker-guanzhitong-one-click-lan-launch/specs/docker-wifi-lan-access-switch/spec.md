@@ -1,0 +1,73 @@
+## MODIFIED Requirements
+
+### Requirement: Launcher SHALL expose a LAN access switch for the existing Docker Web service
+
+统一启动器 SHALL 提供 `wll lan on`、`wll lan off` 和 `wll lan status` 三个基础命令，并新增 `wll start guanzhitong-lan`/`wll guanzhitong-lan` 一键启动命令及 `wll stop guanzhitong-lan` 一键关闭命令；交互菜单 SHALL 提供等价的一键启动和一键关闭入口，同时保留基础命令。所有操作 SHALL 针对现有容器 `guanzhitong-compliance` 和宿主机端口 `18765`，不得创建新容器、镜像或备用端口。
+
+#### Scenario: User enables Wi‑Fi LAN access
+
+- **WHEN** 用户执行 `wll lan on`
+- **THEN** 启动器校验 Docker Desktop、目标容器和端口映射，并启用仅允许当前 Private Wi‑Fi IPv4 子网访问 TCP `18765` 的入站规则
+
+#### Scenario: User starts Web and LAN access in one action
+
+- **WHEN** 用户执行 `wll start guanzhitong-lan` 或 `wll guanzhitong-lan`
+- **THEN** 启动器启动或复用同一个 `guanzhitong-compliance` Docker 容器，确认其健康且本机 HTTP 可用，再开启当前 Private Wi‑Fi 子网规则，并显示本机与局域网访问地址
+
+#### Scenario: User disables Wi‑Fi LAN access
+
+- **WHEN** 用户执行 `wll lan off`
+- **THEN** 启动器禁用冠志通专用入站规则，保留容器和本机 `localhost` 访问，不停止 Docker 服务
+
+#### Scenario: User stops Web and LAN access in one action
+
+- **WHEN** 用户执行 `wll stop guanzhitong-lan`
+- **THEN** 启动器先关闭冠志通专用入站规则，再停止同一个 `guanzhitong-compliance` 容器，并报告最终局域网规则关闭与容器停止状态
+
+#### Scenario: User checks switch status
+
+- **WHEN** 用户执行 `wll lan status`
+- **THEN** 启动器显示容器状态、健康状态、宿主机端口、当前 WLAN 名称/IP/子网、防火墙规则状态、允许来源和局域网访问地址
+
+### Requirement: The switch SHALL fail closed and avoid parallel Docker objects
+
+开关及一键生命周期操作 SHALL 只操作已确认的 Docker CLI、容器名、镜像和宿主机端口；目标不存在、健康检查失败、端口映射不匹配、Docker 不可用或防火墙操作失败时 SHALL 返回非零结果并保持/恢复关闭状态。若一键启动已启动此前停止的容器但随后开启 LAN 失败，启动器 SHALL 停止本次新启动的容器以回滚；若容器原本已运行，则 SHALL 保留其运行状态但不得启用 LAN 规则。启动器 SHALL 不执行 `docker run`、不复制项目、不创建第二个容器或临时端口。
+
+#### Scenario: Target container is missing or unhealthy
+
+- **WHEN** `guanzhitong-compliance` 不存在、未运行或健康状态不是 `healthy`
+- **THEN** `wll lan on` 和一键启动均不开放局域网规则，并显示目标容器和修复原因
+
+#### Scenario: Target port mapping is not the expected mapping
+
+- **WHEN** 目标容器没有将容器端口 `8765` 映射到宿主机 `18765`
+- **THEN** `wll lan on` 和一键启动均拒绝继续，不修改其他端口或容器
+
+#### Scenario: Docker Desktop has a broad TCP inbound rule
+
+- **WHEN** Docker Desktop 的宽泛 TCP 入站规则会使 Docker 发布端口绕过冠志通来源限制
+- **THEN** 启动器 SHALL 在开启或一键启动时检测该条件，保持该宽泛规则关闭，并在状态中报告该安全前提
+
+#### Scenario: One-click startup fails after starting the container
+
+- **WHEN** 一键启动为本次操作启动了原本停止的目标容器，但 WLAN 识别、健康验证或防火墙配置失败
+- **THEN** 启动器 SHALL 禁用/保持专用 LAN 规则关闭，并停止本次启动的容器；日志 SHALL 记录回滚结果
+
+### Requirement: The launcher SHALL provide safe operational feedback and logs
+
+每次基础开关及一键生命周期操作 SHALL 记录目标容器、端口、网络接口、允许来源、规则变更、容器动作、结果和错误；输出 SHALL 区分“容器运行状态”和“局域网访问开关状态”，不得仅以端口监听作为 LAN 已开启的依据。一键启动成功后 SHALL 提供可复核的状态摘要；一键关闭成功后 SHALL 提供容器已停止、规则已关闭和本机端口不可用的结果摘要。
+
+#### Scenario: Successful toggle is logged
+
+- **WHEN** `wll lan on` 或 `wll lan off` 成功完成
+- **THEN** 控制台和 `System/logs/launcher.log` 均记录明确的成功状态、规则范围和访问地址/关闭结果
+
+#### Scenario: Successful one-click lifecycle is logged
+
+- **WHEN** 一键启动或一键关闭成功完成
+- **THEN** 控制台和 `System/logs/launcher.log` 均记录容器动作、LAN 开关状态、端口/地址及最终验证结果
+
+#### Scenario: Firewall operation requires elevation
+
+- **WHEN** 当前 PowerShell 权限不足以读取或修改 Windows 防火墙
+- **THEN** 启动器提示需要管理员权限，返回失败结果，不留下半完成的启用状态
