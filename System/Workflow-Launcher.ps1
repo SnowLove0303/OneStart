@@ -59,6 +59,8 @@ $Script:DshBrowserPath      = 'C:\Program Files\Google\Chrome\Application\chrome
 
 # --- 冠志通 Docker Web 工作台配置 ---
 $Script:GuanZhiDockerCli    = 'D:\APP\Docker\resources\bin\docker.exe'
+$Script:DockerDesktopExe    = 'D:\APP\Docker\Docker Desktop.exe'
+$Script:DockerEngineReadyTimeoutSec = 90
 $Script:GuanZhiDockerContainer = 'guanzhitong-compliance'
 $Script:GuanZhiDockerImage  = 'guanzhitong-compliance:20260901'
 $Script:GuanZhiContainerPort = 8765
@@ -194,6 +196,74 @@ function Get-GuanZhiDockerCli {
         return $command.Source
     }
     return $null
+}
+
+function Get-DockerDesktopExe {
+    <# 返回 Docker Desktop 启动程序路径 #>
+    if (Test-Path -LiteralPath $Script:DockerDesktopExe -PathType Leaf) {
+        return $Script:DockerDesktopExe
+    }
+    $candidates = @(
+        'D:\APP\Docker\Docker Desktop.exe',
+        'C:\Program Files\Docker\Docker\Docker Desktop.exe',
+        (Join-Path $env:ProgramFiles 'Docker\Docker\Docker Desktop.exe'),
+        (Join-Path $env:LOCALAPPDATA 'Programs\Docker\Docker\Docker Desktop.exe')
+    )
+    foreach ($p in $candidates) {
+        if (Test-Path -LiteralPath $p -PathType Leaf) {
+            return $p
+        }
+    }
+    $shortcut = 'C:\Users\Administrator\Desktop\Docker Desktop.lnk'
+    if (Test-Path -LiteralPath $shortcut -PathType Leaf) {
+        try {
+            $ws = New-Object -ComObject WScript.Shell
+            $target = $ws.CreateShortcut($shortcut).TargetPath
+            if (Test-Path -LiteralPath $target -PathType Leaf) {
+                return $target
+            }
+        } catch {}
+    }
+    return $null
+}
+
+function Ensure-GuanZhiDockerEngineRunning {
+    <# 确保 Docker 引擎正在运行；若未运行则自动拉起 Docker Desktop 并等待就绪 #>
+    param([Parameter(Mandatory)][string]$DockerCli)
+    if (Test-GuanZhiDockerAvailable -DockerCli $dockerCli) {
+        return $true
+    }
+    $desktopExe = Get-DockerDesktopExe
+    if ($null -eq $desktopExe -or -not (Test-Path -LiteralPath $desktopExe -PathType Leaf)) {
+        Write-LauncherLog 'Docker 引擎未就绪且未找到 Docker Desktop 启动程序' -Level WARN
+        return $false
+    }
+    Write-Host ''
+    Write-Host '  检测到 Docker 引擎未运行，正在自动拉起 Docker Desktop，请稍候 ...' -ForegroundColor Yellow
+    Write-LauncherLog "Docker 引擎不可用，正在自动拉起 Docker Desktop: $desktopExe" -Level INFO
+    try {
+        Start-Process -FilePath $desktopExe
+    } catch {
+        Write-LauncherLog "启动 Docker Desktop 进程失败: $($_.Exception.Message)" -Level ERROR
+        return $false
+    }
+
+    $timeout = $Script:DockerEngineReadyTimeoutSec
+    Write-Host "  正在等待 Docker 引擎初始化就绪（上限 ${timeout} 秒）..." -ForegroundColor Cyan
+    for ($i = 1; $i -le $timeout; $i++) {
+        Start-Sleep -Seconds 1
+        if (Test-GuanZhiDockerAvailable -DockerCli $dockerCli) {
+            Write-Host "  Docker 引擎已成功就绪！（耗时 $i 秒）" -ForegroundColor Green
+            Write-LauncherLog "Docker 引擎已就绪，耗时 $i 秒" -Level INFO
+            return $true
+        }
+        if ($i % 5 -eq 0) {
+            Write-Host "  等待 Docker 引擎就绪中... ($i/${timeout}s)" -ForegroundColor Gray
+        }
+    }
+    Write-LauncherLog "等待 Docker 引擎就绪超时（${timeout} 秒）" -Level ERROR
+    Write-Host "  等待 Docker 引擎就绪超时（${timeout} 秒），请检查 Docker Desktop 是否启动异常。" -ForegroundColor Red
+    return $false
 }
 
 function Get-GuanZhiDockerState {
@@ -453,7 +523,7 @@ function Start-GuanZhiWeb {
         Write-Host '  未找到 Docker CLI，请确认 Docker Desktop 已安装。' -ForegroundColor Red
         return $false
     }
-    if (-not (Test-GuanZhiDockerAvailable -DockerCli $dockerCli)) {
+    if (-not (Ensure-GuanZhiDockerEngineRunning -DockerCli $dockerCli)) {
         Write-LauncherLog 'Docker 引擎不可用，未启动或创建任何容器' -Level ERROR
         Write-Host '  Docker 引擎不可用，请先启动 Docker Desktop。' -ForegroundColor Red
         return $false
@@ -531,7 +601,12 @@ function Start-GuanZhiLanSession {
     Write-LauncherLog '========== 一键启动冠志通 Docker Web + Wi‑Fi LAN ==========' -Level INFO
 
     $dockerCli = Get-GuanZhiDockerCli
-    if ($null -eq $dockerCli -or -not (Test-GuanZhiDockerAvailable -DockerCli $dockerCli)) {
+    if ($null -eq $dockerCli) {
+        Write-LauncherLog "一键启动失败：未找到 Docker CLI: $($Script:GuanZhiDockerCli)" -Level ERROR
+        Write-Host '  未找到 Docker CLI，请确认 Docker Desktop 已安装。' -ForegroundColor Red
+        return $false
+    }
+    if (-not (Ensure-GuanZhiDockerEngineRunning -DockerCli $dockerCli)) {
         Write-LauncherLog '一键启动失败：Docker CLI/引擎不可用' -Level ERROR
         Write-Host '  Docker 引擎不可用，未开启局域网访问。' -ForegroundColor Red
         return $false
@@ -698,10 +773,23 @@ function Invoke-GuanZhiLanCommand {
         return $false
     }
     $dockerCli = Get-GuanZhiDockerCli
-    if ($null -eq $dockerCli -or -not (Test-GuanZhiDockerAvailable -DockerCli $dockerCli)) {
-        Write-LauncherLog 'Docker CLI/引擎不可用，LAN 操作失败关闭' -Level ERROR
-        Write-Host '  Docker 引擎不可用，已拒绝修改防火墙。' -ForegroundColor Red
+    if ($null -eq $dockerCli) {
+        Write-LauncherLog '未找到 Docker CLI，LAN 操作失败关闭' -Level ERROR
+        Write-Host '  未找到 Docker CLI，已拒绝修改防火墙。' -ForegroundColor Red
         return $false
+    }
+    if ($Command -eq 'on') {
+        if (-not (Ensure-GuanZhiDockerEngineRunning -DockerCli $dockerCli)) {
+            Write-LauncherLog 'Docker CLI/引擎不可用，LAN 操作失败关闭' -Level ERROR
+            Write-Host '  Docker 引擎不可用，已拒绝修改防火墙。' -ForegroundColor Red
+            return $false
+        }
+    } else {
+        if (-not (Test-GuanZhiDockerAvailable -DockerCli $dockerCli)) {
+            Write-LauncherLog 'Docker CLI/引擎不可用，LAN 操作失败关闭' -Level ERROR
+            Write-Host '  Docker 引擎不可用，已拒绝修改防火墙。' -ForegroundColor Red
+            return $false
+        }
     }
     $state = Get-GuanZhiDockerState -DockerCli $dockerCli
     if (-not $state.Exists -or [string]$state.Image -ne $Script:GuanZhiDockerImage) {

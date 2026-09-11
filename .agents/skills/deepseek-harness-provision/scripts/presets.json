@@ -1,0 +1,68 @@
+{
+  "_comment": "harness llm-pi-ai provider presets. api is per-route: openai-responses | openai-completions | anthropic-messages. baseURL stops at /v1, never append /responses or /chat/completions.",
+  "b-ai-flash": {
+    "provider_id": "b-ai",
+    "display_name": "B.AI",
+    "api": "openai-completions",
+    "base_url": "https://api.b.ai/v1",
+    "api_key_env": "BAI_API_KEY",
+    "timeout_ms": 120000,
+    "stream_idle_timeout_ms": 300000,
+    "models": [
+      {"id": "deepseek-v4-flash", "name": "DeepSeek-V4-Flash", "context_window": 131072, "max_tokens": 8192, "input": ["text"]},
+      {"id": "deepseek-v4-flash-vision-exp", "name": "DeepSeek-V4-Flash-Vision-Exp", "context_window": 131072, "max_tokens": 8192, "input": ["text", "image"]}
+    ],
+    "verify": {"method": "chat", "model": "deepseek-v4-flash"}
+  },
+  "b-ai-flash-only": {
+    "provider_id": "b-ai",
+    "display_name": "B.AI",
+    "api": "openai-completions",
+    "base_url": "https://api.b.ai/v1",
+    "api_key_env": "BAI_API_KEY",
+    "timeout_ms": 120000,
+    "stream_idle_timeout_ms": 300000,
+    "models": [
+      {"id": "deepseek-v4-flash", "name": "DeepSeek-V4-Flash", "context_window": 131072, "max_tokens": 8192, "input": ["text"]}
+    ],
+    "verify": {"method": "chat", "model": "deepseek-v4-flash"}
+  },
+  "zen-spark-free": {
+    "provider_id": "opencode-zen",
+    "display_name": "OpenCode Zen",
+    "api": "openai-responses",
+    "base_url": "https://opencode.ai/zen/v1",
+    "api_key_env": "OPENCODE_API_KEY",
+    "headers": {"HTTP-Referer": "https://opencode.ai/", "X-Title": "opencode", "x-opencode-client": "dsh"},
+    "generate_session_header": true,
+    "models": [
+      {"id": "muse-spark-1.3-contributor-free", "name": "Muse Spark 1.3 Contributor Free", "context_window": 1048576, "max_tokens": 131072, "input": ["text", "image"]}
+    ],
+    "verify": {"method": "responses", "model": "muse-spark-1.3-contributor-free"}
+  },
+  "go-chat": {
+    "provider_id": "opencode-go",
+    "display_name": "OpenCode Go",
+    "api": "openai-completions",
+    "base_url": "https://opencode.ai/zen/go/v1",
+    "api_key_env": "OPENCODE_GO_API_KEY",
+    "headers": {"HTTP-Referer": "https://opencode.ai/", "X-Title": "opencode", "x-opencode-client": "dsh"},
+    "generate_session_header": true,
+    "models": [
+      {"id": "deepseek-v4-flash", "name": "DeepSeek V4 Flash", "context_window": 1000000, "max_tokens": 384000, "input": ["text"]}
+    ],
+    "verify": {"method": "chat", "model": "deepseek-v4-flash"}
+  },
+  "cliproxy-luna": {
+    "provider_id": "chatgpt-cli-proxy",
+    "display_name": "ChatGPT CLI Proxy (local)",
+    "api": "openai-responses",
+    "base_url": "http://127.0.0.1:8317/v1",
+    "api_key_env": "CLIPROXY_API_KEY",
+    "models": [
+      {"id": "gpt-5.6-luna", "name": "GPT-5.6 Luna (ChatGPT CLI Proxy)", "context_window": 272000, "max_tokens": 128000, "input": ["text", "image"], "reasoning_efforts": {"low": "low", "medium": "medium", "high": "high", "xhigh": "xhigh", "max": "max"}}
+    ],
+    "verify": {"method": "responses", "model": "gpt-5.6-luna"},
+    "precheck": {"tcp": "127.0.0.1:8317", "hint": "start CLIProxyAPI first: CLIProxyAPI\\cli-proxy-api.exe -config config.yaml"}
+  }
+}
