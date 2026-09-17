@@ -6,6 +6,7 @@
     .\Workflow-Launcher.ps1                  显示交互菜单
     .\Workflow-Launcher.ps1 start dsh        启动 DeepSeek Harness (Web)
     .\Workflow-Launcher.ps1 start aistudy    启动 AI Study Tauri
+    .\Workflow-Launcher.ps1 start studypower  启动 StudyPower Web 工作台
     .\Workflow-Launcher.ps1 start web        启动冠志通 Web 工作台
     .\Workflow-Launcher.ps1 start guanzhitong-lan 一键启动冠志通 Docker Web 并开启 Wi‑Fi 局域网访问
     .\Workflow-Launcher.ps1 start compliance 启动合规性判断工作台应用
@@ -15,6 +16,7 @@
     .\Workflow-Launcher.ps1 status           查看运行状态
     .\Workflow-Launcher.ps1 logs dsh         查看 dsh 运行日志
     .\Workflow-Launcher.ps1 dsh              便捷写法，等价于 start dsh
+    .\Workflow-Launcher.ps1 studypower       便捷写法，等价于 start studypower
     .\Workflow-Launcher.ps1 web              便捷写法，等价于 start web
     .\Workflow-Launcher.ps1 guanzhitong-lan   便捷写法，等价于 start guanzhitong-lan
     .\Workflow-Launcher.ps1 compliance       便捷写法，打开合规性判断工作台应用
@@ -40,6 +42,14 @@ $Script:LauncherRoot = $PSScriptRoot
 
 # --- 日志 ---
 $Script:LogFile = Join-Path $LauncherRoot 'logs\launcher.log'
+
+# --- StudyPower Web 工作台配置 ---
+$Script:StudyPowerRoot          = 'F:\APP Location\StudyPower'
+$Script:StudyPowerPort          = 3100
+$Script:StudyPowerUrl           = 'http://127.0.0.1:3100'
+$Script:StudyPowerReadyTimeoutSec = 30
+$Script:StudyPowerOutLog        = Join-Path $LauncherRoot 'logs\studypower.out.log'
+$Script:StudyPowerErrLog        = Join-Path $LauncherRoot 'logs\studypower.err.log'
 
 # --- AI Study Tauri 配置 ---
 $Script:AIStudyTauriDir = 'D:\应用研究\AI Study Tauri（AST)'
@@ -142,6 +152,8 @@ function Write-Menu {
     Write-Host '    [15] 一键关闭 LAN 并停止冠志通 Docker Web' -ForegroundColor Red
     Write-Host ''
     Write-Host '    [16] 进入 AI 工具套件组合菜单 (Antigravity / IDE / ChatGPT / Cockpit) >>>' -ForegroundColor Magenta
+    Write-Host '    [22] 启动 StudyPower Web 工作台' -ForegroundColor Green
+    Write-Host '    [23] 停止 StudyPower Web 工作台' -ForegroundColor Red
     Write-Host ''
     Write-Host '    [E1] 打开 DeepSeek Harness 网页' -ForegroundColor Magenta
     Write-Host ''
@@ -175,6 +187,153 @@ function Test-DshRunning {
             })
         return ($dshPids.Count -gt 0)
     } catch {
+        return $false
+    }
+}
+
+function Get-StudyPowerProcessTree {
+    <# 返回 StudyPower 项目上下文中的进程树；不匹配项目路径时不返回进程。 #>
+    param([switch]$RequireListener)
+
+    $allProcesses = @(Get-CimInstance Win32_Process -ErrorAction SilentlyContinue)
+    if ($allProcesses.Count -eq 0) { return @() }
+
+    $rootPattern = [regex]::Escape($Script:StudyPowerRoot.TrimEnd('\'))
+    $contextProcesses = @($allProcesses | Where-Object {
+            -not [string]::IsNullOrWhiteSpace([string]$_.CommandLine) -and
+            [regex]::IsMatch([string]$_.CommandLine, $rootPattern, [System.Text.RegularExpressions.RegexOptions]::IgnoreCase)
+        })
+    if ($contextProcesses.Count -eq 0) { return @() }
+
+    $knownPids = @{}
+    foreach ($process in $contextProcesses) { $knownPids[[int]$process.ProcessId] = $true }
+    do {
+        $changed = $false
+        foreach ($process in $allProcesses) {
+            $processId = [int]$process.ProcessId
+            if (-not $knownPids.ContainsKey($processId) -and $knownPids.ContainsKey([int]$process.ParentProcessId)) {
+                $knownPids[$processId] = $true
+                $changed = $true
+            }
+        }
+    } while ($changed)
+
+    $tree = @($allProcesses | Where-Object { $knownPids.ContainsKey([int]$_.ProcessId) })
+    if ($RequireListener) {
+        $listeners = @(Get-NetTCPConnection -LocalPort $Script:StudyPowerPort -State Listen -ErrorAction SilentlyContinue)
+        $listenerPids = @($listeners | Select-Object -ExpandProperty OwningProcess)
+        if (@($tree | Where-Object { $_.ProcessId -in $listenerPids }).Count -eq 0) { return @() }
+    }
+    return $tree
+}
+
+function Test-StudyPowerRunning {
+    <# 只有项目进程占用固定端口且 HTTP 可达时才视为运行中。 #>
+    $processes = @(Get-StudyPowerProcessTree -RequireListener)
+    if ($processes.Count -eq 0) { return $false }
+    try {
+        $response = Invoke-WebRequest -UseBasicParsing -Uri $Script:StudyPowerUrl -TimeoutSec 3 -ErrorAction Stop
+        return ($response.StatusCode -ge 200 -and $response.StatusCode -lt 500)
+    } catch {
+        return $false
+    }
+}
+
+function Start-StudyPower {
+    <# 启动 StudyPower Next.js 生产服务并在就绪后打开浏览器。 #>
+    Write-Host ''
+    Write-Host '  正在启动 StudyPower Web 工作台 ...' -ForegroundColor Green
+    Write-LauncherLog '========== 启动 StudyPower Web 工作台 ==========' -Level INFO
+
+    if (Test-StudyPowerRunning) {
+        Write-LauncherLog 'StudyPower 已在运行，跳过重复启动' -Level INFO
+        Write-Host "  StudyPower 已在运行中: $($Script:StudyPowerUrl)" -ForegroundColor Green
+        Open-PlatformUrl -Name 'StudyPower' -Url $Script:StudyPowerUrl
+        return $true
+    }
+    if (-not (Test-Path -LiteralPath $Script:StudyPowerRoot -PathType Container)) {
+        Write-LauncherLog "StudyPower 目录不存在: $($Script:StudyPowerRoot)" -Level ERROR
+        Write-Host "  未找到 StudyPower 目录: $($Script:StudyPowerRoot)" -ForegroundColor Red
+        return $false
+    }
+    if (-not (Test-Path -LiteralPath (Join-Path $Script:StudyPowerRoot 'package.json') -PathType Leaf)) {
+        Write-LauncherLog "StudyPower package.json 不存在: $($Script:StudyPowerRoot)" -Level ERROR
+        Write-Host '  StudyPower 项目缺少 package.json，已停止启动。' -ForegroundColor Red
+        return $false
+    }
+
+    $listeners = @(Get-NetTCPConnection -LocalPort $Script:StudyPowerPort -State Listen -ErrorAction SilentlyContinue)
+    if ($listeners.Count -gt 0) {
+        Write-LauncherLog "StudyPower 预期端口已被其他进程占用: $($Script:StudyPowerPort)" -Level ERROR
+        Write-Host "  端口 $($Script:StudyPowerPort) 已被非 StudyPower 进程占用，已拒绝启动。" -ForegroundColor Red
+        return $false
+    }
+
+    $npm = Get-Command npm.cmd -ErrorAction SilentlyContinue | Select-Object -First 1
+    if ($null -eq $npm -or [string]::IsNullOrWhiteSpace($npm.Source)) {
+        Write-LauncherLog '未找到 npm.cmd，无法启动 StudyPower' -Level ERROR
+        Write-Host '  未找到 npm.cmd，请确认 Node.js/npm 已加入 PATH。' -ForegroundColor Red
+        return $false
+    }
+
+    Remove-Item -LiteralPath $Script:StudyPowerOutLog, $Script:StudyPowerErrLog -ErrorAction SilentlyContinue
+    try {
+        Start-Process -FilePath $npm.Source -ArgumentList "run start -- -p $($Script:StudyPowerPort)" `
+            -WorkingDirectory $Script:StudyPowerRoot -WindowStyle Hidden `
+            -RedirectStandardOutput $Script:StudyPowerOutLog -RedirectStandardError $Script:StudyPowerErrLog
+        Write-LauncherLog "StudyPower 后台启动命令已发出: npm run start -- -p $($Script:StudyPowerPort) (工作目录: $($Script:StudyPowerRoot))" -Level INFO
+    } catch {
+        Write-LauncherLog "启动 StudyPower 异常: $($_.Exception.Message)" -Level ERROR
+        Write-Host "  启动失败: $($_.Exception.Message)" -ForegroundColor Red
+        return $false
+    }
+
+    Write-LauncherLog "等待 StudyPower 就绪 (端口 $($Script:StudyPowerPort))..." -Level INFO
+    for ($i = 0; $i -lt $Script:StudyPowerReadyTimeoutSec; $i++) {
+        Start-Sleep -Seconds 1
+        if (Test-StudyPowerRunning) {
+            Write-LauncherLog "StudyPower 启动完成: $($Script:StudyPowerUrl)" -Level INFO
+            Write-Host "  StudyPower 已就绪: $($Script:StudyPowerUrl)" -ForegroundColor Green
+            Open-PlatformUrl -Name 'StudyPower' -Url $Script:StudyPowerUrl
+            return $true
+        }
+    }
+
+    Write-LauncherLog 'StudyPower 启动超时，请查看 studypower.err.log' -Level ERROR
+    Write-Host '  StudyPower 启动超时，请查看启动器 logs\studypower.err.log。' -ForegroundColor Red
+    if (Test-Path -LiteralPath $Script:StudyPowerErrLog) {
+        Get-Content -LiteralPath $Script:StudyPowerErrLog -Tail 15 -Encoding UTF8 | ForEach-Object { Write-Host "    $_" -ForegroundColor DarkGray }
+    }
+    return $false
+}
+
+function Stop-StudyPower {
+    <# 只停止 StudyPower 项目上下文的进程树。 #>
+    Write-Host ''
+    Write-Host '  正在停止 StudyPower Web 工作台 ...' -ForegroundColor Red
+    Write-LauncherLog '========== 停止 StudyPower Web 工作台 ==========' -Level INFO
+
+    $processes = @(Get-StudyPowerProcessTree)
+    if ($processes.Count -eq 0) {
+        Write-Host '  StudyPower 未在运行。' -ForegroundColor Yellow
+        return $true
+    }
+
+    $knownPids = @{}
+    foreach ($process in $processes) { $knownPids[[int]$process.ProcessId] = $true }
+    $roots = @($processes | Where-Object { -not $knownPids.ContainsKey([int]$_.ParentProcessId) })
+    try {
+        foreach ($process in $roots) {
+            $null = & taskkill.exe /PID $process.ProcessId /T /F 2>$null
+            Write-LauncherLog "已停止 StudyPower 进程树: PID=$($process.ProcessId)" -Level INFO
+        }
+        Start-Sleep -Milliseconds 500
+        if (@(Get-StudyPowerProcessTree).Count -gt 0) { throw 'StudyPower 进程未完全退出' }
+        Write-Host '  StudyPower 已停止。' -ForegroundColor Green
+        return $true
+    } catch {
+        Write-LauncherLog "停止 StudyPower 异常: $($_.Exception.Message)" -Level ERROR
+        Write-Host "  停止失败: $($_.Exception.Message)" -ForegroundColor Red
         return $false
     }
 }
@@ -853,6 +1012,12 @@ function Show-PlatformStatus {
     }
 
     Write-Host ''
+    Write-Host '  ------ StudyPower Web 工作台状态 ------' -ForegroundColor Cyan
+    if (Test-StudyPowerRunning) {
+        Write-Host "  StudyPower: 运行中 ($($Script:StudyPowerUrl))" -ForegroundColor Green
+    } else {
+        Write-Host '  StudyPower: 未运行' -ForegroundColor Yellow
+    }
     Write-Host '  ------ AI Study Tauri 状态 ------' -ForegroundColor Cyan
     $aiStudyProcs = Get-AIStudyProcesses
     if ($aiStudyProcs.Count -gt 0) {
@@ -1824,6 +1989,14 @@ function Invoke-MenuAction {
             # 进入 AI 桌面工具协同组合子菜单
             Show-AiSuiteMenu
         }
+        '22' {
+            # 启动 StudyPower Web 工作台
+            $null = Start-StudyPower
+        }
+        '23' {
+            # 停止 StudyPower Web 工作台
+            $null = Stop-StudyPower
+        }
         'ai' {
             Show-AiSuiteMenu
         }
@@ -1871,6 +2044,7 @@ function Main {
         'dsh', 'deepseek', 'deepseek-harness', 'harness',
         'aistudy', 'tauri', 'system', 'aistudy-tauri',
         'web', 'guanzhi', 'guanzhi-web', 'guanzhitong-lan', 'compliance',
+        'studypower', 'study-power', 'study',
         'all',
         'ai-suite', 'aisuite', 'aitools', 'antigravity', 'antigravity-ide', 'ide', 'chatgpt', 'cockpit'
     )
@@ -1900,6 +2074,9 @@ function Main {
                     'web'         { $ok = Start-GuanZhiWeb }
                     'guanzhi'     { $ok = Start-GuanZhiWeb }
                     'guanzhi-web' { $ok = Start-GuanZhiWeb }
+                    'studypower'  { $ok = Start-StudyPower }
+                    'study-power' { $ok = Start-StudyPower }
+                    'study'       { $ok = Start-StudyPower }
                     'guanzhitong-lan' { $ok = Start-GuanZhiLanSession }
                     'compliance' { $ok = Start-GuanZhiCompliance }
                     'ai-suite'        { $ok = Start-AiSuite }
@@ -1933,6 +2110,9 @@ function Main {
                     'web'         { $ok = Stop-GuanZhiWeb }
                     'guanzhi'     { $ok = Stop-GuanZhiWeb }
                     'guanzhi-web' { $ok = Stop-GuanZhiWeb }
+                    'studypower'  { $ok = Stop-StudyPower }
+                    'study-power' { $ok = Stop-StudyPower }
+                    'study'       { $ok = Stop-StudyPower }
                     'guanzhitong-lan' { $ok = Stop-GuanZhiLanSession }
                     'compliance' { $ok = Stop-GuanZhiWeb }
                     'ai-suite'        { $ok = Stop-AiSuite }
@@ -1988,7 +2168,7 @@ function Main {
                     default { Write-Host "用法: .\Workflow-Launcher.ps1 logs [dsh]" -ForegroundColor Yellow }
                 }
             }
-            default { Write-Host "用法: .\Workflow-Launcher.ps1 [start|stop|status|lan|logs] [aistudy|dsh|web|guanzhitong-lan|compliance|ai-suite|antigravity|antigravity-ide|chatgpt|cockpit|all]" -ForegroundColor Yellow; exit 1 }
+            default { Write-Host "用法: .\Workflow-Launcher.ps1 [start|stop|status|lan|logs] [aistudy|dsh|studypower|web|guanzhitong-lan|compliance|ai-suite|all]" -ForegroundColor Yellow; exit 1 }
         }
         return
     }
@@ -1999,7 +2179,7 @@ function Main {
     $running = $true
     while ($running) {
         Write-Menu
-        $choice = Read-Host '  请选择操作 [0-16, E1, CLS, 0]'
+        $choice = Read-Host '  请选择操作 [0-23, E1, CLS, 0]'
         $running = Invoke-MenuAction -Choice $choice
         if ($running) {
             if ($choice -and $choice.Trim().ToLowerInvariant() -in @('cls', 'clear')) {

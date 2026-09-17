@@ -25,6 +25,7 @@ wll                 # 打开交互菜单
 wll dsh             # 便捷写法，等价于 start dsh
 wll aistudy         # 便捷写法，等价于 start aistudy
 wll web             # 便捷写法，启动冠志通 Web 工作台
+wll studypower      # 便捷写法，启动 StudyPower Web 工作台
 wll guanzhitong-lan # 一键启动 Docker Web 并开启同一 Wi‑Fi 局域网访问
 wll compliance      # 便捷写法，打开合规性判断工作台应用
 wll lan on           # 开启同一 Wi‑Fi 局域网访问
@@ -47,6 +48,7 @@ wll status ai-suite  # 查看 AI 桌面协同组合实时状态与 PID
 .\Workflow-Launcher.ps1 start aistudy
 .\Workflow-Launcher.ps1 start aistudy
 .\Workflow-Launcher.ps1 start web
+.\Workflow-Launcher.ps1 start studypower
 .\Workflow-Launcher.ps1 start guanzhitong-lan
 .\Workflow-Launcher.ps1 start compliance
 .\Workflow-Launcher.ps1 start ai-suite
@@ -64,6 +66,7 @@ wll status ai-suite  # 查看 AI 桌面协同组合实时状态与 PID
 # 停止
 .\Workflow-Launcher.ps1 stop dsh
 .\Workflow-Launcher.ps1 stop aistudy
+.\Workflow-Launcher.ps1 stop studypower
 .\Workflow-Launcher.ps1 stop guanzhitong-lan
 .\Workflow-Launcher.ps1 stop ai-suite
 .\Workflow-Launcher.ps1 stop antigravity
@@ -112,6 +115,7 @@ wll status ai-suite  # 查看 AI 桌面协同组合实时状态与 PID
 | AI Study Tauri | 本机桌面应用（最新正式构建版） |
 | DeepSeek Harness | http://127.0.0.1:9010 |
 | 冠志通 Docker Web 工作台 | http://127.0.0.1:18765 |
+| StudyPower Web 工作台 | http://127.0.0.1:3100 |
 
 ## 本机平台目录
 

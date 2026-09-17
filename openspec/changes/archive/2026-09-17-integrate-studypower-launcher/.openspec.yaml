@@ -1,0 +1,3 @@
+schema: spec-driven
+created: 2026-09-17
+goal: 通过 wll start studypower 或 wll studypower 启动、等待并打开 StudyPower

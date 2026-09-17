@@ -58,6 +58,7 @@ wll status ai-suite # 查看 AI 协同组合状态看板
 # 独立启停
 wll start dsh       | wll stop dsh
 wll start aistudy   | wll stop aistudy
+wll start studypower | wll stop studypower
 wll start web       | wll stop web
 wll start antigravity     | wll stop antigravity
 wll start antigravity-ide | wll stop antigravity-ide
@@ -84,6 +85,7 @@ wll start guanzhitong-lan # 一键启动 Docker Web + 开启 LAN 访问
 # 启动指定平台或组合
 .\System\Workflow-Launcher.ps1 start ai-suite
 .\System\Workflow-Launcher.ps1 start dsh
+.\System\Workflow-Launcher.ps1 start studypower
 .\System\Workflow-Launcher.ps1 start all
 
 # 停止
@@ -105,6 +107,8 @@ wll start guanzhitong-lan # 一键启动 Docker Web + 开启 LAN 访问
 | **[2]** | 启动 DeepSeek Harness (Web) | http://127.0.0.1:9010 |
 | **[3]** | 运行 DeepSeek Harness 一次性任务 | CLI 交互模式 (Headless) |
 | **[4]** | 启动冠志通 Web 工作台 | 启动 Docker 容器 `guanzhitong-compliance` (http://127.0.0.1:18765) |
+| **[22]** | 启动 StudyPower Web 工作台 | 启动 `F:\APP Location\StudyPower` 的 Next.js 生产服务 (http://127.0.0.1:3100) |
+| **[23]** | 停止 StudyPower Web 工作台 | 只停止 StudyPower 项目上下文中的进程树 |
 | **[5]** | 同时启动全部平台 | 依次启动全部常规核心服务 |
 | **[6]** | 查看全部运行状态 | 端口、容器、进程与 AI 组合综合巡检 |
 | **[7-10]** | 停止对应服务 / 停止全部 | 优雅安全下线 |
