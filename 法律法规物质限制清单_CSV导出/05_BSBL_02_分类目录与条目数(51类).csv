@@ -1,0 +1,52 @@
+﻿分类ID,所属板块,分类名称,排序序号,受限物质条目数
+1,BSBL 主清单,Aldehydes｜醛类,1,3
+2,BSBL 主清单,Alkylphenolethoxylates (APEOs)｜烷基酚聚氧乙烯醚,2,2
+3,BSBL 主清单,Alkylphenols (APs)｜烷基酚,3,6
+4,BSBL 主清单,Amines（胺类）,4,15
+5,BSBL 主清单,Arylamines（芳香胺）,5,35
+6,BSBL 主清单,Biocides（杀生物剂）,6,13
+7,BSBL 主清单,Chlorinated Benzenes and Toluenes（氯化苯和氯化甲苯）,7,15
+8,BSBL 主清单,"Chlorinated paraffins, all chain lengths（全链长氯化石蜡）",8,10
+9,BSBL 主清单,Chlorinated Phenols（氯化酚）,9,25
+10,BSBL 主清单,Colorants（着色剂）,10,70
+11,BSBL 主清单,Dioxins and Furans,11,5
+12,BSBL 主清单,Enzymes（酶）,12,1
+13,BSBL 主清单,Flame retardants（阻燃剂）,13,44
+14,BSBL 主清单,Glycols（乙二醇醚类）,14,11
+15,BSBL 主清单,"Greenhouse Gases, fluorinated",15,1
+16,BSBL 主清单,"Halogenated Biphenyls, Terphenyls and Naphthalenes(卤代联苯、卤代三联苯和卤代萘)",16,13
+17,BSBL 主清单,Halogenated Diarylalkanes（卤代二芳基烷）,17,4
+18,BSBL 主清单,Metals（金属）,18,39
+19,BSBL 主清单,Monomers（单体）,19,8
+20,BSBL 主清单,Nitrosamines（亚硝胺）,20,16
+21,BSBL 主清单,Other Chemical Substances（其他化学物质）,21,43
+22,BSBL 主清单,Other Chemical Substances — Boric acid and derivatives 硼酸及其衍生物（Boric acid and derivatives）,22,43
+23,BSBL 主清单,Ozone Depleting Substances（消耗臭氧层物质）,23,3
+24,BSBL 主清单,PFAS 总组 + PFAS dyes,24,32
+25,BSBL 主清单,PFBA / PFHxA / PFHpA 相关物质,25,8
+26,BSBL 主清单,PFOA + C9–C21 PFCAs,26,8
+27,BSBL 主清单,PFAS（续）,27,18
+28,BSBL 主清单,Plasticizers（增塑剂）— Phthalic acid esters,28,32
+29,BSBL 主清单,Polyaromatic hydrocarbons (PAHs) 多环芳烃,29,18
+30,BSBL 主清单,PAHs（续）+ Polymers（聚合物）,30,10
+31,BSBL 主清单,Solvents（溶剂）,31,29
+32,BSBL 主清单,Substances with usage restrictions but no consumer safety limits 有使用限制但无消费者安全限值的物质。,32,23
+33,BSBL 主清单,Phosphonates and salts（膦酸盐及其盐）,33,8
+34,BSBL 主清单,Tin-organic Compounds（有机锡化合物）,34,25
+35,BSBL 主清单,UV stabilizers（紫外线稳定剂）,35,6
+36,Annex I Compilation of Individual Substances,(1) Alkylphenolethoxylates (APEOs) 烷基酚聚氧乙烯醚,36,48
+37,Annex I Compilation of Individual Substances,(2) APEOs（续）+ Alkylphenols（APs）开始,37,47
+38,Annex I Compilation of Individual Substances,(3) Alkylphenols（APs）+ Arylamines（芳胺）,38,47
+39,Annex I Compilation of Individual Substances,(4)  Arylamines（芳胺，续）,39,49
+40,Annex I Compilation of Individual Substances,(5) Arylamines（续）+ Chlorinated Benzenes and Toluenes,40,47
+41,Annex I Compilation of Individual Substances,（6） Chlorinated Benzenes and Toluenes + Colorants,41,93
+42,Annex I Compilation of Individual Substances,（7）Colorants（续）+ Dioxins and Furans,42,47
+43,Annex I Compilation of Individual Substances,（8）  Dioxins and Furans + Enzymes + Flame retardants,43,47
+44,Annex I Compilation of Individual Substances,（9) Flame retardants + Greenhouse Gases + Halogenated Biphenyls,44,43
+45,Annex I Compilation of Individual Substances,"（10）Halogenated Biphenyls, Terphenyls and Naphthalenes（卤代联苯/三联苯/萘）",45,192
+46,Annex I Compilation of Individual Substances,（11） 八/九/十氯联苯 + 多氯萘 + Metals（金属）开始,46,88
+47,Annex I Compilation of Individual Substances,（12）Ozone Depleting Substances（续）,47,92
+48,Annex I Compilation of Individual Substances,（13）Ozone Depleting Substances（续）+ PFAS开始,48,46
+49,Annex I Compilation of Individual Substances,（14） PFAS（续）,49,47
+50,Annex I Compilation of Individual Substances,（15） PFAS（多氟和全氟烷基物质）,50,68
+51,Annex I Compilation of Individual Substances,（16） PFAS（续）+ Tin-organic Compounds（有机锡化合物）,51,83

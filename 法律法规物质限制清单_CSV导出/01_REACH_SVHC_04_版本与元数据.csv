@@ -1,0 +1,8 @@
+﻿属性,属性值
+source_csv,F:\APP Location\Guanzhi Tong\旧版\03_数据库\法规数据库\物质限制清单\REACH-SVHC候选清单-253项-2026-02-04-ECHA.csv
+source_api,https://chem.echa.europa.eu/api-obligation-list/v1/candidateList
+source_scope,ECHA Candidate List 253项；组级项目展开为有明确CAS或EC的成员记录
+top_level_count,253
+child_count,242
+unresolved_parent_count,0
+identifier_policy,不编造CAS/EC；无可核实标识的父级保留为待审查项目

@@ -1,0 +1,14 @@
+﻿属性,属性值
+source_api,https://chem.echa.europa.eu/api-obligation-list/v1/restrictionList
+source_page,https://chem.echa.europa.eu/obligation-lists/restrictionList
+source_regulation,REACH Regulation (EC) No 1907/2006 Annex XVII
+source_consolidated_text,https://eur-lex.europa.eu/eli/reg/2006/1907
+top_level_entry_count,79
+expanded_record_count,1868
+scope,命中表示该 CAS/EC 属于 Annex XVII 条目或物质组范围；最终适用仍需审查用途、浓度、物品形态和豁免
+chinese_name_policy,中文名优先使用本地 CAS 库和内置常用词表；其余为基于 ECHA 英文名的翻译候选，状态为机器翻译待复核
+data_quality_policy,所有字段已填充；法规组无单一CAS/EC时使用组级标识，不伪造单一编号
+shared_rematch_source,https://chatgpt.com/s/t_6a8b97d302648191a73cd38b2a963c3a
+authoritative_shared_table,https://chatgpt.com/s/t_6a8b97d302648191a73cd38b2a963c3a
+member_cn_batch_1,CAS/EC + ECHA英文名称逐条核对，来源为当前共享核验内容及官方清单
+CAS完整性,86个限制条目与1868个细分物质均具备完整合规标识

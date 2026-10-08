@@ -1,0 +1,6 @@
+﻿属性,属性值
+source_csv,F:\APP Location\Guanzhi Tong\旧版\03_数据库\法规数据库\物质限制清单\EU-RoHS-材料级限用物质清单-2011-65-EU-2015-863.csv
+record_count,160
+register,EU RoHS 2011/65/EU Annex II + 2015/863
+scope,均质材料级初筛；物质组/元素索引不能替代最终检测
+CAS补全处理,已对铅、汞、镉、六价铬、多溴联苯、多溴二苯醚6大类别代表性条目全部补全CAS基准

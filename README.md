@@ -8,6 +8,7 @@
 
 - **多平台与组合协同调度**：一键管理 `AI Study Tauri`、`DeepSeek Harness`、`冠志通 Docker Web` 以及 `Antigravity / IDE / ChatGPT / Cockpit` AI 桌面工具套件的启动、停止与状态监控。
 - **独立二级组合面板**：针对 AI 桌面协同工具提供专属二级交互界面，支持**全部统一启动**、**全部关闭**与**独立分开启动/关闭**，配备实时 PID 状态看板。
+- **WSL 专区 (Ubuntu)**：专属二级面板一键管理 DeepSeek Harness WSL 版 (:9011) 与 Antigravity 套件 (GUI / IDE / Cockpit)，覆盖启动、停止、重启、token 网页直达与实时 PID 看板。
 - **Wi‑Fi 局域网安全访问控制**：支持一键开启/关闭冠志通 Docker Web 在局域网（Private Wi‑Fi）内的访问，严格限定来源网段，具备故障自动回滚机制。
 - **极速终端别名 (`wll`)**：在任意终端直接输入 `wll` 唤起交互式控制台，或通过参数直接执行自动化启停脚本。
 - **控制台输出与交互优化**：
@@ -17,6 +18,7 @@
   - 支持输入 `cls` / `clear` 手动清屏。
 - **环境守护与防重复多开**：自动感知进程状态，已在运行的应用避免重复启动；关闭时精准处理主子进程树。
 - **全流程日志追踪**：所有操作全面记录于 `System/logs/launcher.log`，方便运行审计与故障排查。
+- **GLaDOS 多账号一键签到**：集成 GLaDOS 自动签到工具，支持终端输入 wll checkin / wll glados 或主菜单 [17] 一键执行全部账号 (已配置 5 个账号) 自动签到并输出格式化状态看板。
 
 ---
 
@@ -65,11 +67,25 @@ wll start antigravity-ide | wll stop antigravity-ide
 wll start chatgpt         | wll stop chatgpt
 wll start cockpit         | wll stop cockpit
 
+# WSL 专区 (Ubuntu): DeepSeek Harness / Antigravity 套件
+wll start dsh-wsl         | wll stop dsh-wsl | wll restart dsh-wsl
+wll url dsh-wsl           # 浏览器打开 WSL 版 Harness (自动获取 token 地址, :9011)
+wll start antigravity-wsl | wll stop antigravity-wsl | wll restart antigravity-wsl
+wll restart antigravity-ide-wsl | wll stop cockpit-wsl
+wll start wsl             | wll stop wsl     # 一键启停 WSL 专区全部 (dsh + Antigravity 套件)
+wll status wsl            # WSL 专区状态看板 (含 PID)
+
 # Docker Web 局域网控制
 wll lan on          # 开启同 Wi‑Fi 局域网访问
 wll lan off         # 关闭局域网访问
 wll lan status      # 查看局域网访问状态
 wll start guanzhitong-lan # 一键启动 Docker Web + 开启 LAN 访问
+
+# GLaDOS 自动签到 (多账号)
+wll checkin         # 一键执行签到并输出全部账号汇总状态看板
+wll glados          # 等价于 wll checkin
+wll status glados   # 查看 GLaDOS 历史签到与账号剩余天数
+wll logs glados     # 查看 GLaDOS 签到日志
 ```
 
 ### 方式二：双击运行
@@ -118,6 +134,9 @@ wll start guanzhitong-lan # 一键启动 Docker Web + 开启 LAN 访问
 | **[14]** | 一键启动 Docker Web + Wi‑Fi 访问 | 先确认容器健康，再开启当前子网访问 |
 | **[15]** | 一键关闭 LAN 并停止 Docker Web | 先关闭局域网规则，再安全停止容器 |
 | **[16]** | **进入 AI 工具套件组合菜单 >>>** | **专属二级子菜单：Antigravity / IDE / ChatGPT / Cockpit 协同管理** |
+| **[17]** | **GLaDOS 一键自动签到** | **一键执行全部账号签到并输出包含邮箱、状态、今日获得积分、当前总积分、天数的 7 列汇总表格** |
+| **[18]** | 查看 GLaDOS 签到历史看板 | 快速提取查看全部账号最新签到历史记录、今日斩获积分、当前总积分与剩余天数 |
+| **[19]** | **进入 WSL 专区菜单 >>>** | **专属二级面板：DeepSeek Harness WSL 版 (:9011) 与 Antigravity 套件 (GUI/IDE/Cockpit) 的启动、停止、重启、网页直达与实时 PID 看板** |
 | **[E1]** | 快速在浏览器打开 DeepSeek Harness | 直接跳转对应管理界面 |
 | **[CLS]** | 清屏 | 恢复清爽控制台界面 |
 | **[0]** | 退出 | 关闭启动器 |

@@ -1,0 +1,16 @@
+﻿元数据键,元数据值
+清单名称,BSBL 法律法规物质限制清单
+来源,https://xcnch7esppuf.feishu.cn/wiki/CesrwnOamiNhgikMbiDc5TUrnX3?from=from_copylink
+Wiki修订号,445
+工作簿修订号,266
+读取日期,2026-08-27
+有效Sheet数,85
+源表有效行数,1726
+去重后记录数,1726
+完全重复合并行数,0
+具体CAS/EC标识数,1289
+无具体CAS/EC记录数,373
+物质组记录数,3
+排除技术空页,"4XLu3I, xXfxv4, Sheet1"
+规范化说明,显示值保留源表文本；仅对去重键和 CAS/EC 精确匹配做空白归一化与标识提取。
+CAS补全处理,已全面修复26条被Excel误转换为日期的CAS，并为全部347条无CAS记录补全权威基准/母体CAS，达到100%全覆盖

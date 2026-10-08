@@ -26,6 +26,44 @@
     .\Workflow-Launcher.ps1 start ai-suite   一键启动 AI 桌面协同组合 (Antigravity/IDE/ChatGPT/Cockpit)
     .\Workflow-Launcher.ps1 stop ai-suite    一键关闭 AI 桌面协同组合
     .\Workflow-Launcher.ps1 status ai-suite  查看 AI 桌面协同组合状态
+    .\Workflow-Launcher.ps1 start dsh-wsl    启动 DeepSeek Harness WSL 版 (Ubuntu :9011)
+    .\Workflow-Launcher.ps1 stop dsh-wsl     停止 DeepSeek Harness WSL 版
+    .\Workflow-Launcher.ps1 restart dsh-wsl  重启 DeepSeek Harness WSL 版
+    .\Workflow-Launcher.ps1 url dsh-wsl      浏览器打开 DeepSeek Harness WSL 版 (token 地址)
+    .\Workflow-Launcher.ps1 start antigravity-wsl         启动 Antigravity WSL 版 (WSLg GUI)
+    .\Workflow-Launcher.ps1 restart antigravity-ide-wsl   重启 Antigravity IDE WSL 版
+    .\Workflow-Launcher.ps1 stop cockpit-wsl              关闭 Cockpit WSL 版
+    .\Workflow-Launcher.ps1 start wsl      一键启动 WSL 专区全部 (dsh + Antigravity 套件)
+    .\Workflow-Launcher.ps1 status wsl     查看 WSL 专区状态看板
+    .\Workflow-Launcher.ps1 start feishu          一键拉起全套 (根服务 + 飞书双桥接)
+    .\Workflow-Launcher.ps1 stop feishu           一键关闭全套 (双桥接 + 核心根服务)
+    .\Workflow-Launcher.ps1 restart feishu        一键重启全套服务 (根服务 + 飞书双桥接)
+    .\Workflow-Launcher.ps1 status feishu         查看根服务与飞书双机器人综合状态看板
+    .\Workflow-Launcher.ps1 url feishu            浏览器打开飞书桥接管理面板 (http://127.0.0.1:7891)
+    .\Workflow-Launcher.ps1 logs feishu           查看飞书桥接运行日志
+    .\Workflow-Launcher.ps1 feishu                便捷写法，等价于 start feishu
+    .\Workflow-Launcher.ps1 start feishu-opencode 快速拉起 OpenCode 2 全套服务 (根服务 + 飞书桥接)
+    .\Workflow-Launcher.ps1 stop feishu-opencode  快速关闭 OpenCode 2 飞书服务
+    .\Workflow-Launcher.ps1 start feishu-ag       快速拉起 Antigravity 全套服务 (根服务 + 飞书桥接)
+    .\Workflow-Launcher.ps1 stop feishu-ag        快速关闭 Antigravity 飞书服务
+    .\Workflow-Launcher.ps1 start opencode2-core  单独启动 OpenCode 2 核心根服务 (后台 Web/API 服务)
+    .\Workflow-Launcher.ps1 stop opencode2-core   单独关闭 OpenCode 2 核心根服务
+    .\Workflow-Launcher.ps1 start ag-core         单独启动 Antigravity 核心根服务 (Remote-Control 守护)
+    .\Workflow-Launcher.ps1 stop ag-core          单独关闭 Antigravity 核心根服务
+    .\Workflow-Launcher.ps1 pair opencode2        查看 OpenCode 2 Web 配对凭据 (URL/密码)
+    .\Workflow-Launcher.ps1 url opencode2         浏览器打开 OpenCode 2 Web 服务 (http://127.0.0.1:49374)
+    .\Workflow-Launcher.ps1 start msds       启动 MSDS-Engine Web 工作台
+    .\Workflow-Launcher.ps1 start msds-web   启动 MSDS-Engine Web 工作台
+    .\Workflow-Launcher.ps1 start msds-api   启动 MSDS-Engine Agent REST API 服务
+    .\Workflow-Launcher.ps1 stop msds        停止 MSDS-Engine 全部服务 (Web / API)
+    .\Workflow-Launcher.ps1 stop msds-web    停止 MSDS-Engine Web 工作台
+    .\Workflow-Launcher.ps1 stop msds-api    停止 MSDS-Engine Agent REST API 服务
+    .\Workflow-Launcher.ps1 status msds      查看 MSDS-Engine 运行状态
+    .\Workflow-Launcher.ps1 url msds         浏览器打开 MSDS-Engine Web 工作台 (http://127.0.0.1:5173)
+    .\Workflow-Launcher.ps1 url msds-api     浏览器打开 MSDS-Engine Agent API 健康检查 (http://127.0.0.1:5174/api/msds/health)
+    .\Workflow-Launcher.ps1 logs msds        查看 MSDS-Engine 运行日志
+    .\Workflow-Launcher.ps1 msds             便捷写法，等价于 start msds
+    .\Workflow-Launcher.ps1 msds-api         便捷写法，等价于 start msds-api
 #>
 
 #Requires -Version 5.1
@@ -50,6 +88,20 @@ $Script:StudyPowerUrl           = 'http://127.0.0.1:3100'
 $Script:StudyPowerReadyTimeoutSec = 30
 $Script:StudyPowerOutLog        = Join-Path $LauncherRoot 'logs\studypower.out.log'
 $Script:StudyPowerErrLog        = Join-Path $LauncherRoot 'logs\studypower.err.log'
+
+# --- MSDS-Engine (化学品安全技术说明书智能处理引擎) 配置 ---
+$Script:MsdsEngineRoot          = 'F:\App Location\Guanzhi Tong\Skill\MSDS-Engine'
+$Script:MsdsEngineWebDir        = Join-Path $Script:MsdsEngineRoot 'web'
+$Script:MsdsEngineWebPort       = 5173
+$Script:MsdsEngineWebUrl        = 'http://127.0.0.1:5173'
+$Script:MsdsEngineApiPort       = 5174
+$Script:MsdsEngineApiUrl        = 'http://127.0.0.1:5174/api/msds'
+$Script:MsdsEngineHealthUrl     = 'http://127.0.0.1:5174/api/msds/health'
+$Script:MsdsEngineReadyTimeoutSec = 30
+$Script:MsdsEngineWebOutLog     = Join-Path $LauncherRoot 'logs\msds-engine-web.out.log'
+$Script:MsdsEngineWebErrLog     = Join-Path $LauncherRoot 'logs\msds-engine-web.err.log'
+$Script:MsdsEngineApiOutLog     = Join-Path $LauncherRoot 'logs\msds-engine-api.out.log'
+$Script:MsdsEngineApiErrLog     = Join-Path $LauncherRoot 'logs\msds-engine-api.err.log'
 
 # --- AI Study Tauri 配置 ---
 $Script:AIStudyTauriDir = 'D:\应用研究\AI Study Tauri（AST)'
@@ -80,6 +132,13 @@ $Script:GuanZhiWebReadyTimeoutSec = 30
 $Script:GuanZhiComplianceUrl = "$($Script:GuanZhiWebUrl)/?app=compliance-workbench"
 $Script:GuanZhiFirewallRuleName = 'Guanzhitong Docker Web WiFi LAN 18765'
 $Script:GuanZhiLegacyFirewallRuleName = 'Guanzhitong 合规性判断 8765'
+
+# --- GLaDOS 自动签到配置 ---
+$Script:GladosDir               = 'F:\App Location\Glados'
+$Script:GladosScript            = Join-Path $Script:GladosDir 'glados.py'
+$Script:GladosConfigFile        = Join-Path $Script:GladosDir 'config.json'
+$Script:GladosLogFile           = Join-Path $Script:GladosDir 'checkin.log'
+$Script:GladosPythonExe         = 'C:\Users\Administrator\AppData\Local\Programs\Python\Python312\python.exe'
 $Script:GuanZhiDockerBackendRuleDisplayName = 'Docker Desktop Backend'
 
 # --- AI 桌面工具协同组合 (Antigravity / IDE / ChatGPT / Cockpit) 配置 ---
@@ -90,6 +149,19 @@ $Script:CockpitExe              = 'D:\APP\AI app\Cockpit\cockpit-tools.exe'
 $Script:CockpitDir              = 'D:\APP\AI app\Cockpit'
 $Script:ChatGptPackageFamily    = 'OpenAI.Codex_2p2nqsd0c76g0'
 $Script:ChatGptAppId            = 'OpenAI.Codex_2p2nqsd0c76g0!App'
+
+# --- WSL 专区 (Ubuntu) 配置：DeepSeek Harness / Antigravity 套件 ---
+# 助手脚本位于 WSL 内，通过 `wsl -d Ubuntu -- ~/.local/bin/<helper> <cmd>` 调用（单 token 无引号坑）。
+$Script:WslDistro        = 'Ubuntu'
+$Script:WslDshHelperPath = '~/.local/bin/dsh-web'   # DeepSeek Harness WSL 助手 (start/stop/restart/status/url)
+$Script:WslAgHelperPath  = '~/.local/bin/agw'       # Antigravity WSL 套件助手 (gui/ide/cockpit)
+$Script:WslFeishuHelperPath = '~/.local/bin/feishu-bridge' # 飞书双机器人与根服务助手 (OpenCode 2 + Antigravity)
+$Script:WslFeishuPort    = 7891
+$Script:WslFeishuUrl     = 'http://127.0.0.1:7891'
+$Script:WslOpencode2Port = 49374
+$Script:WslOpencode2Url  = 'http://127.0.0.1:49374'
+$Script:WslDshPort       = 9011
+$Script:WslDshUrl        = 'http://127.0.0.1:9011'
 
 # --- 启动后等待 ---
 $Script:PostStartWaitSeconds = 5
@@ -109,11 +181,16 @@ function Write-LauncherLog {
     $timestamp = Get-Date -Format 'yyyy-MM-dd HH:mm:ss'
     $entry = "[$timestamp] [$Level] $Message"
 
-    $logDir = Split-Path $Script:LogFile -Parent
-    if (-not (Test-Path $logDir)) {
-        New-Item -ItemType Directory -Path $logDir -Force | Out-Null
+    try {
+        $logDir = Split-Path $Script:LogFile -Parent
+        if (-not (Test-Path $logDir)) {
+            New-Item -ItemType Directory -Path $logDir -Force | Out-Null
+        }
+        Add-Content -Path $Script:LogFile -Value $entry -Encoding UTF8
+    } catch {
+        # 日志落盘失败（并发调用抢写锁等）绝不中断主流程；控制台已输出该条目
+        Write-Host "(日志写入跳过: $($_.Exception.Message))" -ForegroundColor DarkGray
     }
-    Add-Content -Path $Script:LogFile -Value $entry -Encoding UTF8
 
     switch ($Level) {
         'INFO'  { Write-Host $entry -ForegroundColor Cyan }
@@ -152,8 +229,16 @@ function Write-Menu {
     Write-Host '    [15] 一键关闭 LAN 并停止冠志通 Docker Web' -ForegroundColor Red
     Write-Host ''
     Write-Host '    [16] 进入 AI 工具套件组合菜单 (Antigravity / IDE / ChatGPT / Cockpit) >>>' -ForegroundColor Magenta
+    $gladosCount = Get-GladosAccountCount
+    Write-Host "    [17] GLaDOS 一键自动签到 (执行签到并汇总 $gladosCount 个账号状态)" -ForegroundColor Green
+    Write-Host '    [18] 查看 GLaDOS 最新签到历史与账号状态' -ForegroundColor Yellow
+    Write-Host '    [19] 进入 WSL 专区菜单 (DeepSeek Harness / Antigravity WSL) >>>' -ForegroundColor DarkCyan
+    Write-Host '    [20] 进入飞书机器人与根服务专区 (OpenCode 2 + Antigravity 根服务/桥接/面板) >>>' -ForegroundColor DarkCyan
     Write-Host '    [22] 启动 StudyPower Web 工作台' -ForegroundColor Green
     Write-Host '    [23] 停止 StudyPower Web 工作台' -ForegroundColor Red
+    Write-Host '    [24] 进入 MSDS-Engine 智能处理专区 (Web / API / 测试 / 批注) >>>' -ForegroundColor DarkCyan
+    Write-Host '    [25] 启动 MSDS-Engine Web 工作台' -ForegroundColor Green
+    Write-Host '    [26] 停止 MSDS-Engine 全部服务 (Web / API)' -ForegroundColor Red
     Write-Host ''
     Write-Host '    [E1] 打开 DeepSeek Harness 网页' -ForegroundColor Magenta
     Write-Host ''
@@ -168,27 +253,59 @@ function Write-Menu {
 # 平台状态
 # ============================================================
 
+function Get-DshProcess {
+    <#
+    .SYNOPSIS 返回持有 127.0.0.1:9010 监听端口的 dsh node 进程（数组，可能为空）
+    .NOTES 用一元逗号返回，避免空数组被展开成 $null（StrictMode 下 $null.Count 会抛异常）。
+    #>
+    $result = @()
+    try {
+        $listeners = @(Get-NetTCPConnection -LocalAddress '127.0.0.1' -LocalPort $Script:DshPort -State Listen -ErrorAction Stop)
+        if ($listeners.Count -gt 0) {
+            $ownerPids = @($listeners | Select-Object -ExpandProperty OwningProcess -Unique)
+            $result = @(Get-CimInstance Win32_Process -ErrorAction SilentlyContinue |
+                Where-Object {
+                    $_.ProcessId -in $ownerPids -and
+                    $_.Name -eq 'node.exe' -and
+                    ($_.CommandLine -like "*dsh*" -or $_.CommandLine -like "*bin.js*" -or $_.CommandLine -like "*$($Script:DshCliBin)*")
+                })
+        }
+    } catch {}
+    return ,$result
+}
+
 function Test-DshRunning {
     <#
     .SYNOPSIS 检测 DeepSeek Harness Web 是否正在运行
     .NOTES dsh 首页会保持流式响应，不能用 Invoke-WebRequest 等待响应结束；
            通过固定端口和正式 CLI 入口确认唯一运行实例。
     #>
-    try {
-        $listeners = @(Get-NetTCPConnection -LocalAddress '127.0.0.1' -LocalPort $Script:DshPort -State Listen -ErrorAction Stop)
-        if ($listeners.Count -eq 0) { return $false }
+    return ((Get-DshProcess).Count -gt 0)
+}
 
-        $dshPids = @(Get-CimInstance Win32_Process -ErrorAction SilentlyContinue |
-            Where-Object {
-                $_.ProcessId -in @($listeners | Select-Object -ExpandProperty OwningProcess) -and
-                $_.Name -eq 'node.exe' -and
-                $_.CommandLine -like "*$($Script:DshCliBin)*" -and
-                $_.CommandLine -like "*--port $($Script:DshPort)*"
-            })
-        return ($dshPids.Count -gt 0)
-    } catch {
-        return $false
+function Show-DshResultSummary {
+    <#
+    .SYNOPSIS 打印 DeepSeek Harness 启动/状态结果小结（常驻控制台，不会被浏览器盖掉）
+    #>
+    # Get-DshProcess 用一元逗号返回数组整体，此处直接赋值（不再套 @()，否则形成嵌套数组）
+    $dshProcs = Get-DshProcess
+    $dshPids = @($dshProcs | Select-Object -ExpandProperty ProcessId)
+    $dashboardUrl = Get-DshDashboardUrl
+    $dshOut = Join-Path $Script:DshRoot 'dsh-web.out.log'
+    $dshErr = Join-Path $Script:DshRoot 'dsh-web.err.log'
+    Write-Host ''
+    Write-Host '  ============ DeepSeek Harness 运行结果 ============' -ForegroundColor Cyan
+    if ($dshPids.Count -gt 0) {
+        Write-Host "  状态: 运行中 (PID: $($dshPids -join ', '), 端口 $($Script:DshPort))" -ForegroundColor Green
+    } else {
+        Write-Host "  状态: 未运行 (端口 $($Script:DshPort) 无监听)" -ForegroundColor Yellow
     }
+    Write-Host "  网页: $dashboardUrl" -ForegroundColor Magenta
+    Write-Host "  输出日志: $dshOut" -ForegroundColor Gray
+    Write-Host "  错误日志: $dshErr" -ForegroundColor Gray
+    Write-Host '  查看日志: wll logs dsh' -ForegroundColor Gray
+    Write-Host '  =====================================================' -ForegroundColor Cyan
+    Write-Host ''
 }
 
 function Get-StudyPowerProcessTree {
@@ -335,6 +452,436 @@ function Stop-StudyPower {
         Write-LauncherLog "停止 StudyPower 异常: $($_.Exception.Message)" -Level ERROR
         Write-Host "  停止失败: $($_.Exception.Message)" -ForegroundColor Red
         return $false
+    }
+}
+
+# ============================================================
+# MSDS-Engine (化学品安全技术说明书智能处理引擎)
+# ============================================================
+
+function Get-MsdsEngineWebProcessTree {
+    <# 返回持有 5173 监听端口或在 MSDS-Engine\web 目录下运行的 Vite 进程树 #>
+    $listeners = @(Get-NetTCPConnection -LocalPort $Script:MsdsEngineWebPort -State Listen -ErrorAction SilentlyContinue)
+    $listenerPids = @($listeners | Select-Object -ExpandProperty OwningProcess -Unique)
+    $allProcesses = @(Get-CimInstance Win32_Process -ErrorAction SilentlyContinue)
+    if ($allProcesses.Count -eq 0) { return @() }
+
+    $targetPids = @{}
+    foreach ($p in $allProcesses) {
+        $cmd = [string]$p.CommandLine
+        if ($cmd -and $cmd -match 'MSDS-Engine' -and ($cmd -match 'vite' -or $cmd -match 'dev')) {
+            $targetPids[[int]$p.ProcessId] = $true
+        }
+    }
+    foreach ($pidNum in $listenerPids) {
+        $targetPids[[int]$pidNum] = $true
+    }
+    if ($targetPids.Count -eq 0) { return @() }
+
+    do {
+        $changed = $false
+        foreach ($proc in $allProcesses) {
+            $procId = [int]$proc.ProcessId
+            if (-not $targetPids.ContainsKey($procId) -and $targetPids.ContainsKey([int]$proc.ParentProcessId)) {
+                $targetPids[$procId] = $true
+                $changed = $true
+            }
+        }
+    } while ($changed)
+
+    return @($allProcesses | Where-Object { $targetPids.ContainsKey([int]$_.ProcessId) })
+}
+
+function Get-MsdsEngineApiProcessTree {
+    <# 返回持有 5174 监听端口或运行 api-server.mjs 的 API 进程树 #>
+    $listeners = @(Get-NetTCPConnection -LocalPort $Script:MsdsEngineApiPort -State Listen -ErrorAction SilentlyContinue)
+    $listenerPids = @($listeners | Select-Object -ExpandProperty OwningProcess -Unique)
+    $allProcesses = @(Get-CimInstance Win32_Process -ErrorAction SilentlyContinue)
+    if ($allProcesses.Count -eq 0) { return @() }
+
+    $targetPids = @{}
+    foreach ($p in $allProcesses) {
+        $cmd = [string]$p.CommandLine
+        if ($cmd -and $cmd -match 'api-server\.mjs') {
+            $targetPids[[int]$p.ProcessId] = $true
+        }
+    }
+    foreach ($pidNum in $listenerPids) {
+        $targetPids[[int]$pidNum] = $true
+    }
+    if ($targetPids.Count -eq 0) { return @() }
+
+    do {
+        $changed = $false
+        foreach ($proc in $allProcesses) {
+            $procId = [int]$proc.ProcessId
+            if (-not $targetPids.ContainsKey($procId) -and $targetPids.ContainsKey([int]$proc.ParentProcessId)) {
+                $targetPids[$procId] = $true
+                $changed = $true
+            }
+        }
+    } while ($changed)
+
+    return @($allProcesses | Where-Object { $targetPids.ContainsKey([int]$_.ProcessId) })
+}
+
+function Test-MsdsEngineWebRunning {
+    <# 检查 MSDS-Engine Web 工作台是否正常运行 #>
+    $listeners = @(Get-NetTCPConnection -LocalPort $Script:MsdsEngineWebPort -State Listen -ErrorAction SilentlyContinue)
+    if ($listeners.Count -eq 0) { return $false }
+    try {
+        $response = Invoke-WebRequest -UseBasicParsing -Uri $Script:MsdsEngineWebUrl -TimeoutSec 3 -ErrorAction Stop
+        return ($response.StatusCode -ge 200 -and $response.StatusCode -lt 500)
+    } catch {
+        return $false
+    }
+}
+
+function Test-MsdsEngineApiRunning {
+    <# 检查 MSDS-Engine Agent REST API 服务是否正常运行 #>
+    $listeners = @(Get-NetTCPConnection -LocalPort $Script:MsdsEngineApiPort -State Listen -ErrorAction SilentlyContinue)
+    if ($listeners.Count -eq 0) { return $false }
+    try {
+        $response = Invoke-RestMethod -Uri $Script:MsdsEngineHealthUrl -TimeoutSec 3 -ErrorAction Stop
+        return ($null -ne $response -and $response.success -eq $true)
+    } catch {
+        return $false
+    }
+}
+
+function Open-MsdsEngineWeb {
+    Open-PlatformUrl -Name 'MSDS-Engine Web 工作台' -Url $Script:MsdsEngineWebUrl
+    return $true
+}
+
+function Open-MsdsEngineApi {
+    Open-PlatformUrl -Name 'MSDS-Engine Agent API 健康检查' -Url $Script:MsdsEngineHealthUrl
+    return $true
+}
+
+function Start-MsdsEngineWeb {
+    <# 启动 MSDS-Engine Web 交互工作台并在就绪后自动打开浏览器 #>
+    Write-Host ''
+    Write-Host '  正在启动 MSDS-Engine Web 工作台 (Vite) ...' -ForegroundColor Green
+    Write-LauncherLog '========== 启动 MSDS-Engine Web 工作台 ==========' -Level INFO
+
+    if (Test-MsdsEngineWebRunning) {
+        Write-LauncherLog 'MSDS-Engine Web 已在运行，跳过重复启动' -Level INFO
+        Write-Host "  MSDS-Engine Web 工作台已在运行中: $($Script:MsdsEngineWebUrl)" -ForegroundColor Green
+        Open-MsdsEngineWeb
+        return $true
+    }
+    if (-not (Test-Path -LiteralPath $Script:MsdsEngineWebDir -PathType Container)) {
+        Write-LauncherLog "MSDS-Engine Web 目录不存在: $($Script:MsdsEngineWebDir)" -Level ERROR
+        Write-Host "  未找到 MSDS-Engine Web 目录: $($Script:MsdsEngineWebDir)" -ForegroundColor Red
+        return $false
+    }
+
+    $listeners = @(Get-NetTCPConnection -LocalPort $Script:MsdsEngineWebPort -State Listen -ErrorAction SilentlyContinue)
+    if ($listeners.Count -gt 0) {
+        Write-LauncherLog "端口 $($Script:MsdsEngineWebPort) 已被其他进程占用" -Level ERROR
+        Write-Host "  端口 $($Script:MsdsEngineWebPort) 已被其他进程占用，已停止启动。" -ForegroundColor Red
+        return $false
+    }
+
+    $npm = Get-Command npm.cmd -ErrorAction SilentlyContinue | Select-Object -First 1
+    if ($null -eq $npm -or [string]::IsNullOrWhiteSpace($npm.Source)) {
+        Write-LauncherLog '未找到 npm.cmd，无法启动 MSDS-Engine' -Level ERROR
+        Write-Host '  未找到 npm.cmd，请确认 Node.js/npm 已加入 PATH。' -ForegroundColor Red
+        return $false
+    }
+
+    Remove-Item -LiteralPath $Script:MsdsEngineWebOutLog, $Script:MsdsEngineWebErrLog -ErrorAction SilentlyContinue
+    try {
+        $cmdLine = "cmd.exe /c `"npm.cmd run dev -- --host 127.0.0.1 > `"$Script:MsdsEngineWebOutLog`" 2> `"$Script:MsdsEngineWebErrLog`"`""
+        $wmiRes = ([wmiclass]'Win32_Process').Create($cmdLine, $Script:MsdsEngineWebDir, $null)
+        if ($null -eq $wmiRes -or $wmiRes.ReturnValue -ne 0) {
+            Start-Process -FilePath 'cmd.exe' -ArgumentList "/c `"$cmdLine`"" `
+                -WorkingDirectory $Script:MsdsEngineWebDir -WindowStyle Hidden
+        }
+        Write-LauncherLog "MSDS-Engine Web 后台启动命令已发出: npm run dev -- --host 127.0.0.1" -Level INFO
+    } catch {
+        Write-LauncherLog "启动 MSDS-Engine Web 异常: $($_.Exception.Message)" -Level ERROR
+        Write-Host "  启动失败: $($_.Exception.Message)" -ForegroundColor Red
+        return $false
+    }
+
+    Write-LauncherLog "等待 MSDS-Engine Web 就绪 (端口 $($Script:MsdsEngineWebPort))..." -Level INFO
+    for ($i = 0; $i -lt $Script:MsdsEngineReadyTimeoutSec; $i++) {
+        Start-Sleep -Seconds 1
+        if (Test-MsdsEngineWebRunning) {
+            Write-LauncherLog "MSDS-Engine Web 启动完成: $($Script:MsdsEngineWebUrl)" -Level INFO
+            Write-Host "  MSDS-Engine Web 工作台已就绪: $($Script:MsdsEngineWebUrl)" -ForegroundColor Green
+            Open-MsdsEngineWeb
+            return $true
+        }
+    }
+
+    Write-LauncherLog 'MSDS-Engine Web 启动超时，请查看 msds-engine-web.err.log' -Level ERROR
+    Write-Host '  MSDS-Engine Web 启动超时，请查看 logs\msds-engine-web.err.log。' -ForegroundColor Red
+    if (Test-Path -LiteralPath $Script:MsdsEngineWebErrLog) {
+        Get-Content -LiteralPath $Script:MsdsEngineWebErrLog -Tail 15 -Encoding UTF8 | ForEach-Object { Write-Host "    $_" -ForegroundColor DarkGray }
+    }
+    return $false
+}
+
+function Stop-MsdsEngineWeb {
+    <# 停止 MSDS-Engine Web 工作台 #>
+    Write-Host ''
+    Write-Host '  正在停止 MSDS-Engine Web 工作台 ...' -ForegroundColor Red
+    Write-LauncherLog '========== 停止 MSDS-Engine Web 工作台 ==========' -Level INFO
+
+    $processes = @(Get-MsdsEngineWebProcessTree)
+    if ($processes.Count -eq 0) {
+        Write-Host '  MSDS-Engine Web 工作台未在运行。' -ForegroundColor Yellow
+        return $true
+    }
+
+    $knownPids = @{}
+    foreach ($process in $processes) { $knownPids[[int]$process.ProcessId] = $true }
+    $roots = @($processes | Where-Object { -not $knownPids.ContainsKey([int]$_.ParentProcessId) })
+    try {
+        foreach ($process in $roots) {
+            $null = & taskkill.exe /PID $process.ProcessId /T /F 2>$null
+            Write-LauncherLog "已停止 MSDS-Engine Web 进程树: PID=$($process.ProcessId)" -Level INFO
+        }
+        Start-Sleep -Milliseconds 500
+        Write-Host '  MSDS-Engine Web 工作台已停止。' -ForegroundColor Green
+        return $true
+    } catch {
+        Write-LauncherLog "停止 MSDS-Engine Web 异常: $($_.Exception.Message)" -Level ERROR
+        Write-Host "  停止失败: $($_.Exception.Message)" -ForegroundColor Red
+        return $false
+    }
+}
+
+function Start-MsdsEngineApi {
+    <# 启动 MSDS-Engine Agent REST API 独立服务 #>
+    Write-Host ''
+    Write-Host '  正在启动 MSDS-Engine Agent REST API 独立服务 ...' -ForegroundColor Green
+    Write-LauncherLog '========== 启动 MSDS-Engine Agent API 服务 ==========' -Level INFO
+
+    if (Test-MsdsEngineApiRunning) {
+        Write-LauncherLog 'MSDS-Engine API 服务已在运行，跳过重复启动' -Level INFO
+        Write-Host "  MSDS-Engine Agent API 服务已在运行中: $($Script:MsdsEngineApiUrl)" -ForegroundColor Green
+        Open-MsdsEngineApi
+        return $true
+    }
+    if (-not (Test-Path -LiteralPath (Join-Path $Script:MsdsEngineWebDir 'src\api-server.mjs') -PathType Leaf)) {
+        Write-LauncherLog "未找到 api-server.mjs 入口文件" -Level ERROR
+        Write-Host "  未找到 MSDS-Engine API 入口文件: src\api-server.mjs" -ForegroundColor Red
+        return $false
+    }
+
+    $listeners = @(Get-NetTCPConnection -LocalPort $Script:MsdsEngineApiPort -State Listen -ErrorAction SilentlyContinue)
+    if ($listeners.Count -gt 0) {
+        Write-LauncherLog "端口 $($Script:MsdsEngineApiPort) 已被其他进程占用" -Level ERROR
+        Write-Host "  端口 $($Script:MsdsEngineApiPort) 已被其他进程占用，已停止启动。" -ForegroundColor Red
+        return $false
+    }
+
+    $node = Get-Command node.exe -ErrorAction SilentlyContinue | Select-Object -First 1
+    if ($null -eq $node -or [string]::IsNullOrWhiteSpace($node.Source)) {
+        Write-LauncherLog '未找到 node.exe，无法启动 API 服务' -Level ERROR
+        Write-Host '  未找到 node.exe，请确认 Node.js 已安装并加入 PATH。' -ForegroundColor Red
+        return $false
+    }
+
+    Remove-Item -LiteralPath $Script:MsdsEngineApiOutLog, $Script:MsdsEngineApiErrLog -ErrorAction SilentlyContinue
+    try {
+        $cmdLine = "cmd.exe /c `"node.exe src/api-server.mjs > `"$Script:MsdsEngineApiOutLog`" 2> `"$Script:MsdsEngineApiErrLog`"`""
+        $wmiRes = ([wmiclass]'Win32_Process').Create($cmdLine, $Script:MsdsEngineWebDir, $null)
+        if ($null -eq $wmiRes -or $wmiRes.ReturnValue -ne 0) {
+            Start-Process -FilePath 'cmd.exe' -ArgumentList "/c `"$cmdLine`"" `
+                -WorkingDirectory $Script:MsdsEngineWebDir -WindowStyle Hidden
+        }
+        Write-LauncherLog "MSDS-Engine API 后台启动命令已发出: node src/api-server.mjs" -Level INFO
+    } catch {
+        Write-LauncherLog "启动 MSDS-Engine API 异常: $($_.Exception.Message)" -Level ERROR
+        Write-Host "  启动失败: $($_.Exception.Message)" -ForegroundColor Red
+        return $false
+    }
+
+    Write-LauncherLog "等待 MSDS-Engine API 就绪 (端口 $($Script:MsdsEngineApiPort))..." -Level INFO
+    for ($i = 0; $i -lt $Script:MsdsEngineReadyTimeoutSec; $i++) {
+        Start-Sleep -Seconds 1
+        if (Test-MsdsEngineApiRunning) {
+            Write-LauncherLog "MSDS-Engine API 启动完成: $($Script:MsdsEngineApiUrl)" -Level INFO
+            Write-Host "  MSDS-Engine Agent API 服务已就绪: $($Script:MsdsEngineApiUrl)" -ForegroundColor Green
+            Open-MsdsEngineApi
+            return $true
+        }
+    }
+
+    Write-LauncherLog 'MSDS-Engine API 启动超时，请查看 msds-engine-api.err.log' -Level ERROR
+    Write-Host '  MSDS-Engine API 启动超时，请查看 logs\msds-engine-api.err.log。' -ForegroundColor Red
+    if (Test-Path -LiteralPath $Script:MsdsEngineApiErrLog) {
+        Get-Content -LiteralPath $Script:MsdsEngineApiErrLog -Tail 15 -Encoding UTF8 | ForEach-Object { Write-Host "    $_" -ForegroundColor DarkGray }
+    }
+    return $false
+}
+
+function Stop-MsdsEngineApi {
+    <# 停止 MSDS-Engine Agent REST API 独立服务 #>
+    Write-Host ''
+    Write-Host '  正在停止 MSDS-Engine Agent REST API 独立服务 ...' -ForegroundColor Red
+    Write-LauncherLog '========== 停止 MSDS-Engine Agent API 服务 ==========' -Level INFO
+
+    $processes = @(Get-MsdsEngineApiProcessTree)
+    if ($processes.Count -eq 0) {
+        Write-Host '  MSDS-Engine Agent API 服务未在运行。' -ForegroundColor Yellow
+        return $true
+    }
+
+    $knownPids = @{}
+    foreach ($process in $processes) { $knownPids[[int]$process.ProcessId] = $true }
+    $roots = @($processes | Where-Object { -not $knownPids.ContainsKey([int]$_.ParentProcessId) })
+    try {
+        foreach ($process in $roots) {
+            $null = & taskkill.exe /PID $process.ProcessId /T /F 2>$null
+            Write-LauncherLog "已停止 MSDS-Engine API 进程树: PID=$($process.ProcessId)" -Level INFO
+        }
+        Start-Sleep -Milliseconds 500
+        Write-Host '  MSDS-Engine Agent API 服务已停止。' -ForegroundColor Green
+        return $true
+    } catch {
+        Write-LauncherLog "停止 MSDS-Engine API 异常: $($_.Exception.Message)" -Level ERROR
+        Write-Host "  停止失败: $($_.Exception.Message)" -ForegroundColor Red
+        return $false
+    }
+}
+
+function Stop-MsdsEngineAll {
+    <# 停止 MSDS-Engine 全部服务 (Web + API) #>
+    $stopWeb = Stop-MsdsEngineWeb
+    $stopApi = Stop-MsdsEngineApi
+    return ($stopWeb -and $stopApi)
+}
+
+function Show-MsdsEngineSummary {
+    <# 显示 MSDS-Engine 状态汇总 #>
+    Write-Host '  ------ MSDS-Engine (化学品说明书智能引擎) 状态 ------' -ForegroundColor Cyan
+    $webRunning = Test-MsdsEngineWebRunning
+    $apiRunning = Test-MsdsEngineApiRunning
+
+    if ($webRunning) {
+        Write-Host "  Web 交互工作台: 运行中 ($($Script:MsdsEngineWebUrl))" -ForegroundColor Green
+    } else {
+        Write-Host '  Web 交互工作台: 未运行' -ForegroundColor Yellow
+    }
+
+    if ($apiRunning) {
+        Write-Host "  Agent REST API : 运行中 ($($Script:MsdsEngineApiUrl))" -ForegroundColor Green
+    } else {
+        Write-Host '  Agent REST API : 未运行' -ForegroundColor Yellow
+    }
+    Write-Host "  项目物理根路径: $($Script:MsdsEngineRoot)" -ForegroundColor DarkGray
+}
+
+function Show-MsdsEngineLogs {
+    <# 显示 MSDS-Engine 最新日志 #>
+    Write-Host ''
+    Write-Host '  --- msds-engine-web.out.log (最近 20 行) ---' -ForegroundColor Cyan
+    if (Test-Path $Script:MsdsEngineWebOutLog) { Get-Content -LiteralPath $Script:MsdsEngineWebOutLog -Tail 20 -Encoding UTF8 } else { Write-Host '  (暂无 Web 输出日志)' }
+    Write-Host ''
+    Write-Host '  --- msds-engine-web.err.log (最近 20 行) ---' -ForegroundColor Cyan
+    if (Test-Path $Script:MsdsEngineWebErrLog) { Get-Content -LiteralPath $Script:MsdsEngineWebErrLog -Tail 20 -Encoding UTF8 } else { Write-Host '  (暂无 Web 错误日志)' }
+    Write-Host ''
+    Write-Host '  --- msds-engine-api.out.log (最近 20 行) ---' -ForegroundColor Cyan
+    if (Test-Path $Script:MsdsEngineApiOutLog) { Get-Content -LiteralPath $Script:MsdsEngineApiOutLog -Tail 20 -Encoding UTF8 } else { Write-Host '  (暂无 API 输出日志)' }
+    Write-Host ''
+    Write-Host '  --- msds-engine-api.err.log (最近 20 行) ---' -ForegroundColor Cyan
+    if (Test-Path $Script:MsdsEngineApiErrLog) { Get-Content -LiteralPath $Script:MsdsEngineApiErrLog -Tail 20 -Encoding UTF8 } else { Write-Host '  (暂无 API 错误日志)' }
+    Write-Host ''
+}
+
+function Show-MsdsEngineMenu {
+    <# MSDS-Engine 专用交互式二级菜单 #>
+    Write-LauncherLog '进入 MSDS-Engine 二级菜单' -Level INFO
+    $inMsdsMenu = $true
+    while ($inMsdsMenu) {
+        $webRunning = Test-MsdsEngineWebRunning
+        $apiRunning = Test-MsdsEngineApiRunning
+
+        Write-Host ''
+        Write-Host '  ============================================================' -ForegroundColor DarkCyan
+        Write-Host '   MSDS-Engine (化学品安全技术说明书智能处理引擎) 专区' -ForegroundColor White
+        Write-Host '  ============================================================' -ForegroundColor DarkCyan
+        Write-Host ''
+        Write-Host '   【当前组件运行状态】' -ForegroundColor Cyan
+        Write-Host "     1. Web 交互工作台 (Vite):   $(if ($webRunning) { '[√] 运行中 (' + $Script:MsdsEngineWebUrl + ')' } else { '[x] 未运行' })" -ForegroundColor $(if ($webRunning) { 'Green' } else { 'DarkGray' })
+        Write-Host "     2. Agent REST API 服务:     $(if ($apiRunning) { '[√] 运行中 (' + $Script:MsdsEngineApiUrl + ')' } else { '[x] 未运行' })" -ForegroundColor $(if ($apiRunning) { 'Green' } else { 'DarkGray' })
+        Write-Host ''
+        Write-Host '   【快捷启动】' -ForegroundColor Green
+        Write-Host '    [1]  启动 Web 交互工作台 (自动打开浏览器 127.0.0.1:5173)' -ForegroundColor Green
+        Write-Host '    [2]  启动 Agent REST API 独立无头服务 (127.0.0.1:5174)' -ForegroundColor Green
+        Write-Host '    [3]  一键全部启动 (Web + API 独立服务)' -ForegroundColor Green
+        Write-Host ''
+        Write-Host '   【服务关闭】' -ForegroundColor Red
+        Write-Host '    [4]  停止 Web 交互工作台' -ForegroundColor Red
+        Write-Host '    [5]  停止 Agent REST API 独立服务' -ForegroundColor Red
+        Write-Host '    [6]  一键全部停止 (关闭 Web 与 API 服务)' -ForegroundColor Red
+        Write-Host ''
+        Write-Host '   【浏览与测试工具】' -ForegroundColor Yellow
+        Write-Host '    [7]  在浏览器中打开 Web 交互工作台' -ForegroundColor Magenta
+        Write-Host '    [8]  在浏览器中打开 Agent API 健康检查' -ForegroundColor Magenta
+        Write-Host '    [9]  执行核心冒烟与测试套件 (npm run test:smoke)' -ForegroundColor Cyan
+        Write-Host '    [10] 在 VS Code 中打开 MSDS-Engine 工程' -ForegroundColor Cyan
+        Write-Host '    [11] 查看 MSDS-Engine 运行日志' -ForegroundColor DarkGray
+        Write-Host ''
+        Write-Host '    [R]   刷新当前状态' -ForegroundColor Cyan
+        Write-Host '    [CLS] 清屏' -ForegroundColor DarkGray
+        Write-Host '    [0]   返回统一启动器主菜单' -ForegroundColor Gray
+        Write-Host '  ============================================================' -ForegroundColor DarkCyan
+        Write-Host ''
+
+        $subChoice = Read-Host '  请选择 MSDS-Engine 操作 [0-11, R, CLS]'
+        if ([string]::IsNullOrWhiteSpace($subChoice)) { continue }
+        $subKey = $subChoice.Trim().ToLowerInvariant()
+
+        switch ($subKey) {
+            '1' { $null = Start-MsdsEngineWeb }
+            '2' { $null = Start-MsdsEngineApi }
+            '3' {
+                $null = Start-MsdsEngineWeb
+                $null = Start-MsdsEngineApi
+            }
+            '4' { $null = Stop-MsdsEngineWeb }
+            '5' { $null = Stop-MsdsEngineApi }
+            '6' { $null = Stop-MsdsEngineAll }
+            '7' { $null = Open-MsdsEngineWeb }
+            '8' { $null = Open-MsdsEngineApi }
+            '9' {
+                Write-Host ''
+                Write-Host '  正在执行 MSDS-Engine 自动化测试套件 ...' -ForegroundColor Cyan
+                $npm = Get-Command npm.cmd -ErrorAction SilentlyContinue | Select-Object -First 1
+                if ($npm) {
+                    & $npm.Source --prefix $Script:MsdsEngineWebDir run test:smoke
+                }
+            }
+            '10' {
+                Write-Host ''
+                Write-Host "  正在使用 VS Code 打开: $($Script:MsdsEngineRoot)" -ForegroundColor Cyan
+                code $Script:MsdsEngineRoot
+            }
+            '11' {
+                Show-MsdsEngineLogs
+            }
+            'r' { continue }
+            'cls' { Clear-Host; continue }
+            'clear' { Clear-Host; continue }
+            '0' {
+                Write-Host '  已返回统一启动器主菜单。' -ForegroundColor Gray
+                $inMsdsMenu = $false
+                break
+            }
+            default {
+                Write-Host '  无效选项，请重新输入。' -ForegroundColor Yellow
+            }
+        }
+        if ($inMsdsMenu -and $subKey -notin @('r', 'cls', 'clear')) {
+            Wait-ActionPause -PromptText '操作执行完毕。按 [Enter] 键返回 MSDS 专区菜单...'
+        }
     }
 }
 
@@ -1045,6 +1592,14 @@ function Show-PlatformStatus {
     Write-Host '  -- AI 桌面协同组合状态 (Antigravity / IDE / ChatGPT / Cockpit) --' -ForegroundColor Cyan
     Show-AiSuiteSummary
     Write-Host ''
+    Show-WslSummary
+    Write-Host ''
+    Show-WslFeishuSummary
+    Write-Host ''
+    Show-GladosStatus
+    Write-Host ''
+    Show-MsdsEngineSummary
+    Write-Host ''
 }
 
 # ============================================================
@@ -1235,7 +1790,9 @@ function Start-Dsh {
 
     if (Test-DshRunning) {
         Write-LauncherLog 'DeepSeek Harness 已在运行，跳过启动' -Level INFO
-        Write-Host '  DeepSeek Harness 已在运行中。' -ForegroundColor Green
+        Write-Host '  DeepSeek Harness 已在运行中（跳过重复启动）。' -ForegroundColor Green
+        Show-DshResultSummary
+        Write-Host '  正在打开浏览器 ...' -ForegroundColor Gray
         Open-DshDashboard
         return $true
     }
@@ -1251,19 +1808,34 @@ function Start-Dsh {
         return $false
     }
 
-    # 后台拉起 dsh web（分离进程，不阻塞 wll 菜单）。
+    # 检查端口是否被遗留进程占用，防止 EADDRINUSE 导致启动超时
+    $staleConn = Get-NetTCPConnection -LocalPort $Script:DshPort -State Listen -ErrorAction SilentlyContinue
+    if ($staleConn) {
+        Write-LauncherLog "检测到端口 $($Script:DshPort) 存在旧进程占用，正在清理..." -Level WARN
+        $stalePids = @($staleConn | Select-Object -ExpandProperty OwningProcess -Unique)
+        foreach ($spid in $stalePids) {
+            try { Stop-Process -Id $spid -Force -ErrorAction SilentlyContinue } catch {}
+        }
+        Start-Sleep -Milliseconds 800
+    }
+
+    # 后台拉起 dsh web（经 cmd 纯后台独立进程启动并文件重定向，彻底解绑控制台管道，杜绝 EPIPE / 管道断开导致进程退出）。
     # 优先用预编译 CLI（node apps/cli/lib/bin.js），避免 pnpm+tsx 源码转译导致的 ~95s 冷启动。
     $dshOut = Join-Path $Script:DshRoot 'dsh-web.out.log'
     $dshErr = Join-Path $Script:DshRoot 'dsh-web.err.log'
     Remove-Item -LiteralPath $dshOut, $dshErr -ErrorAction SilentlyContinue
     try {
         $env:DSH_HOME = $Script:DshHome
+        $env:NODE_USE_ENV_PROXY = '1'
         $dshWorkDir = $Script:DshRoot
         # 路径含空格，必须显式加引号；Start-Process -ArgumentList 数组拼接不会自动加引号
         $dshArgs = "`"$($Script:DshCliBin)`" web --patch apps/cli/config/examples/schedule/cordis.yml --port $($Script:DshPort)"
-        Start-Process -FilePath 'node.exe' -ArgumentList $dshArgs `
-            -WorkingDirectory $dshWorkDir -WindowStyle Hidden `
-            -RedirectStandardOutput $dshOut -RedirectStandardError $dshErr
+        $cmdLine = "cmd.exe /c `"`"node.exe`" $dshArgs > `"$dshOut`" 2> `"$dshErr`"`""
+        $wmiRes = ([wmiclass]'Win32_Process').Create($cmdLine, $dshWorkDir, $null)
+        if ($null -eq $wmiRes -or $wmiRes.ReturnValue -ne 0) {
+            Start-Process -FilePath 'cmd.exe' -ArgumentList "/c $cmdLine" `
+                -WorkingDirectory $dshWorkDir -WindowStyle Hidden
+        }
         Write-LauncherLog "后台启动命令已发出: node $dshArgs (工作目录: $dshWorkDir)" -Level INFO
     } catch {
         Write-LauncherLog "启动 DeepSeek Harness 异常: $($_.Exception.Message)" -Level ERROR
@@ -1271,11 +1843,30 @@ function Start-Dsh {
         return $false
     }
 
-    # 等待就绪
+    # 等待就绪（实时透出 dsh 启动输出 + 倒计时，避免长时间无反馈）
     Write-LauncherLog "等待 DeepSeek Harness 就绪 (端口 $($Script:DshPort))..." -Level INFO
+    Write-Host "  等待就绪中 (最多 $($Script:DshReadyTimeoutSec)s)，dsh 启动输出如下:" -ForegroundColor Gray
     $ready = $false
+    $lastOutLen = 0
     for ($i = 0; $i -lt $Script:DshReadyTimeoutSec; $i++) {
         Start-Sleep -Seconds 1
+        if (Test-Path -LiteralPath $dshOut) {
+            try {
+                $outContent = Get-Content -LiteralPath $dshOut -Raw -Encoding UTF8 -ErrorAction SilentlyContinue
+                if ($outContent -and $outContent.Length -gt $lastOutLen) {
+                    $newText = $outContent.Substring($lastOutLen)
+                    $lastOutLen = $outContent.Length
+                    foreach ($newLine in ($newText -split "`r?`n")) {
+                        if (-not [string]::IsNullOrWhiteSpace($newLine)) {
+                            Write-Host "    [dsh] $newLine" -ForegroundColor DarkGray
+                        }
+                    }
+                }
+            } catch {}
+        }
+        if ((($i + 1) % 10) -eq 0) {
+            Write-Host "  ... 已等待 $($i + 1)s/$($Script:DshReadyTimeoutSec)s" -ForegroundColor DarkGray
+        }
         if (Test-DshRunning) {
             $ready = $true
             break
@@ -1284,15 +1875,23 @@ function Start-Dsh {
 
     if ($ready) {
         Write-LauncherLog 'DeepSeek Harness 启动完成' -Level INFO
-        Write-Host "  DeepSeek Harness 已就绪: $($Script:DshUrl)" -ForegroundColor Green
+        Write-Host "  DeepSeek Harness 已就绪。" -ForegroundColor Green
+        Show-DshResultSummary
+        Write-Host '  正在打开浏览器 ...' -ForegroundColor Gray
         Open-DshDashboard
         return $true
     } else {
         Write-LauncherLog 'DeepSeek Harness 启动超时，请查看 dsh-web.err.log' -Level WARN
         Write-Host '  DeepSeek Harness 启动超时，请查看 dsh-web.err.log。' -ForegroundColor Yellow
+        if (Test-Path $dshOut) {
+            Write-Host '  --- dsh-web.out.log (全部) ---' -ForegroundColor Cyan
+            Get-Content -LiteralPath $dshOut -Encoding UTF8 | ForEach-Object { Write-Host "    $_" -ForegroundColor DarkGray }
+        }
         if (Test-Path $dshErr) {
+            Write-Host '  --- dsh-web.err.log (最近 15 行) ---' -ForegroundColor Cyan
             Get-Content -LiteralPath $dshErr -Tail 15 -Encoding UTF8 | ForEach-Object { Write-Host "    $_" -ForegroundColor DarkGray }
         }
+        Write-Host '  排查: 1) wll logs dsh 看完整日志  2) wll stop dsh 后重试  3) 检查端口 9010 是否被占用' -ForegroundColor Yellow
         return $false
     }
 }
@@ -1830,6 +2429,33 @@ function Stop-AiSuite {
     }
 }
 
+function Wait-ActionPause {
+    <#
+    .SYNOPSIS 操作执行完毕后稳定驻留反馈结果，清空输入缓冲并暂停等待，防止菜单立即刷新冲掉输出
+    #>
+    param(
+        [string]$PromptText = '操作执行完毕。请查看上方反馈结果，按 [Enter] 键继续...'
+    )
+    Write-Host ''
+    Write-Host '  ------------------------------------------------------------' -ForegroundColor DarkGray
+    Write-Host "  [提示] $PromptText" -ForegroundColor DarkCyan
+    Write-Host '         (日志已同步记录至 System\logs\launcher.log)' -ForegroundColor DarkGray
+
+    # 清空输入缓冲区中可能残留的击键或换行
+    try {
+        while ($Host.UI.RawUI.KeyAvailable) {
+            $null = $Host.UI.RawUI.ReadKey('NoEcho,IncludeKeyDown')
+        }
+    } catch {}
+
+    # 等待用户按 Enter 键确认继续
+    try {
+        $null = Read-Host
+    } catch {
+        Start-Sleep -Seconds 3
+    }
+}
+
 function Show-AiSuiteMenu {
     <#
     .SYNOPSIS AI 桌面工具协同组合独立二级菜单
@@ -1903,12 +2529,962 @@ function Show-AiSuiteMenu {
                 Write-Host '  无效选项，请重新输入。' -ForegroundColor Yellow
             }
         }
+        if ($inSuiteMenu -and $subKey -notin @('r', 'cls', 'clear', '0')) {
+            Wait-ActionPause -PromptText 'AI 套件操作已完成。按 [Enter] 键刷新并返回菜单...'
+        }
+    }
+}
+
+# ============================================================
+# WSL 专区 (Ubuntu): DeepSeek Harness / Antigravity 套件
+# ============================================================
+
+function Invoke-WslHelper {
+    <#
+    .SYNOPSIS 调用 WSL 内的管理助手脚本，返回清理后的输出行与退出码
+    .NOTES wsl.exe 的 UTF-16 通知行含 NUL 字符，直接过滤避免污染菜单；
+           EAP=Stop 下 wsl.exe 的 stderr 会抛 NativeCommandError，临时降级规避。
+    #>
+    param(
+        [Parameter(Mandatory)][ValidateSet('dsh', 'ag', 'feishu')][string]$Helper,
+        [string[]]$WslArgs = @()
+    )
+    $helperPath = switch ($Helper) {
+        'dsh'    { $Script:WslDshHelperPath }
+        'ag'     { $Script:WslAgHelperPath }
+        'feishu' { $Script:WslFeishuHelperPath }
+    }
+    $prevEap = $ErrorActionPreference
+    $ErrorActionPreference = 'Continue'
+    try {
+        $raw = @( & wsl.exe -d $Script:WslDistro -- $helperPath @WslArgs 2>&1 )
+        $lines = @()
+        foreach ($item in $raw) {
+            $text = [string]$item
+            if ($text.Length -eq 0) { continue }
+            if ($text.IndexOf([char]0) -ge 0) { continue }
+            $lines += $text
+        }
+        return [pscustomobject]@{ Lines = $lines; ExitCode = $LASTEXITCODE }
+    } catch {
+        Write-LauncherLog "WSL 助手调用失败 ($Helper $($WslArgs -join ' ')): $($_.Exception.Message)" -Level ERROR
+        return [pscustomobject]@{ Lines = @("WSL call failed: $($_.Exception.Message)"); ExitCode = 1 }
+    } finally {
+        $ErrorActionPreference = $prevEap
+    }
+}
+
+function Get-WslDshState {
+    <#
+    .SYNOPSIS 查询 DeepSeek Harness WSL 运行状态 (一次 wsl 调用)
+    #>
+    $res = Invoke-WslHelper -Helper dsh -WslArgs @('status')
+    $listenLine = $res.Lines | Where-Object { $_ -match ':' + [string]$Script:WslDshPort } | Select-Object -First 1
+    $procLine = $res.Lines | Where-Object { $_ -match '^\s*\d+\s+.*bin\.js' } | Select-Object -First 1
+    $procId = $null
+    if ($procLine -and $procLine -match '^\s*(\d+)') { $procId = $Matches[1] }
+    return [pscustomobject]@{
+        Running = [bool]$listenLine
+        Pid     = $procId
+        Lines   = $res.Lines
+    }
+}
+
+function Get-WslAntigravityState {
+    <#
+    .SYNOPSIS 查询 Antigravity WSL 套件三组件状态 (一次 wsl 调用)
+    #>
+    $res = Invoke-WslHelper -Helper ag -WslArgs @('status')
+    $state = @{ Gui = $false; Ide = $false; Cockpit = $false; Pids = @{} }
+    foreach ($line in $res.Lines) {
+        if ($line -match '^(gui|ide|cockpit):\s+(RUNNING|stopped)(?:\s+pid=(.*))?$') {
+            $key = switch ($Matches[1]) { 'gui' { 'Gui' } 'ide' { 'Ide' } 'cockpit' { 'Cockpit' } }
+            $state[$key] = ($Matches[2] -eq 'RUNNING')
+            if ($Matches[3]) { $state.Pids[$key] = $Matches[3] }
+        }
+    }
+    return [pscustomobject]$state
+}
+
+function Show-WslHelperLines {
+    param([Parameter(Mandatory)]$Result)
+    foreach ($line in $Result.Lines) { Write-Host "    $line" -ForegroundColor Cyan }
+}
+
+function Start-WslDsh {
+    <#
+    .SYNOPSIS 启动 DeepSeek Harness WSL 版 (Ubuntu :9011，首次启动约 30s)
+    #>
+    Write-Host ''
+    Write-Host '  正在启动 DeepSeek Harness WSL 版 (Ubuntu :9011) ...' -ForegroundColor Green
+    Write-LauncherLog '启动 DeepSeek Harness WSL 版' -Level INFO
+    $res = Invoke-WslHelper -Helper dsh -WslArgs @('start')
+    Show-WslHelperLines $res
+    if ($res.ExitCode -eq 0) {
+        Write-Host '  [√] DeepSeek Harness WSL 已就绪。' -ForegroundColor Green
+        return $true
+    }
+    Write-Host '  [x] DeepSeek Harness WSL 启动失败，请查看 WSL 日志。' -ForegroundColor Red
+    return $false
+}
+
+function Stop-WslDsh {
+    <#
+    .SYNOPSIS 停止 DeepSeek Harness WSL 版
+    #>
+    Write-LauncherLog '停止 DeepSeek Harness WSL 版' -Level INFO
+    $res = Invoke-WslHelper -Helper dsh -WslArgs @('stop')
+    Show-WslHelperLines $res
+    if ($res.ExitCode -eq 0) {
+        Write-Host '  [√] DeepSeek Harness WSL 已停止。' -ForegroundColor Green
+        return $true
+    }
+    Write-Host '  [x] DeepSeek Harness WSL 停止失败。' -ForegroundColor Red
+    return $false
+}
+
+function Restart-WslDsh {
+    <#
+    .SYNOPSIS 重启 DeepSeek Harness WSL 版
+    #>
+    Write-Host ''
+    Write-Host '  正在重启 DeepSeek Harness WSL 版 (Ubuntu :9011) ...' -ForegroundColor Green
+    Write-LauncherLog '重启 DeepSeek Harness WSL 版' -Level INFO
+    $res = Invoke-WslHelper -Helper dsh -WslArgs @('restart')
+    Show-WslHelperLines $res
+    if ($res.ExitCode -eq 0) {
+        Write-Host '  [√] DeepSeek Harness WSL 重启完成。' -ForegroundColor Green
+        return $true
+    }
+    Write-Host '  [x] DeepSeek Harness WSL 重启失败，请查看 WSL 日志。' -ForegroundColor Red
+    return $false
+}
+
+function Get-WslDshUrl {
+    <#
+    .SYNOPSIS 获取 DeepSeek Harness WSL 当前带 token 的访问地址
+    #>
+    $res = Invoke-WslHelper -Helper dsh -WslArgs @('url')
+    $url = $res.Lines | Where-Object { $_ -match '^http://127\.0\.0\.1:' + [string]$Script:WslDshPort + '/\?token=' } | Select-Object -Last 1
+    if ($url) { return $url }
+    return $Script:WslDshUrl
+}
+
+function Open-WslDshDashboard {
+    <#
+    .SYNOPSIS 用浏览器打开 DeepSeek Harness WSL 版 (localhost 中继直达 WSL)
+    #>
+    $url = Get-WslDshUrl
+    Write-LauncherLog "打开 DeepSeek Harness WSL 网页: $url" -Level INFO
+    try {
+        if (Test-Path -LiteralPath $Script:DshBrowserPath) {
+            Start-Process -FilePath $Script:DshBrowserPath -ArgumentList $url
+        } else {
+            Start-Process $url
+        }
+        Write-Host "  已打开 DeepSeek Harness WSL: $url" -ForegroundColor Magenta
+        return $true
+    } catch {
+        Write-LauncherLog "打开 DeepSeek Harness WSL 失败: $($_.Exception.Message)" -Level ERROR
+        return $false
+    }
+}
+
+function Start-WslAntigravity {
+    <#
+    .SYNOPSIS 启动 Antigravity WSL 组件 (gui/ide/cockpit/all)
+    #>
+    param([ValidateSet('gui', 'ide', 'cockpit', 'all')][string]$Component = 'gui')
+    Write-Host ''
+    Write-Host "  正在启动 Antigravity WSL 组件 ($Component，WSLg 窗口) ..." -ForegroundColor Green
+    Write-LauncherLog "启动 Antigravity WSL ($Component)" -Level INFO
+    $res = Invoke-WslHelper -Helper ag -WslArgs @('start', $Component)
+    Show-WslHelperLines $res
+    if ($res.ExitCode -eq 0) { return $true }
+    Write-Host "  [x] Antigravity WSL ($Component) 启动失败。" -ForegroundColor Red
+    return $false
+}
+
+function Stop-WslAntigravity {
+    <#
+    .SYNOPSIS 关闭 Antigravity WSL 组件 (gui/ide/cockpit/all)
+    #>
+    param([ValidateSet('gui', 'ide', 'cockpit', 'all')][string]$Component = 'gui')
+    Write-LauncherLog "停止 Antigravity WSL ($Component)" -Level INFO
+    $res = Invoke-WslHelper -Helper ag -WslArgs @('stop', $Component)
+    Show-WslHelperLines $res
+    if ($res.ExitCode -eq 0) { return $true }
+    Write-Host "  [x] Antigravity WSL ($Component) 关闭失败。" -ForegroundColor Red
+    return $false
+}
+
+function Restart-WslAntigravity {
+    <#
+    .SYNOPSIS 重启 Antigravity WSL 组件 (gui/ide/cockpit/all)
+    #>
+    param([ValidateSet('gui', 'ide', 'cockpit', 'all')][string]$Component = 'gui')
+    Write-Host ''
+    Write-Host "  正在重启 Antigravity WSL 组件 ($Component) ..." -ForegroundColor Green
+    Write-LauncherLog "重启 Antigravity WSL ($Component)" -Level INFO
+    $res = Invoke-WslHelper -Helper ag -WslArgs @('restart', $Component)
+    Show-WslHelperLines $res
+    if ($res.ExitCode -eq 0) { return $true }
+    Write-Host "  [x] Antigravity WSL ($Component) 重启失败。" -ForegroundColor Red
+    return $false
+}
+
+function Start-WslSuite {
+    <#
+    .SYNOPSIS 一键启动 WSL 专区全部 (DeepSeek Harness + Antigravity 套件)
+    #>
+    $d = Start-WslDsh
+    $a = Start-WslAntigravity -Component all
+    return ($d -and $a)
+}
+
+function Stop-WslSuite {
+    <#
+    .SYNOPSIS 一键停止 WSL 专区全部 (DeepSeek Harness + Antigravity 套件)
+    #>
+    $d = Stop-WslDsh
+    $a = Stop-WslAntigravity -Component all
+    return ($d -and $a)
+}
+
+function Show-WslSummary {
+    <#
+    .SYNOPSIS 显示 WSL 专区状态看板 (供全局 status 与专区菜单使用)
+    #>
+    Write-Host '  -- WSL 专区状态 (Ubuntu) --' -ForegroundColor DarkCyan
+    $dsh = Get-WslDshState
+    if ($dsh.Running) {
+        Write-Host "  DeepSeek Harness WSL: 运行中 (PID: $($dsh.Pid), 端口 $($Script:WslDshPort))" -ForegroundColor Green
+    } else {
+        Write-Host '  DeepSeek Harness WSL: 未运行' -ForegroundColor Yellow
+    }
+    $ag = Get-WslAntigravityState
+    $components = @(
+        @{ Name = 'Antigravity GUI WSL'; Key = 'Gui' },
+        @{ Name = 'Antigravity IDE WSL'; Key = 'Ide' },
+        @{ Name = 'Cockpit WSL';         Key = 'Cockpit' }
+    )
+    foreach ($c in $components) {
+        $running = [bool]$ag.($c.Key)
+        $pidText = if ($running -and $ag.Pids[$c.Key]) { " (PID: $($ag.Pids[$c.Key]))" } else { '' }
+        $mark = if ($running) { '[√] 运行中' } else { '[x] 未运行' }
+        Write-Host "  $($c.Name): $mark$pidText" -ForegroundColor $(if ($running) { 'Green' } else { 'DarkGray' })
+    }
+}
+
+function Show-WslMenu {
+    <#
+    .SYNOPSIS WSL 专区独立二级菜单 (DeepSeek Harness / Antigravity 套件)
+    #>
+    Write-LauncherLog '进入 WSL 专区二级菜单' -Level INFO
+    $inWslMenu = $true
+    while ($inWslMenu) {
+        $dsh = Get-WslDshState
+        $ag  = Get-WslAntigravityState
+
+        Write-Host ''
+        Write-Host '  ============================================================' -ForegroundColor DarkCyan
+        Write-Host '   WSL 专区 (Ubuntu): DeepSeek Harness / Antigravity 套件' -ForegroundColor White
+        Write-Host '  ============================================================' -ForegroundColor DarkCyan
+        Write-Host ''
+        Write-Host '   【当前组件运行状态】' -ForegroundColor Cyan
+        $dshMark = if ($dsh.Running) { "[√] 运行中 (PID: $($dsh.Pid))" } else { '[x] 未运行' }
+        Write-Host "     DeepSeek Harness ($($Script:WslDshPort)): $dshMark" -ForegroundColor $(if ($dsh.Running) { 'Green' } else { 'DarkGray' })
+        $antiRows = @(
+            @{ Label = 'Antigravity GUI:'; Key = 'Gui' },
+            @{ Label = 'Antigravity IDE:'; Key = 'Ide' },
+            @{ Label = 'Cockpit:        '; Key = 'Cockpit' }
+        )
+        foreach ($row in $antiRows) {
+            $running = [bool]$ag.($row.Key)
+            $pidText = if ($running -and $ag.Pids[$row.Key]) { " (PID: $($ag.Pids[$row.Key]))" } else { '' }
+            $mark = if ($running) { '[√] 运行中' } else { '[x] 未运行' }
+            Write-Host "     $($row.Label) $mark$pidText" -ForegroundColor $(if ($running) { 'Green' } else { 'DarkGray' })
+        }
+        Write-Host ''
+        Write-Host '   【统一操作】' -ForegroundColor Yellow
+        Write-Host '    [1]  一键全部启动 (dsh + Antigravity 套件)' -ForegroundColor Green
+        Write-Host '    [2]  一键全部关闭 (dsh + Antigravity 套件)' -ForegroundColor Red
+        Write-Host ''
+        Write-Host '   【DeepSeek Harness WSL (:9011)】' -ForegroundColor Yellow
+        Write-Host '    [3]  启动      [4]  停止      [5]  重启      [6]  打开网页 (token)' -ForegroundColor Green
+        Write-Host ''
+        Write-Host '   【Antigravity WSL (WSLg 窗口)】' -ForegroundColor Yellow
+        Write-Host '    [7]  启动 GUI      [8]  关闭 GUI      [9]  重启 GUI' -ForegroundColor Green
+        Write-Host '    [10] 启动 IDE      [11] 关闭 IDE      [12] 重启 IDE' -ForegroundColor Green
+        Write-Host '    [13] 启动 Cockpit  [14] 关闭 Cockpit  [15] 重启 Cockpit' -ForegroundColor Green
+        Write-Host ''
+        Write-Host '    [R]   刷新当前状态' -ForegroundColor Cyan
+        Write-Host '    [CLS] 清屏' -ForegroundColor DarkGray
+        Write-Host '    [0]   返回主菜单' -ForegroundColor Gray
+        Write-Host ''
+        Write-Host '  ============================================================' -ForegroundColor DarkCyan
+        Write-Host ''
+
+        $subChoice = Read-Host '  请选择 WSL 专区操作 [0-15, R, CLS]'
+        if ([string]::IsNullOrWhiteSpace($subChoice)) { continue }
+        $subKey = $subChoice.Trim().ToLowerInvariant()
+
+        switch ($subKey) {
+            '1'  { $null = Start-WslSuite }
+            '2'  { $null = Stop-WslSuite }
+            '3'  { $null = Start-WslDsh }
+            '4'  { $null = Stop-WslDsh }
+            '5'  { $null = Restart-WslDsh }
+            '6'  { $null = Open-WslDshDashboard }
+            '7'  { $null = Start-WslAntigravity -Component gui }
+            '8'  { $null = Stop-WslAntigravity -Component gui }
+            '9'  { $null = Restart-WslAntigravity -Component gui }
+            '10' { $null = Start-WslAntigravity -Component ide }
+            '11' { $null = Stop-WslAntigravity -Component ide }
+            '12' { $null = Restart-WslAntigravity -Component ide }
+            '13' { $null = Start-WslAntigravity -Component cockpit }
+            '14' { $null = Stop-WslAntigravity -Component cockpit }
+            '15' { $null = Restart-WslAntigravity -Component cockpit }
+            'r' { continue }
+            'cls' { Clear-Host; continue }
+            'clear' { Clear-Host; continue }
+            '0' {
+                Write-Host '  已返回统一启动器主菜单。' -ForegroundColor Gray
+                $inWslMenu = $false
+                break
+            }
+            default {
+                Write-Host '  无效选项，请重新输入。' -ForegroundColor Yellow
+            }
+        }
+        if ($inWslMenu -and $subKey -notin @('r', 'cls', 'clear', '0')) {
+            Wait-ActionPause -PromptText 'WSL 专区操作已完成。按 [Enter] 键刷新并返回菜单...'
+        }
+    }
+}
+
+
+# ============================================================
+# 飞书机器人与根服务专区 (BotMux + OpenCode 2 / Antigravity 根服务)
+# ============================================================
+
+function Get-WslFeishuState {
+    <#
+    .SYNOPSIS 查询底层核心根服务与飞书机器人桥接 (OpenCode 2 + Antigravity) 运行状态
+    #>
+    $res = Invoke-WslHelper -Helper feishu -WslArgs @('status')
+    $state = @{
+        Opencode2Core       = $false
+        Opencode2CorePid    = $null
+        Opencode2CoreUrl    = $Script:WslOpencode2Url
+        AntigravityCore     = $false
+        AntigravityCorePid  = $null
+        Supervisor          = $false
+        Antigravity         = $false
+        OpenCode2           = $false
+        Dashboard           = $false
+        AntigravityDisabled = $false
+        OpenCode2Disabled   = $false
+        Pids                = @{}
+        Port                = $Script:WslFeishuPort
+        Lines               = $res.Lines
+    }
+    foreach ($line in $res.Lines) {
+        if ($line -match '^opencode2-core:\s+(RUNNING|stopped)(?:\s+pid=(\d+))?(?:\s+url=(.+))?') {
+            $state.Opencode2Core = ($Matches[1] -eq 'RUNNING')
+            if ($Matches[2]) { $state.Opencode2CorePid = $Matches[2]; $state.Pids['opencode2-core'] = $Matches[2] }
+            if ($Matches[3]) { $state.Opencode2CoreUrl = $Matches[3].Trim() }
+        }
+        elseif ($line -match '^antigravity-core:\s+(RUNNING|stopped)(?:\s+pid=(\d+))?') {
+            $state.AntigravityCore = ($Matches[1] -eq 'RUNNING')
+            if ($Matches[2]) { $state.AntigravityCorePid = $Matches[2]; $state.Pids['antigravity-core'] = $Matches[2] }
+        }
+        elseif ($line -match '^(supervisor|antigravity|opencode2|dashboard):\s+(RUNNING|STOPPED|DISABLED)(?:\s+pid=(\d+))?(?:\s+port=(\d+))?') {
+            $comp = $Matches[1]
+            $status = $Matches[2]
+            $running = ($status -eq 'RUNNING')
+            $disabled = ($status -eq 'DISABLED')
+            switch ($comp) {
+                'supervisor'  { $state.Supervisor  = $running }
+                'antigravity' { $state.Antigravity = $running; $state.AntigravityDisabled = $disabled }
+                'opencode2'   { $state.OpenCode2   = $running; $state.OpenCode2Disabled   = $disabled }
+                'dashboard'   { $state.Dashboard   = $running }
+            }
+            if ($Matches[3]) { $state.Pids[$comp] = $Matches[3] }
+            if ($Matches[4]) { $state.Port = [int]$Matches[4] }
+        }
+    }
+    return [pscustomobject]$state
+}
+
+function Show-WslFeishuSummary {
+    <#
+    .SYNOPSIS 显示根服务与飞书双机器人综合状态看板
+    #>
+    Write-Host '  -- 根服务与飞书双机器人状态看板 (OpenCode 2 + Antigravity) --' -ForegroundColor DarkCyan
+    $fs = Get-WslFeishuState
+
+    Write-Host '   [底层核心根服务 (Core Engine Services)]' -ForegroundColor Cyan
+    $opCoreMark = if ($fs.Opencode2Core) { "[√] 运行中 (PID: $($fs.Opencode2CorePid)) $($fs.Opencode2CoreUrl)" } else { '[x] 未运行' }
+    $agCoreMark = if ($fs.AntigravityCore) { "[√] 运行中 (PID: $($fs.AntigravityCorePid))" } else { '[x] 未运行' }
+    Write-Host "     OpenCode 2 根服务:    $opCoreMark" -ForegroundColor $(if ($fs.Opencode2Core) { 'Green' } else { 'DarkGray' })
+    Write-Host "     Antigravity 根服务:   $agCoreMark" -ForegroundColor $(if ($fs.AntigravityCore) { 'Green' } else { 'DarkGray' })
+
+    Write-Host '   [飞书机器人桥接 (BotMux Adapters)]' -ForegroundColor Cyan
+    $supMark = if ($fs.Supervisor) { "[√] 运行中 (PID: $($fs.Pids['supervisor']))" } else { '[x] 未运行' }
+    Write-Host "     守护总管 (Supervisor): $supMark" -ForegroundColor $(if ($fs.Supervisor) { 'Green' } else { 'DarkGray' })
+
+    $agMark = if ($fs.Antigravity) {
+        "[√] 运行中 (PID: $($fs.Pids['antigravity']))"
+    } elseif ($fs.AntigravityDisabled) {
+        '[-] 已关闭 (未启用)'
+    } else {
+        '[x] 未运行'
+    }
+    $agColor = if ($fs.Antigravity) { 'Green' } elseif ($fs.AntigravityDisabled) { 'DarkYellow' } else { 'DarkGray' }
+    Write-Host "     Antigravity 机器人:    $agMark" -ForegroundColor $agColor
+
+    $opMark = if ($fs.OpenCode2) {
+        "[√] 运行中 (PID: $($fs.Pids['opencode2']))"
+    } elseif ($fs.OpenCode2Disabled) {
+        '[-] 已关闭 (未启用)'
+    } else {
+        '[x] 未运行'
+    }
+    $opColor = if ($fs.OpenCode2) { 'Green' } elseif ($fs.OpenCode2Disabled) { 'DarkYellow' } else { 'DarkGray' }
+    Write-Host "     OpenCode 2 机器人:     $opMark" -ForegroundColor $opColor
+
+    $dashMark = if ($fs.Dashboard) { "[√] 运行中 (http://127.0.0.1:$($fs.Port))" } else { '[x] 未运行' }
+    Write-Host "     Web 终端管理面板:      $dashMark" -ForegroundColor $(if ($fs.Dashboard) { 'Green' } else { 'DarkGray' })
+}
+
+function Start-WslFeishuBridge {
+    <#
+    .SYNOPSIS 启动飞书双机器人桥接及根服务
+    #>
+    param([string]$Target = 'all')
+    Write-Host ''
+    if ($Target -in @('all', 'all-full', '*')) {
+        Write-Host '  正在一键全套启动 (OpenCode 2 根服务 + Antigravity 根服务 + 飞书双桥接) ...' -ForegroundColor Green
+    } else {
+        Write-Host "  正在启动目标服务 ($Target) ..." -ForegroundColor Green
+    }
+    Write-LauncherLog "启动目标服务 ($Target)" -Level INFO
+    $res = Invoke-WslHelper -Helper feishu -WslArgs @('start', $Target)
+    Show-WslHelperLines $res
+    if ($res.ExitCode -eq 0) {
+        Write-Host "  [√] 启动命令执行完成 ($Target)。" -ForegroundColor Green
+        return $true
+    }
+    Write-Host "  [x] 启动失败 ($Target)，请检查 WSL 日志。" -ForegroundColor Red
+    return $false
+}
+
+function Stop-WslFeishuBridge {
+    <#
+    .SYNOPSIS 停止飞书双机器人桥接及根服务
+    #>
+    param([string]$Target = 'all')
+    Write-Host ''
+    if ($Target -in @('all', 'all-full', '*')) {
+        Write-Host '  正在一键全套停止 (飞书双桥接 + 核心根服务) ...' -ForegroundColor Yellow
+    } else {
+        Write-Host "  正在停止目标服务 ($Target) ..." -ForegroundColor Yellow
+    }
+    Write-LauncherLog "停止目标服务 ($Target)" -Level INFO
+    $res = Invoke-WslHelper -Helper feishu -WslArgs @('stop', $Target)
+    Show-WslHelperLines $res
+    if ($res.ExitCode -eq 0) {
+        Write-Host "  [√] 停止操作已完成 ($Target)。" -ForegroundColor Green
+        return $true
+    }
+    Write-Host "  [x] 停止失败 ($Target)。" -ForegroundColor Red
+    return $false
+}
+
+function Restart-WslFeishuBridge {
+    <#
+    .SYNOPSIS 重启飞书双机器人桥接及根服务
+    #>
+    param([string]$Target = 'all')
+    Write-Host ''
+    Write-Host "  正在重启目标服务 ($Target) ..." -ForegroundColor Green
+    Write-LauncherLog "重启目标服务 ($Target)" -Level INFO
+    $res = Invoke-WslHelper -Helper feishu -WslArgs @('restart', $Target)
+    Show-WslHelperLines $res
+    if ($res.ExitCode -eq 0) {
+        Write-Host "  [√] 重启完成 ($Target)。" -ForegroundColor Green
+        return $true
+    }
+    Write-Host "  [x] 重启失败 ($Target)。" -ForegroundColor Red
+    return $false
+}
+
+function Start-WslFeishuBot {
+    <#
+    .SYNOPSIS 启动指定的飞书机器人服务 (自动前置拉起根服务)
+    #>
+    param([ValidateSet('opencode2', 'antigravity')][string]$Bot = 'opencode2')
+    return Start-WslFeishuBridge -Target $Bot
+}
+
+function Stop-WslFeishuBot {
+    <#
+    .SYNOPSIS 关闭指定的飞书机器人桥接服务
+    #>
+    param([ValidateSet('opencode2', 'antigravity')][string]$Bot = 'opencode2')
+    return Stop-WslFeishuBridge -Target $Bot
+}
+
+function Restart-WslFeishuBot {
+    <#
+    .SYNOPSIS 重启指定的飞书机器人桥接服务
+    #>
+    param([ValidateSet('opencode2', 'antigravity', 'all')][string]$Bot = 'all')
+    return Restart-WslFeishuBridge -Target $Bot
+}
+
+function Show-Opencode2PairInfo {
+    <#
+    .SYNOPSIS 查看 OpenCode 2 Web / 远程配对信息与访问凭据
+    #>
+    Write-Host ''
+    Write-Host '  --- OpenCode 2 Web 配对与连接凭据 ---' -ForegroundColor Cyan
+    $res = Invoke-WslHelper -Helper feishu -WslArgs @('pair')
+    Show-WslHelperLines $res
+    Write-Host ''
+}
+
+function Open-Opencode2Web {
+    <#
+    .SYNOPSIS 浏览器打开 OpenCode 2 Web 服务
+    #>
+    $url = $Script:WslOpencode2Url
+    Write-LauncherLog "打开 OpenCode 2 Web 服务: $url" -Level INFO
+    try {
+        if (Test-Path -LiteralPath $Script:DshBrowserPath) {
+            Start-Process -FilePath $Script:DshBrowserPath -ArgumentList $url
+        } else {
+            Start-Process $url
+        }
+        Write-Host "  已在浏览器中打开 OpenCode 2 Web: $url" -ForegroundColor Magenta
+        return $true
+    } catch {
+        Write-LauncherLog "打开 OpenCode 2 Web 失败: $($_.Exception.Message)" -Level ERROR
+        return $false
+    }
+}
+
+function Open-WslFeishuDashboard {
+    <#
+    .SYNOPSIS 浏览器打开飞书桥接 BotMux 管理面板 (默认 http://127.0.0.1:7891)
+    #>
+    $url = $Script:WslFeishuUrl
+    Write-LauncherLog "打开飞书桥接管理面板: $url" -Level INFO
+    try {
+        if (Test-Path -LiteralPath $Script:DshBrowserPath) {
+            Start-Process -FilePath $Script:DshBrowserPath -ArgumentList $url
+        } else {
+            Start-Process $url
+        }
+        Write-Host "  已在浏览器中打开飞书桥接管理面板: $url" -ForegroundColor Magenta
+        return $true
+    } catch {
+        Write-LauncherLog "打开飞书桥接管理面板失败: $($_.Exception.Message)" -Level ERROR
+        return $false
+    }
+}
+
+function Show-WslFeishuLogs {
+    <#
+    .SYNOPSIS 查看飞书桥接与根服务日志
+    #>
+    param([string]$Target = 'all')
+    Write-Host ''
+    Write-Host "  --- 运行日志 ($Target) ---" -ForegroundColor Cyan
+    $res = Invoke-WslHelper -Helper feishu -WslArgs @('logs', $Target)
+    Show-WslHelperLines $res
+    Write-Host ''
+}
+
+function Show-WslFeishuMenu {
+    <#
+    .SYNOPSIS 飞书机器人与根服务专区菜单 (OpenCode 2 + Antigravity 根服务/桥接/面板/日志 统一与独立控制)
+    #>
+    Write-LauncherLog '进入飞书机器人与根服务二级菜单' -Level INFO
+    $inFeishuMenu = $true
+    while ($inFeishuMenu) {
+        $fs = Get-WslFeishuState
+        Write-Host ''
+        Write-Host '  ============================================================' -ForegroundColor DarkCyan
+        Write-Host '   飞书机器人与根服务专区 (OpenCode 2 + Antigravity 协同体系)' -ForegroundColor White
+        Write-Host '  ============================================================' -ForegroundColor DarkCyan
+        Write-Host ''
+        Write-Host '   【当前状态看板】' -ForegroundColor Cyan
+
+        # 根服务
+        $opCoreMark = if ($fs.Opencode2Core) { "[√] 运行中 (PID: $($fs.Opencode2CorePid)) $($fs.Opencode2CoreUrl)" } else { '[x] 未运行' }
+        $agCoreMark = if ($fs.AntigravityCore) { "[√] 运行中 (PID: $($fs.AntigravityCorePid))" } else { '[x] 未运行' }
+        Write-Host "     [底层根服务] OpenCode 2 核心根服务:    $opCoreMark" -ForegroundColor $(if ($fs.Opencode2Core) { 'Green' } else { 'DarkGray' })
+        Write-Host "     [底层根服务] Antigravity 核心根服务:   $agCoreMark" -ForegroundColor $(if ($fs.AntigravityCore) { 'Green' } else { 'DarkGray' })
+
+        # 飞书机器人
+        $supMark  = if ($fs.Supervisor)  { "[√] 运行中 (PID: $($fs.Pids['supervisor']))" } else { '[x] 未运行' }
+        $agMark   = if ($fs.Antigravity) { "[√] 运行中 (PID: $($fs.Pids['antigravity']))" } elseif ($fs.AntigravityDisabled) { '[-] 已关闭 (未启用)' } else { '[x] 未运行' }
+        $opMark   = if ($fs.OpenCode2)   { "[√] 运行中 (PID: $($fs.Pids['opencode2']))" } elseif ($fs.OpenCode2Disabled) { '[-] 已关闭 (未启用)' } else { '[x] 未运行' }
+        $dashMark = if ($fs.Dashboard)   { "[√] 运行中 (http://127.0.0.1:$($fs.Port))" } else { '[x] 未运行' }
+        Write-Host "     [飞书桥接]   守护总管 (Supervisor):   $supMark" -ForegroundColor $(if ($fs.Supervisor) { 'Green' } else { 'DarkGray' })
+        Write-Host "     [飞书桥接]   OpenCode 2 飞书机器人:   $opMark" -ForegroundColor $(if ($fs.OpenCode2) { 'Green' } elseif ($fs.OpenCode2Disabled) { 'DarkYellow' } else { 'DarkGray' })
+        Write-Host "     [飞书桥接]   Antigravity 飞书机器人:  $agMark" -ForegroundColor $(if ($fs.Antigravity) { 'Green' } elseif ($fs.AntigravityDisabled) { 'DarkYellow' } else { 'DarkGray' })
+        Write-Host "     [控制面板]   Web 终端管理看板:        $dashMark" -ForegroundColor $(if ($fs.Dashboard) { 'Green' } else { 'DarkGray' })
+        Write-Host ''
+        Write-Host '   【全域一键协同操作】' -ForegroundColor Yellow
+        Write-Host '    [1]  一键全部启动 (OpenCode 2 根+桥 + Antigravity 根+桥 全套拉起)' -ForegroundColor Green
+        Write-Host '    [2]  一键全部关闭 (全套桥接 + 全套根服务 彻底停止)' -ForegroundColor Red
+        Write-Host '    [3]  一键全部重启 (全套根服务与桥接热重启)' -ForegroundColor Green
+        Write-Host '    [4]  仅关闭飞书双桥接 (保持底层根服务持续运行)' -ForegroundColor Red
+        Write-Host ''
+        Write-Host '   【OpenCode 2 专属控制】' -ForegroundColor Yellow
+        Write-Host '    [5]  一键拉起 OpenCode 2 全套 (根服务 + 飞书桥接)' -ForegroundColor Green
+        Write-Host '    [6]  单独启动 OpenCode 2 根服务 (后台 Web/API 服务)' -ForegroundColor Green
+        Write-Host '    [7]  单独关闭 OpenCode 2 根服务' -ForegroundColor Red
+        Write-Host '    [8]  单独启动 OpenCode 2 飞书桥接' -ForegroundColor Green
+        Write-Host '    [9]  单独关闭 OpenCode 2 飞书桥接' -ForegroundColor Red
+        Write-Host '    [10] 查看 OpenCode 2 配对凭据 (Pair Info / 密码)' -ForegroundColor Cyan
+        Write-Host '    [11] 查看 OpenCode 2 飞书运行日志' -ForegroundColor Cyan
+        Write-Host ''
+        Write-Host '   【Antigravity 专属控制】' -ForegroundColor Yellow
+        Write-Host '    [12] 一键拉起 Antigravity 全套 (根服务 + 飞书桥接)' -ForegroundColor Green
+        Write-Host '    [13] 单独启动 Antigravity 根服务 (Remote-Control 核心守护)' -ForegroundColor Green
+        Write-Host '    [14] 单独关闭 Antigravity 根服务' -ForegroundColor Red
+        Write-Host '    [15] 单独启动 Antigravity 飞书桥接' -ForegroundColor Green
+        Write-Host '    [16] 单独关闭 Antigravity 飞书桥接' -ForegroundColor Red
+        Write-Host '    [17] 查看 Antigravity 飞书运行日志' -ForegroundColor Cyan
+        Write-Host ''
+        Write-Host '   【Web 控制台与综合运维】' -ForegroundColor Yellow
+        Write-Host '    [18] 打开飞书桥接 Web 终端面板 (http://127.0.0.1:$($fs.Port))' -ForegroundColor Magenta
+        Write-Host '    [19] 打开 OpenCode 2 Web 工作台 (http://127.0.0.1:$($Script:WslOpencode2Port))' -ForegroundColor Magenta
+        Write-Host '    [20] 查看守护进程综合日志 (Supervisor & All Bots)' -ForegroundColor Cyan
+        Write-Host ''
+        Write-Host '    [R]   刷新当前状态' -ForegroundColor Cyan
+        Write-Host '    [CLS] 清屏' -ForegroundColor DarkGray
+        Write-Host '    [0]   返回统一启动器主菜单' -ForegroundColor Gray
+        Write-Host ''
+        Write-Host '  ============================================================' -ForegroundColor DarkCyan
+        Write-Host ''
+
+        $subChoice = Read-Host '  请选择操作 [0-20, R, CLS]'
+        if ([string]::IsNullOrWhiteSpace($subChoice)) { continue }
+        $subKey = $subChoice.Trim().ToLowerInvariant()
+
+        switch ($subKey) {
+            '1'  { $null = Start-WslFeishuBridge -Target 'all' }
+            '2'  { $null = Stop-WslFeishuBridge -Target 'all' }
+            '3'  { $null = Restart-WslFeishuBridge -Target 'all' }
+            '4'  { $null = Stop-WslFeishuBridge -Target 'bridge-all' }
+            '5'  { $null = Start-WslFeishuBridge -Target 'opencode2-all' }
+            '6'  { $null = Start-WslFeishuBridge -Target 'opencode2-core' }
+            '7'  { $null = Stop-WslFeishuBridge -Target 'opencode2-core' }
+            '8'  { $null = Start-WslFeishuBot -Bot opencode2 }
+            '9'  { $null = Stop-WslFeishuBot -Bot opencode2 }
+            '10' { Show-Opencode2PairInfo }
+            '11' { Show-WslFeishuLogs -Target 'opencode2' }
+            '12' { $null = Start-WslFeishuBridge -Target 'antigravity-all' }
+            '13' { $null = Start-WslFeishuBridge -Target 'antigravity-core' }
+            '14' { $null = Stop-WslFeishuBridge -Target 'antigravity-core' }
+            '15' { $null = Start-WslFeishuBot -Bot antigravity }
+            '16' { $null = Stop-WslFeishuBot -Bot antigravity }
+            '17' { Show-WslFeishuLogs -Target 'antigravity' }
+            '18' { $null = Open-WslFeishuDashboard }
+            '19' { $null = Open-Opencode2Web }
+            '20' { Show-WslFeishuLogs -Target 'all' }
+            'r' { continue }
+            'cls' { Clear-Host; continue }
+            'clear' { Clear-Host; continue }
+            '0' {
+                Write-Host '  已返回统一启动器主菜单。' -ForegroundColor Gray
+                $inFeishuMenu = $false
+                break
+            }
+            default {
+                Write-Host '  无效选项，请重新输入。' -ForegroundColor Yellow
+            }
+        }
+        if ($inFeishuMenu -and $subKey -notin @('r', 'cls', 'clear', '0')) {
+            Wait-ActionPause -PromptText '操作已完成。按 [Enter] 键刷新并返回菜单...'
+        }
     }
 }
 
 # ============================================================
 # 主流程
 # ============================================================
+
+
+# ============================================================
+# GLaDOS 自动签到与状态管理
+# ============================================================
+
+function Get-GladosAccountCount {
+    if (Test-Path -LiteralPath $Script:GladosConfigFile) {
+        try {
+            $cfg = Get-Content -LiteralPath $Script:GladosConfigFile -Raw -Encoding UTF8 | ConvertFrom-Json
+            if ($cfg.cookies) { return $cfg.cookies.Count }
+        } catch {}
+    }
+    return 5
+}
+
+function Get-GladosPythonCmd {
+    if (Test-Path -LiteralPath $Script:GladosPythonExe) {
+        return $Script:GladosPythonExe
+    }
+    $py = Get-Command python -ErrorAction SilentlyContinue
+    if ($py) { return $py.Source }
+    return $null
+}
+
+function Invoke-GladosCheckin {
+    <#
+    .SYNOPSIS 执行 GLaDOS 一键自动签到并展示所有账号的详细状态（含当前积分、剩余天数等）
+    #>
+    [CmdletBinding()]
+    param(
+        [switch]$StatusOnly
+    )
+
+    $gladosCount = Get-GladosAccountCount
+    $actionName = if ($StatusOnly) { 'GLaDOS 账号状态查询' } else { 'GLaDOS 一键自动签到' }
+    Write-LauncherLog "$actionName 开始..." -Level INFO
+    Write-Host ''
+    Write-Host '  ============================================================' -ForegroundColor Cyan
+    Write-Host "             $actionName ($gladosCount 个账号)" -ForegroundColor White
+    Write-Host '  ============================================================' -ForegroundColor Cyan
+    Write-Host ''
+
+    $pythonExe = Get-GladosPythonCmd
+    if (-not $pythonExe) {
+        Write-LauncherLog "未找到 Python 运行环境 ($Script:GladosPythonExe)" -Level ERROR
+        Write-Host '  [错误] 未找到 Python 运行环境，请检查 Python 安装路径！' -ForegroundColor Red
+        return $false
+    }
+    if (-not (Test-Path -LiteralPath $Script:GladosScript)) {
+        Write-LauncherLog "未找到 GLaDOS 脚本: $Script:GladosScript" -Level ERROR
+        Write-Host "  [错误] 未找到 GLaDOS 脚本: $Script:GladosScript" -ForegroundColor Red
+        return $false
+    }
+
+    $pyArgs = @('"' + $Script:GladosScript + '"')
+    if ($StatusOnly) {
+        $pyArgs += '--status-only'
+    }
+
+    Write-Host '  [1/2] 正在调用签到引擎，依次连接处理各账号...' -ForegroundColor DarkCyan
+    Write-Host "        脚本位置: $Script:GladosScript" -ForegroundColor DarkGray
+    Write-Host ''
+
+    $rawLines = @()
+    $accountResults = @()
+
+    $psi = [System.Diagnostics.ProcessStartInfo]::new()
+    $psi.FileName = $pythonExe
+    $psi.Arguments = [string]::Join(' ', $pyArgs)
+    $psi.WorkingDirectory = $Script:GladosDir
+    $psi.RedirectStandardOutput = $true
+    $psi.RedirectStandardError = $true
+    $psi.UseShellExecute = $false
+    $psi.CreateNoWindow = $true
+    $psi.StandardOutputEncoding = [System.Text.Encoding]::UTF8
+    $psi.StandardErrorEncoding = [System.Text.Encoding]::UTF8
+
+    $proc = [System.Diagnostics.Process]::new()
+    $proc.StartInfo = $psi
+
+    try {
+        $null = $proc.Start()
+    } catch {
+        Write-LauncherLog "启动 Python 进程失败: $($_.Exception.Message)" -Level ERROR
+        Write-Host "  [错误] 启动 Python 进程失败: $($_.Exception.Message)" -ForegroundColor Red
+        return $false
+    }
+
+    while (-not $proc.StandardOutput.EndOfStream) {
+        $line = $proc.StandardOutput.ReadLine()
+        if ($null -ne $line) {
+            $rawLines += $line
+            # 实时流式显示关键行
+            if ($line -match '>>>\s*正在执行第\s*(?<idx>\d+/\d+)\s*个账号') {
+                Write-Host "  $line" -ForegroundColor Yellow
+            } elseif ($line -match '^【账号】') {
+                Write-Host "  $line" -ForegroundColor Green
+            } elseif ($line -match '^【(获取状态异常|状态查询失败|签到请求失败)】') {
+                Write-Host "  $line" -ForegroundColor Red
+            } elseif ($line -match '\[(提示|等待)\]') {
+                Write-Host "  $line" -ForegroundColor DarkYellow
+            }
+        }
+    }
+    $errOut = $proc.StandardError.ReadToEnd()
+    $proc.WaitForExit()
+
+    # 解析各账号结果 (支持当前积分解析)
+    $idx = 0
+    foreach ($line in $rawLines) {
+        if ($line -match '【账号】') {
+            $idx++
+            $acc = if ($line -match '【账号】(?<val>[^|]+)') { $Matches['val'].Trim() } else { '未知' }
+            $pts = if ($line -match '【当前积分】(?<val>[^|]+)') { $Matches['val'].Trim() } else { '- 积分' }
+            $todayGain = if ($line -match '【今日获得】(?<val>[^|]+)') { $Matches['val'].Trim() } `
+                         elseif ($line -match 'Checkin!\s*Got\s*(?<val>\d+)\s*Points') { "+$($Matches['val']) 积分" } `
+                         elseif ($line -match '\(\+(?<val>\d+)\)') { "+$($Matches['val']) 积分" } `
+                         else { '0 积分' }
+            $days = if ($line -match '【剩余天数】(?<val>\d+)\s*天') { $Matches['val'].Trim() } else { '0' }
+            $res = if ($line -match '【签到结果】(?<val>.*)$') { $Matches['val'].Trim() } else { '无返回信息' }
+
+            # 状态识别
+            $statusText = '成功'
+            $statusColor = 'Green'
+            $displayResult = $res
+            if ($res -match "Today's observation logged") {
+                $statusText = '今日已签'
+                $displayResult = '今日已签到 (记录已同步)'
+            } elseif ($res -match 'Checkin!\s*Got\s*(?<pts>\d+)\s*Points') {
+                $ptsVal = $Matches['pts']
+                $statusText = '签到成功'
+                $displayResult = "获得 +$ptsVal 点积分"
+            } elseif ($res -match '仅查询') {
+                $statusText = '状态正常'
+                $displayResult = '账号状态正常 (仅查询)'
+            } elseif ($res -match '失败' -or $res -match '异常') {
+                $statusText = '签到异常'
+                $statusColor = 'Red'
+            }
+
+            $accountResults += [PSCustomObject]@{
+                Index         = $idx
+                Account       = $acc
+                Status        = $statusText
+                StatusColor   = $statusColor
+                TodayGain     = $todayGain
+                Points        = $pts
+                RemainingDays = "$days 天"
+                RawDays       = [int]$days
+                Result        = $displayResult
+            }
+        }
+    }
+
+    Write-Host ''
+    Write-Host "  [2/2] 签到任务执行完毕，共 $($accountResults.Count) 个账号汇总报告如下：" -ForegroundColor Cyan
+    Write-Host ''
+
+    if ($accountResults.Count -gt 0) {
+        Write-Host '  ┌─────┬──────────────────────────┬──────────────┬────────────┬────────────┬────────────┬──────────────────────────────────────┐' -ForegroundColor DarkCyan
+        Write-Host '  │ 序号│ 账号邮箱                 │ 签到状态     │ 今日获得   │ 当前总积分 │ 剩余天数   │ 签到详细信息                         │' -ForegroundColor DarkCyan
+        Write-Host '  ├─────┼──────────────────────────┼──────────────┼────────────┼────────────┼────────────┼──────────────────────────────────────┤' -ForegroundColor DarkCyan
+
+        foreach ($item in $accountResults) {
+            $idxStr = ("[{0}]" -f $item.Index).PadRight(4)
+            $accStr = $item.Account.PadRight(24)
+            $statusStr = ("[" + $item.Status + "]").PadRight(12)
+            $todayStr = $item.TodayGain.PadRight(10)
+            $ptsStr = $item.Points.PadRight(10)
+            $daysStr = $item.RemainingDays.PadRight(10)
+            $resStr = $item.Result.PadRight(36)
+
+            Write-Host -NoNewline '  │ ' -ForegroundColor DarkCyan
+            Write-Host -NoNewline $idxStr -ForegroundColor White
+            Write-Host -NoNewline '│ ' -ForegroundColor DarkCyan
+            Write-Host -NoNewline $accStr -ForegroundColor Cyan
+            Write-Host -NoNewline '│ ' -ForegroundColor DarkCyan
+            Write-Host -NoNewline $statusStr -ForegroundColor ($item.StatusColor)
+            Write-Host -NoNewline '│ ' -ForegroundColor DarkCyan
+            Write-Host -NoNewline $todayStr -ForegroundColor Yellow
+            Write-Host -NoNewline '│ ' -ForegroundColor DarkCyan
+            Write-Host -NoNewline $ptsStr -ForegroundColor Green
+            Write-Host -NoNewline '│ ' -ForegroundColor DarkCyan
+            Write-Host -NoNewline $daysStr -ForegroundColor Magenta
+            Write-Host -NoNewline '│ ' -ForegroundColor DarkCyan
+            Write-Host -NoNewline $resStr -ForegroundColor Gray
+            Write-Host ' │' -ForegroundColor DarkCyan
+        }
+        Write-Host '  └─────┴──────────────────────────┴──────────────┴────────────┴────────────┴────────────┴──────────────────────────────────────┘' -ForegroundColor DarkCyan
+        Write-Host ''
+
+        $successCount = ($accountResults | Where-Object { $_.Status -in @('成功', '今日已签', '签到成功', '状态正常') }).Count
+        Write-LauncherLog "$actionName 完成: 共 $($accountResults.Count) 个账号，正常/成功 $successCount 个" -Level INFO
+        Write-Host "  [统计] 共处理 $($accountResults.Count) 个账号，正常/成功: $successCount 个，异常: $($accountResults.Count - $successCount) 个。" -ForegroundColor $(if ($successCount -eq $accountResults.Count) { 'Green' } else { 'Yellow' })
+        Write-Host "  [日志] 详细日志已记录至: $Script:GladosLogFile" -ForegroundColor DarkGray
+        return ($successCount -eq $accountResults.Count)
+    } else {
+        Write-LauncherLog "$actionName 未能解析出账号结果" -Level WARN
+        Write-Host '  [警告] 未能解析到账号签到结果，原始输出如下：' -ForegroundColor Yellow
+        $rawLines | ForEach-Object { Write-Host "    $_" -ForegroundColor Gray }
+        if (-not [string]::IsNullOrWhiteSpace($errOut)) {
+            Write-Host "  [错误流] $errOut" -ForegroundColor Red
+        }
+        return $false
+    }
+}
+
+function Show-GladosStatus {
+    <#
+    .SYNOPSIS 查看 GLaDOS 最新签到历史与各账号状态（含当前积分与剩余天数）
+    #>
+    $targetCount = Get-GladosAccountCount
+    Write-Host "  -- GLaDOS 自动签到历史看板 ($targetCount 个账号) --" -ForegroundColor Cyan
+
+    if (-not (Test-Path -LiteralPath $Script:GladosLogFile)) {
+        Write-Host "  暂无签到日志文件 ($Script:GladosLogFile)" -ForegroundColor Yellow
+        return
+    }
+
+    # 从 checkin.log 倒序读取最近一次完整记录
+    $lines = Get-Content -LiteralPath $Script:GladosLogFile -Tail 150 -Encoding UTF8
+    $lastRecords = @()
+    $lastTime = $null
+
+    for ($i = $lines.Count - 1; $i -ge 0; $i--) {
+        $line = $lines[$i]
+        if ($line -match '^\[(?<time>\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2})\].*?【账号】') {
+            if (-not $lastTime) { $lastTime = $Matches['time'] }
+            $acc = if ($line -match '【账号】(?<val>[^|]+)') { $Matches['val'].Trim() } else { '未知' }
+            $pts = if ($line -match '【当前积分】(?<val>[^|]+)') { $Matches['val'].Trim() } else { '- 积分' }
+            $todayGain = if ($line -match '【今日获得】(?<val>[^|]+)') { $Matches['val'].Trim() } `
+                         elseif ($line -match 'Checkin!\s*Got\s*(?<val>\d+)\s*Points') { "+$($Matches['val']) 积分" } `
+                         elseif ($line -match '\(\+(?<val>\d+)\)') { "+$($Matches['val']) 积分" } `
+                         else { '0 积分' }
+            $days = if ($line -match '【剩余天数】(?<val>\d+)\s*天') { $Matches['val'].Trim() + ' 天' } `
+                    elseif ($line -match '【剩余天数】(?<val>\d+)') { $Matches['val'].Trim() + ' 天' } `
+                    else { '0 天' }
+            $res = if ($line -match '【签到结果】(?<val>.*)$') { $Matches['val'].Trim() } else { '无记录' }
+
+            # 避免重复
+            if (-not ($lastRecords | Where-Object { $_.Account -eq $acc })) {
+                $lastRecords += [PSCustomObject]@{
+                    Time        = $Matches['time']
+                    Account     = $acc
+                    TodayGain   = $todayGain
+                    Points      = $pts
+                    Days        = $days
+                    Result      = $res
+                }
+            }
+            if ($lastRecords.Count -ge $targetCount) { break }
+        }
+    }
+
+    if ($lastRecords.Count -gt 0) {
+        Write-Host "  最近签到执行时间: $lastTime" -ForegroundColor Gray
+        $idx = 0
+        foreach ($rec in ($lastRecords | Sort-Object Account)) {
+            $idx++
+            Write-Host "    [$idx] $($rec.Account) : 今日获得 $($rec.TodayGain) | 当前总计 $($rec.Points) | 剩余 $($rec.Days) | $($rec.Result)" -ForegroundColor Green
+        }
+    } else {
+        Write-Host '  日志中尚未检索到完整的账号签到记录。' -ForegroundColor Yellow
+    }
+}
 
 function Invoke-MenuAction {
     <#
@@ -1989,6 +3565,38 @@ function Invoke-MenuAction {
             # 进入 AI 桌面工具协同组合子菜单
             Show-AiSuiteMenu
         }
+        '17' {
+            # GLaDOS 一键自动签到
+            $null = Invoke-GladosCheckin
+        }
+        '18' {
+            # 查看 GLaDOS 最新签到历史与账号状态
+            Show-GladosStatus
+        }
+        '19' {
+            # 进入 WSL 专区二级菜单
+            Show-WslMenu
+        }
+        'wsl' {
+            Show-WslMenu
+        }
+        '20' {
+            # 进入飞书机器人桥接专区菜单 (包含 OpenCode 2 与 Antigravity 启动/关闭/重启/面板)
+            Show-WslFeishuMenu
+        }
+        '21' {
+            # 兼容历史选项编号，进入飞书机器人桥接专区菜单
+            Show-WslFeishuMenu
+        }
+        'feishu' {
+            Show-WslFeishuMenu
+        }
+        'botmux' {
+            Show-WslFeishuMenu
+        }
+        'bridge' {
+            Show-WslFeishuMenu
+        }
         '22' {
             # 启动 StudyPower Web 工作台
             $null = Start-StudyPower
@@ -1996,6 +3604,30 @@ function Invoke-MenuAction {
         '23' {
             # 停止 StudyPower Web 工作台
             $null = Stop-StudyPower
+        }
+        '24' {
+            # 进入 MSDS-Engine 智能处理专区二级菜单
+            Show-MsdsEngineMenu
+        }
+        '25' {
+            # 启动 MSDS-Engine Web 工作台
+            $null = Start-MsdsEngineWeb
+        }
+        '26' {
+            # 停止 MSDS-Engine 全部服务 (Web / API)
+            $null = Stop-MsdsEngineAll
+        }
+        'msds' {
+            Show-MsdsEngineMenu
+        }
+        'msds-engine' {
+            Show-MsdsEngineMenu
+        }
+        'msds-web' {
+            $null = Start-MsdsEngineWeb
+        }
+        'msds-api' {
+            $null = Start-MsdsEngineApi
         }
         'ai' {
             Show-AiSuiteMenu
@@ -2031,6 +3663,36 @@ function Invoke-MenuAction {
     return $true
 }
 
+function Invoke-UrlTarget {
+    <#
+    .SYNOPSIS url/open 动词的目标分发：打开对应平台网页
+    #>
+    param([string]$Target)
+    $ok = $false
+    switch ($Target) {
+        'opencode2' { $ok = Open-Opencode2Web }
+        'opencode'  { $ok = Open-Opencode2Web }
+        'dsh'         { Open-DshDashboard; $ok = $true }
+        'deepseek'    { Open-DshDashboard; $ok = $true }
+        'deepseek-harness' { Open-DshDashboard; $ok = $true }
+        'harness'     { Open-DshDashboard; $ok = $true }
+        'dsh-wsl'     { $ok = Open-WslDshDashboard }
+        'wsl-dsh'     { $ok = Open-WslDshDashboard }
+        'feishu'      { $ok = Open-WslFeishuDashboard }
+        'botmux'      { $ok = Open-WslFeishuDashboard }
+        'bridge'      { $ok = Open-WslFeishuDashboard }
+        'msds'        { $null = Open-MsdsEngineWeb; $ok = $true }
+        'msds-web'    { $null = Open-MsdsEngineWeb; $ok = $true }
+        'msds-engine' { $null = Open-MsdsEngineWeb; $ok = $true }
+        'msds-api'    { $null = Open-MsdsEngineApi; $ok = $true }
+        'web'         { $null = Open-GuanZhiWeb; $ok = $true }
+        'guanzhi'     { $null = Open-GuanZhiWeb; $ok = $true }
+        'guanzhi-web' { $null = Open-GuanZhiWeb; $ok = $true }
+        default { Write-Host "url 支持目标: dsh | dsh-wsl | web" -ForegroundColor Yellow }
+    }
+    if ($ok -eq $false) { exit 1 }
+}
+
 function Main {
     <#
     .SYNOPSIS 主入口：支持命令行参数或交互菜单
@@ -2045,9 +3707,20 @@ function Main {
         'aistudy', 'tauri', 'system', 'aistudy-tauri',
         'web', 'guanzhi', 'guanzhi-web', 'guanzhitong-lan', 'compliance',
         'studypower', 'study-power', 'study',
+        'msds', 'msds-engine', 'msds-web', 'msds-api', 'msds-all',
         'all',
-        'ai-suite', 'aisuite', 'aitools', 'antigravity', 'antigravity-ide', 'ide', 'chatgpt', 'cockpit'
+        'glados', 'checkin', 'glados-checkin',
+        'ai-suite', 'aisuite', 'aitools', 'antigravity', 'antigravity-ide', 'ide', 'chatgpt', 'cockpit',
+        'dsh-wsl', 'wsl-dsh', 'wsl-suite', 'wsl',
+        'antigravity-wsl', 'wsl-antigravity', 'agw', 'antigravity-ide-wsl', 'ide-wsl', 'cockpit-wsl',
+        'feishu', 'botmux', 'bridge', 'feishu-bridge', 'opencode2-feishu', 'antigravity-feishu'
     )
+
+    # 快捷执行：wll checkin / wll glados 直接触发签到
+    if ($Action -and ($Action.ToLower() -in @('checkin', 'glados', 'glados-checkin'))) {
+        $ok = Invoke-GladosCheckin
+        exit $(if ($ok) { 0 } else { 1 })
+    }
 
     # 便捷调用：wll dsh / wll aistudy 直接等价于 start 对应平台
     if ($Action -and $Action -in $knownTargets -and -not $Target) {
@@ -2059,7 +3732,23 @@ function Main {
     # 命令行模式
     if ($Action) {
         Write-LauncherLog "命令行模式: $Action $Target" -Level INFO
-        switch ($Action) {
+        switch ($Action.ToLower()) {
+            'pair' {
+                Show-Opencode2PairInfo
+                exit 0
+            }
+            'checkin' {
+                $ok = Invoke-GladosCheckin
+                exit $(if ($ok) { 0 } else { 1 })
+            }
+            'glados' {
+                $ok = Invoke-GladosCheckin
+                exit $(if ($ok) { 0 } else { 1 })
+            }
+            'glados-checkin' {
+                $ok = Invoke-GladosCheckin
+                exit $(if ($ok) { 0 } else { 1 })
+            }
             'start' {
                 $ok = $false
                 switch ($Target) {
@@ -2077,8 +3766,19 @@ function Main {
                     'studypower'  { $ok = Start-StudyPower }
                     'study-power' { $ok = Start-StudyPower }
                     'study'       { $ok = Start-StudyPower }
+                    'msds'        { $ok = Start-MsdsEngineWeb }
+                    'msds-engine' { $ok = Start-MsdsEngineWeb }
+                    'msds-web'    { $ok = Start-MsdsEngineWeb }
+                    'msds-api'    { $ok = Start-MsdsEngineApi }
+                    'msds-all'    {
+                        $w = Start-MsdsEngineWeb
+                        $a = Start-MsdsEngineApi
+                        $ok = ($w -and $a)
+                    }
                     'guanzhitong-lan' { $ok = Start-GuanZhiLanSession }
                     'compliance' { $ok = Start-GuanZhiCompliance }
+                    'glados'     { $ok = Invoke-GladosCheckin }
+                    'checkin'    { $ok = Invoke-GladosCheckin }
                     'ai-suite'        { $ok = Start-AiSuite }
                     'aisuite'         { $ok = Start-AiSuite }
                     'aitools'         { $ok = Start-AiSuite }
@@ -2087,6 +3787,31 @@ function Main {
                     'ide'             { $ok = Start-AntigravityIdeApp }
                     'chatgpt'         { $ok = Start-ChatGptApp }
                     'cockpit'         { $ok = Start-CockpitApp }
+                    'dsh-wsl'         { $ok = Start-WslDsh }
+                    'wsl-dsh'         { $ok = Start-WslDsh }
+                    'antigravity-wsl' { $ok = Start-WslAntigravity -Component gui }
+                    'wsl-antigravity' { $ok = Start-WslAntigravity -Component gui }
+                    'agw'             { $ok = Start-WslAntigravity -Component gui }
+                    'antigravity-ide-wsl' { $ok = Start-WslAntigravity -Component ide }
+                    'ide-wsl'         { $ok = Start-WslAntigravity -Component ide }
+                    'cockpit-wsl'     { $ok = Start-WslAntigravity -Component cockpit }
+                    'wsl-suite'       { $ok = Start-WslSuite }
+                    'wsl'             { $ok = Start-WslSuite }
+                    'feishu'          { $ok = Start-WslFeishuBridge -Target all }
+                    'botmux'          { $ok = Start-WslFeishuBridge -Target all }
+                    'bridge'          { $ok = Start-WslFeishuBridge -Target all }
+                    'feishu-bridge'   { $ok = Start-WslFeishuBridge -Target all }
+                    'feishu-bridge-only' { $ok = Start-WslFeishuBridge -Target bridge-all }
+                    'feishu-opencode' { $ok = Start-WslFeishuBridge -Target opencode2-all }
+                    'opencode-feishu' { $ok = Start-WslFeishuBridge -Target opencode2-all }
+                    'opencode2-feishu' { $ok = Start-WslFeishuBridge -Target opencode2-all }
+                    'feishu-ag'       { $ok = Start-WslFeishuBridge -Target antigravity-all }
+                    'ag-feishu'       { $ok = Start-WslFeishuBridge -Target antigravity-all }
+                    'antigravity-feishu' { $ok = Start-WslFeishuBridge -Target antigravity-all }
+                    'opencode2-core'  { $ok = Start-WslFeishuBridge -Target opencode2-core }
+                    'opencode-core'   { $ok = Start-WslFeishuBridge -Target opencode2-core }
+                    'ag-core'         { $ok = Start-WslFeishuBridge -Target antigravity-core }
+                    'antigravity-core' { $ok = Start-WslFeishuBridge -Target antigravity-core }
                     'all'    {
                         $a = Start-AIStudyTauri
                         $h = Start-Dsh
@@ -2113,6 +3838,11 @@ function Main {
                     'studypower'  { $ok = Stop-StudyPower }
                     'study-power' { $ok = Stop-StudyPower }
                     'study'       { $ok = Stop-StudyPower }
+                    'msds'        { $ok = Stop-MsdsEngineAll }
+                    'msds-engine' { $ok = Stop-MsdsEngineAll }
+                    'msds-web'    { $ok = Stop-MsdsEngineWeb }
+                    'msds-api'    { $ok = Stop-MsdsEngineApi }
+                    'msds-all'    { $ok = Stop-MsdsEngineAll }
                     'guanzhitong-lan' { $ok = Stop-GuanZhiLanSession }
                     'compliance' { $ok = Stop-GuanZhiWeb }
                     'ai-suite'        { $ok = Stop-AiSuite }
@@ -2123,6 +3853,31 @@ function Main {
                     'ide'             { $ok = Stop-AntigravityIdeApp }
                     'chatgpt'         { $ok = Stop-ChatGptApp }
                     'cockpit'         { $ok = Stop-CockpitApp }
+                    'dsh-wsl'         { $ok = Stop-WslDsh }
+                    'wsl-dsh'         { $ok = Stop-WslDsh }
+                    'antigravity-wsl' { $ok = Stop-WslAntigravity -Component gui }
+                    'wsl-antigravity' { $ok = Stop-WslAntigravity -Component gui }
+                    'agw'             { $ok = Stop-WslAntigravity -Component gui }
+                    'antigravity-ide-wsl' { $ok = Stop-WslAntigravity -Component ide }
+                    'ide-wsl'         { $ok = Stop-WslAntigravity -Component ide }
+                    'cockpit-wsl'     { $ok = Stop-WslAntigravity -Component cockpit }
+                    'wsl-suite'       { $ok = Stop-WslSuite }
+                    'wsl'             { $ok = Stop-WslSuite }
+                    'feishu'          { $ok = Stop-WslFeishuBridge -Target all }
+                    'botmux'          { $ok = Stop-WslFeishuBridge -Target all }
+                    'bridge'          { $ok = Stop-WslFeishuBridge -Target all }
+                    'feishu-bridge'   { $ok = Stop-WslFeishuBridge -Target all }
+                    'feishu-bridge-only' { $ok = Stop-WslFeishuBridge -Target bridge-all }
+                    'feishu-opencode' { $ok = Stop-WslFeishuBot -Bot opencode2 }
+                    'opencode-feishu' { $ok = Stop-WslFeishuBot -Bot opencode2 }
+                    'opencode2-feishu' { $ok = Stop-WslFeishuBot -Bot opencode2 }
+                    'feishu-ag'       { $ok = Stop-WslFeishuBot -Bot antigravity }
+                    'ag-feishu'       { $ok = Stop-WslFeishuBot -Bot antigravity }
+                    'antigravity-feishu' { $ok = Stop-WslFeishuBot -Bot antigravity }
+                    'opencode2-core'  { $ok = Stop-WslFeishuBridge -Target opencode2-core }
+                    'opencode-core'   { $ok = Stop-WslFeishuBridge -Target opencode2-core }
+                    'ag-core'         { $ok = Stop-WslFeishuBridge -Target antigravity-core }
+                    'antigravity-core' { $ok = Stop-WslFeishuBridge -Target antigravity-core }
                     'all'    {
                         $a = Stop-AIStudyTauri
                         $h = Stop-Dsh
@@ -2133,11 +3888,77 @@ function Main {
                 }
                 if ($ok -eq $false) { exit 1 }
             }
+            'restart' {
+                $ok = $false
+                switch ($Target) {
+                    'dsh'         { $null = Stop-Dsh; $ok = Start-Dsh }
+                    'deepseek'    { $null = Stop-Dsh; $ok = Start-Dsh }
+                    'deepseek-harness' { $null = Stop-Dsh; $ok = Start-Dsh }
+                    'harness'     { $null = Stop-Dsh; $ok = Start-Dsh }
+                    'dsh-wsl'     { $ok = Restart-WslDsh }
+                    'wsl-dsh'     { $ok = Restart-WslDsh }
+                    'antigravity-wsl'     { $ok = Restart-WslAntigravity -Component gui }
+                    'wsl-antigravity'     { $ok = Restart-WslAntigravity -Component gui }
+                    'agw'                 { $ok = Restart-WslAntigravity -Component gui }
+                    'antigravity-ide-wsl' { $ok = Restart-WslAntigravity -Component ide }
+                    'ide-wsl'             { $ok = Restart-WslAntigravity -Component ide }
+                    'cockpit-wsl'         { $ok = Restart-WslAntigravity -Component cockpit }
+                    'wsl-suite'   {
+                        $d = Stop-WslSuite
+                        $ok = Start-WslSuite
+                    }
+                    'wsl'         {
+                        $d = Stop-WslSuite
+                        $ok = Start-WslSuite
+                    }
+                    'feishu'        { $ok = Restart-WslFeishuBridge -Target all }
+                    'botmux'        { $ok = Restart-WslFeishuBridge -Target all }
+                    'bridge'        { $ok = Restart-WslFeishuBridge -Target all }
+                    'feishu-bridge' { $ok = Restart-WslFeishuBridge -Target all }
+                    'feishu-opencode' { $ok = Restart-WslFeishuBot -Bot opencode2 }
+                    'opencode-feishu' { $ok = Restart-WslFeishuBot -Bot opencode2 }
+                    'opencode2-feishu' { $ok = Restart-WslFeishuBot -Bot opencode2 }
+                    'feishu-ag'     { $ok = Restart-WslFeishuBot -Bot antigravity }
+                    'ag-feishu'     { $ok = Restart-WslFeishuBot -Bot antigravity }
+                    'antigravity-feishu' { $ok = Restart-WslFeishuBot -Bot antigravity }
+                    'opencode2-core' { $ok = Restart-WslFeishuBridge -Target opencode2-core }
+                    'ag-core'       { $ok = Restart-WslFeishuBridge -Target antigravity-core }
+                    'msds'        { $null = Stop-MsdsEngineWeb; $ok = Start-MsdsEngineWeb }
+                    'msds-web'    { $null = Stop-MsdsEngineWeb; $ok = Start-MsdsEngineWeb }
+                    'msds-api'    { $null = Stop-MsdsEngineApi; $ok = Start-MsdsEngineApi }
+                    default { Write-Host "restart 支持目标: dsh | dsh-wsl | antigravity-wsl | antigravity-ide-wsl | cockpit-wsl | wsl-suite" -ForegroundColor Yellow }
+                }
+                if ($ok -eq $false) { exit 1 }
+            }
+            'url'  { Invoke-UrlTarget -Target $Target }
+            'open' { Invoke-UrlTarget -Target $Target }
             'status'  {
+                if ($Target -in @('glados', 'checkin', 'glados-checkin')) {
+                    Show-GladosStatus
+                    exit 0
+                }
+                if ($Target -in @('wsl', 'wsl-suite', 'dsh-wsl', 'wsl-dsh', 'antigravity-wsl', 'wsl-antigravity', 'agw', 'antigravity-ide-wsl', 'ide-wsl', 'cockpit-wsl')) {
+                    Write-Host ''
+                    Show-WslSummary
+                    Write-Host ''
+                    exit 0
+                }
+                if ($Target -in @('feishu', 'botmux', 'bridge', 'feishu-bridge')) {
+                    Write-Host ''
+                    Show-WslFeishuSummary
+                    Write-Host ''
+                    exit 0
+                }
                 if ($Target -in @('ai-suite', 'aisuite', 'aitools', 'ai')) {
                     Write-Host ''
                     Write-Host '  -- AI 桌面协同组合状态 (Antigravity / IDE / ChatGPT / Cockpit) --' -ForegroundColor Cyan
                     Show-AiSuiteSummary
+                    exit 0
+                }
+                if ($Target -in @('msds', 'msds-engine', 'msds-web', 'msds-api')) {
+                    Write-Host ''
+                    Show-MsdsEngineSummary
+                    Write-Host ''
                     exit 0
                 }
                 Show-PlatformStatus
@@ -2153,7 +3974,46 @@ function Main {
                 if ($ok -eq $false) { exit 1 }
             }
             'logs' {
-                switch ($Target) {
+                switch ($Target.ToLowerInvariant()) {
+                    'glados' {
+                        Write-Host ''
+                        Write-Host '  --- GLaDOS checkin.log (最近 30 行) ---' -ForegroundColor Cyan
+                        if (Test-Path $Script:GladosLogFile) {
+                            Get-Content -LiteralPath $Script:GladosLogFile -Tail 30 -Encoding UTF8
+                        } else {
+                            Write-Host '  (暂无日志文件)'
+                        }
+                        Write-Host ''
+                        exit 0
+                    }
+                    'feishu' {
+                        Show-WslFeishuLogs -Target 'all'
+                        exit 0
+                    }
+                    'feishu-ag' {
+                        Show-WslFeishuLogs -Target 'antigravity'
+                        exit 0
+                    }
+                    'feishu-opencode' {
+                        Show-WslFeishuLogs -Target 'opencode2'
+                        exit 0
+                    }
+                    'msds' {
+                        Show-MsdsEngineLogs
+                        exit 0
+                    }
+                    'msds-engine' {
+                        Show-MsdsEngineLogs
+                        exit 0
+                    }
+                    'msds-web' {
+                        Show-MsdsEngineLogs
+                        exit 0
+                    }
+                    'msds-api' {
+                        Show-MsdsEngineLogs
+                        exit 0
+                    }
                     'dsh' {
                         $dshOut = Join-Path $Script:DshRoot 'dsh-web.out.log'
                         $dshErr = Join-Path $Script:DshRoot 'dsh-web.err.log'
@@ -2168,7 +4028,7 @@ function Main {
                     default { Write-Host "用法: .\Workflow-Launcher.ps1 logs [dsh]" -ForegroundColor Yellow }
                 }
             }
-            default { Write-Host "用法: .\Workflow-Launcher.ps1 [start|stop|status|lan|logs] [aistudy|dsh|studypower|web|guanzhitong-lan|compliance|ai-suite|all]" -ForegroundColor Yellow; exit 1 }
+            default { Write-Host "用法: .\Workflow-Launcher.ps1 [start|stop|restart|status|url|lan|logs] [aistudy|dsh|dsh-wsl|antigravity-wsl|antigravity-ide-wsl|cockpit-wsl|studypower|web|guanzhitong-lan|compliance|ai-suite|wsl|feishu|all]" -ForegroundColor Yellow; exit 1 }
         }
         return
     }
@@ -2179,45 +4039,14 @@ function Main {
     $running = $true
     while ($running) {
         Write-Menu
-        $choice = Read-Host '  请选择操作 [0-23, E1, CLS, 0]'
+        $choice = Read-Host '  请选择操作 [0-26, E1, CLS, 0]'
         $running = Invoke-MenuAction -Choice $choice
         if ($running) {
-            if ($choice -and $choice.Trim().ToLowerInvariant() -in @('cls', 'clear')) {
+            $cleanChoice = if ($choice) { $choice.Trim().ToLowerInvariant() } else { '' }
+            if ($cleanChoice -in @('cls', 'clear', '16', 'ai', 'suite', 'aitools', '19', 'wsl', '20', '21', 'feishu', 'botmux', 'bridge', '24', 'msds', 'msds-engine')) {
                 continue
             }
-            Write-Host ''
-            Write-Host '  ------------------------------------------------------------' -ForegroundColor DarkGray
-            Write-Host '  [提示] 鼠标划选按 Ctrl+C 复制 | 按 [C] 复制最新日志 | 按 [Enter] 返回主菜单...' -ForegroundColor DarkCyan
-            Write-Host '         (完整执行记录已同步写入: System\logs\launcher.log，输入 cls 可手动清屏)' -ForegroundColor DarkGray
-            try {
-                while ($true) {
-                    $key = $Host.UI.RawUI.ReadKey('NoEcho,IncludeKeyDown')
-                    # 忽略纯修饰键 (Shift: 16, Ctrl: 17, Alt: 18, Win: 91/92)
-                    if ($key.VirtualKeyCode -in 16, 17, 18, 91, 92) { continue }
-                    # 若按下 Ctrl+C 执行文本复制，已由控制台处理，不退出等待
-                    $isCtrl = [bool]($key.ControlKeyState -band ([System.Management.Automation.Host.ControlKeyStates]::RightCtrlPressed -bor [System.Management.Automation.Host.ControlKeyStates]::LeftCtrlPressed))
-                    if ($isCtrl -and $key.VirtualKeyCode -eq 67) { continue }
-                    # 按 C 键一键将最近日志复制到系统剪贴板
-                    if ($key.Character -in 'c', 'C') {
-                        try {
-                            if (Test-Path -LiteralPath $Script:LogFile) {
-                                $tail = (Get-Content -LiteralPath $Script:LogFile -Tail 30) -join [Environment]::NewLine
-                                if (-not [string]::IsNullOrWhiteSpace($tail)) {
-                                    Set-Clipboard -Value $tail
-                                    Write-Host '  [√] 已将最近 30 行执行日志复制到系统剪贴板！' -ForegroundColor Green
-                                }
-                            }
-                        } catch {
-                            Write-Host "  复制失败: $($_.Exception.Message)" -ForegroundColor Red
-                        }
-                        continue
-                    }
-                    # 按 Enter 键确认返回菜单
-                    if ($key.VirtualKeyCode -eq 13) { break }
-                }
-            } catch {
-                $null = Read-Host
-            }
+            Wait-ActionPause -PromptText '操作执行完毕。按 [Enter] 键返回主菜单...'
         }
     }
 }

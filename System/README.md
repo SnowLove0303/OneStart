@@ -34,6 +34,20 @@ wll lan status       # 查看 Docker、Wi‑Fi 和防火墙状态
 wll start ai-suite   # 一键启动 AI 桌面协同组合 (4个工具全启)
 wll stop ai-suite    # 一键关闭 AI 桌面协同组合 (4个工具全关)
 wll status ai-suite  # 查看 AI 桌面协同组合实时状态与 PID
+wll start dsh-wsl         # 启动 DeepSeek Harness WSL 版 (Ubuntu :9011，首次约 30s)
+wll stop dsh-wsl          # 停止 DeepSeek Harness WSL 版
+wll restart dsh-wsl       # 重启 DeepSeek Harness WSL 版
+wll url dsh-wsl           # 浏览器打开 WSL 版 Harness (自动获取 token 地址)
+wll start antigravity-wsl # 启动 Antigravity WSL 版 (WSLg GUI 窗口)
+wll stop antigravity-wsl  # 关闭 Antigravity WSL 版
+wll restart antigravity-ide-wsl  # 重启 Antigravity IDE WSL 版
+wll stop cockpit-wsl      # 关闭 Cockpit WSL 版
+wll start wsl             # 一键启动 WSL 专区全部 (dsh + Antigravity 套件)
+wll status wsl            # WSL 专区状态看板 (含 PID)
+wll checkin          # GLaDOS 一键自动签到并汇总全部账号状态 (5 个账号)
+wll glados           # 便捷写法，等价于 wll checkin
+wll status glados    # 查看 GLaDOS 最近一次签到历史与全部账号天数与积分
+wll logs glados      # 查看 GLaDOS 签到日志 (tail 30)
 ```
 
 ### 方式二：双击运行
@@ -49,6 +63,7 @@ wll status ai-suite  # 查看 AI 桌面协同组合实时状态与 PID
 .\Workflow-Launcher.ps1 start aistudy
 .\Workflow-Launcher.ps1 start web
 .\Workflow-Launcher.ps1 start studypower
+.\Workflow-Launcher.ps1 start web
 .\Workflow-Launcher.ps1 start guanzhitong-lan
 .\Workflow-Launcher.ps1 start compliance
 .\Workflow-Launcher.ps1 start ai-suite
@@ -93,6 +108,8 @@ wll status ai-suite  # 查看 AI 桌面协同组合实时状态与 PID
 | 2 | 启动 DeepSeek Harness | 后台启动 dsh Web（预编译 CLI，端口 9010），就绪后自动打开浏览器 |
 | 3 | DeepSeek Harness 一次性任务 | CLI 交互模式（headless） |
 | 4 | 启动冠志通 Docker Web 工作台 | 启动或复用 Docker 容器 `guanzhitong-compliance`，宿主机端口 18765 |
+| 22 | 启动 StudyPower Web 工作台 | 从 `F:\APP Location\StudyPower` 启动 Next.js 生产服务，端口 3100，就绪后打开浏览器 |
+| 23 | 停止 StudyPower Web 工作台 | 只停止 StudyPower 项目上下文中的进程树 |
 | 5 | 同时启动 | 依次启动 AI Study Tauri、DeepSeek Harness 和冠志通 Web |
 | 6 | 查看状态 | 显示各平台运行状态 |
 | 7 | 停止 AI Study Tauri | 按进程名收口所有 AIstudy.exe 实例 |
@@ -105,6 +122,9 @@ wll status ai-suite  # 查看 AI 桌面协同组合实时状态与 PID
 | 14 | 一键启动冠志通 Docker Web + Wi‑Fi 局域网访问 | 先确认 Docker Web 健康，再开启当前 Private Wi‑Fi 子网访问 |
 | 15 | 一键关闭 LAN 并停止冠志通 Docker Web | 先关闭局域网规则，再停止同一 Docker 容器并回读状态 |
 | 16 | 进入 AI 工具套件组合菜单 | 独立二级交互面板：支持 Antigravity / IDE / ChatGPT / Cockpit 全部统一启动、全部关闭、独立分开展控及实时 PID 看板 |
+| 17 | GLaDOS 一键自动签到 | 顺序执行全部账号自动签到，并在控制台输出包含邮箱、状态、今日获得积分、当前总积分、剩余天数的 7 列汇总表格 |
+| 18 | 查看 GLaDOS 签到历史 | 快速提取查看全部账号最新的签到记录、今日斩获积分、当前总积分与剩余天数历史 |
+| 19 | 进入 WSL 专区菜单 | 独立二级交互面板：DeepSeek Harness WSL 版 (:9011) 与 Antigravity 套件 (GUI / IDE / Cockpit) 的一键启停、单组件启动/停止/重启、token 网页直达与实时 PID 看板 |
 | E1 | 打开 DeepSeek Harness 网页 | 浏览器打开 http://127.0.0.1:9010 |
 | 0 | 退出 | 关闭启动器 |
 
@@ -114,6 +134,7 @@ wll status ai-suite  # 查看 AI 桌面协同组合实时状态与 PID
 |------|------|
 | AI Study Tauri | 本机桌面应用（最新正式构建版） |
 | DeepSeek Harness | http://127.0.0.1:9010 |
+| DeepSeek Harness (WSL) | http://127.0.0.1:9011 （token 地址用 `wll url dsh-wsl` 自动获取） |
 | 冠志通 Docker Web 工作台 | http://127.0.0.1:18765 |
 | StudyPower Web 工作台 | http://127.0.0.1:3100 |
 

@@ -1,0 +1,161 @@
+﻿序号,物质类别,中文名称,英文名称,CAS号,EC号,均质材料限值,限值ppm,材料筛查说明,法规依据,限制组,记录类型
+1,重金属,铅及其化合物,Lead and its compounds,7439-92-1 (单质铅及基准化合物),,0.10%,1000,组级限制按铅元素计；该行是组级父项，不以单一CAS代表全部化合物,2011/65/EU Annex II,铅及其化合物,group
+2,重金属,铅（元素索引）,Lead (element index),7439-92-1,231-100-4,0.10%,1000,此CAS为铅元素索引；命中后仍按铅及其化合物的组级范围判断,2011/65/EU Annex II,铅及其化合物,index
+3,重金属,汞及其化合物,Mercury and its compounds,7439-97-6 (单质汞及基准化合物),,0.10%,1000,组级限制按汞元素计；该行是组级父项，不以单一CAS代表全部化合物,2011/65/EU Annex II,汞及其化合物,group
+4,重金属,汞（元素索引）,Mercury (element index),7439-97-6,231-106-7,0.10%,1000,此CAS为汞元素索引；命中后仍按汞及其化合物的组级范围判断,2011/65/EU Annex II,汞及其化合物,index
+5,重金属,镉及其化合物,Cadmium and its compounds,7440-43-9 (单质镉及基准化合物),,0.01%,100,组级限制按镉元素计；该行是组级父项，不以单一CAS代表全部化合物,2011/65/EU Annex II,镉及其化合物,group
+6,重金属,镉（元素索引）,Cadmium (element index),7440-43-9,231-152-8,0.01%,100,此CAS为镉元素索引；命中后仍按镉及其化合物的组级范围判断,2011/65/EU Annex II,镉及其化合物,index
+7,重金属,六价铬化合物,Hexavalent chromium compounds,18540-29-9 (六价铬离子/基准化合物),,0.10%,1000,组级限制按Cr(VI)形态实施；该行是组级父项，不以铬元素CAS代表全部六价铬化合物,2011/65/EU Annex II,六价铬化合物,group
+8,重金属,铬（六价形态元素索引）,Chromium (hexavalent form index),7440-47-3,231-157-5,0.10%,1000,此CAS仅为铬元素索引；实际检测必须区分Cr(VI)，命中后按六价铬化合物组级范围判断,2011/65/EU Annex II,六价铬化合物,index
+9,阻燃剂,多溴联苯,PBBs - Polybrominated biphenyls,59536-65-1 (PBBs混合物CAS),,0.10%,1000,组级限制；该行是父项，以下为可识别的官方成员CAS，未以单一CAS替代整个物质组,2011/65/EU Annex II,多溴联苯,group
+10,阻燃剂,多溴联苯（组级索引）,PBBs (group index),59536-65-1,249-759-6,0.10%,1000,该CAS为组级或商业混合物索引，不代表全部异构体；命中后按多溴联苯组级范围判断,2011/65/EU Annex II,多溴联苯,index
+11,阻燃剂,3-溴联苯,3-Bromobiphenyl,2113-57-7,218-304-9,0.10%,1000,可识别的多溴联苯成员CAS；仍按多溴联苯组级限制判定,2011/65/EU Annex II,多溴联苯,member
+12,阻燃剂,4-溴联苯,4-Bromobiphenyl,92-66-0,202-176-6,0.10%,1000,可识别的多溴联苯成员CAS；仍按多溴联苯组级限制判定,2011/65/EU Annex II,多溴联苯,member
+13,阻燃剂,"4,4'-二溴联苯","4,4'-Dibromobiphenyl",92-86-4,202-198-6,0.10%,1000,可识别的多溴联苯成员CAS；仍按多溴联苯组级限制判定,2011/65/EU Annex II,多溴联苯,member
+14,阻燃剂,六溴联苯,"Hexabromo-1,1'-biphenyl",36355-01-8,252-994-2,0.10%,1000,可识别的多溴联苯成员CAS；仍按多溴联苯组级限制判定,2011/65/EU Annex II,多溴联苯,member
+15,阻燃剂,九溴联苯,"Nonabromo-1,1'-biphenyl",27753-52-2,248-637-5,0.10%,1000,可识别的多溴联苯成员CAS；仍按多溴联苯组级限制判定,2011/65/EU Annex II,多溴联苯,member
+16,阻燃剂,十溴联苯,"Decabromo-1,1'-biphenyl",13654-09-6,237-137-2,0.10%,1000,可识别的多溴联苯成员CAS；仍按多溴联苯组级限制判定,2011/65/EU Annex II,多溴联苯,member
+17,阻燃剂,四溴（四溴苯基）苯,Tetrabromo tetrabromophenyl benzene,27858-07-7,248-696-7,0.10%,1000,可识别的多溴联苯成员CAS；仍按多溴联苯组级限制判定,2011/65/EU Annex II,多溴联苯,member
+18,阻燃剂,多溴二苯醚,PBDEs - Polybrominated diphenyl ethers,1163-19-5 (十溴二苯醚等代表性CAS),,0.10%,1000,组级限制；该行是父项，以下为可识别的官方成员CAS，未以单一CAS替代整个物质组,2011/65/EU Annex II,多溴二苯醚,group
+19,阻燃剂,多溴二苯醚（组级索引）,PBDEs (group index),68928-80-3,273-031-2,0.10%,1000,该CAS为组级或商业混合物索引，不代表全部同系物；命中后按多溴二苯醚组级范围判断,2011/65/EU Annex II,多溴二苯醚,index
+20,阻燃剂,四溴二苯醚,Tetrabromodiphenyl ether,40088-47-9,254-787-2,0.10%,1000,可识别的多溴二苯醚成员CAS；仍按多溴二苯醚组级限制判定,2011/65/EU Annex II,多溴二苯醚,member
+21,阻燃剂,4-溴苯基苯醚,4-Bromophenyl phenyl ether,101-55-3,202-952-4,0.10%,1000,可识别的多溴二苯醚成员CAS；仍按多溴二苯醚组级限制判定,2011/65/EU Annex II,多溴二苯醚,member
+22,阻燃剂,三溴二苯醚,Diphenyl ether tribromo derivative,49690-94-0,256-431-1,0.10%,1000,可识别的多溴二苯醚成员CAS；仍按多溴二苯醚组级限制判定,2011/65/EU Annex II,多溴二苯醚,member
+23,阻燃剂,四溴二苯醚（异构体）,Tetrabromodiphenyl ether isomer,65075-08-3,,0.10%,1000,可识别的多溴二苯醚成员CAS；仍按多溴二苯醚组级限制判定,2011/65/EU Annex II,多溴二苯醚,member
+24,阻燃剂,五溴二苯醚,Pentabromodiphenyl ether,32534-81-9,251-084-2,0.10%,1000,可识别的多溴二苯醚成员CAS；仍按多溴二苯醚组级限制判定,2011/65/EU Annex II,多溴二苯醚,member
+25,阻燃剂,五溴二苯醚（异构体）,2-2'-3-4'-6'-Pentabromodiphenyl ether,38463-82-0,,0.10%,1000,可识别的多溴二苯醚成员CAS；仍按多溴二苯醚组级限制判定,2011/65/EU Annex II,多溴二苯醚,member
+26,阻燃剂,五溴（四溴苯氧基）苯,Pentabromo tetrabromophenoxy benzene,63936-56-1,264-565-7,0.10%,1000,可识别的多溴二苯醚成员CAS；仍按多溴二苯醚组级限制判定,2011/65/EU Annex II,多溴二苯醚,member
+27,阻燃剂,六溴二苯醚,Hexabromodiphenyl ether,36483-60-0,253-058-6,0.10%,1000,可识别的多溴二苯醚成员CAS；仍按多溴二苯醚组级限制判定,2011/65/EU Annex II,多溴二苯醚,member
+28,阻燃剂,六溴二苯醚154,Hexabromodiphenyl ether 154,207122-15-4,,0.10%,1000,可识别的多溴二苯醚成员CAS；仍按多溴二苯醚组级限制判定,2011/65/EU Annex II,多溴二苯醚,member
+29,阻燃剂,七溴二苯醚异构体,2-2'-3-4-4'-6-6'-Heptabromodiphenyl ether,207122-16-5,,0.10%,1000,可识别的多溴二苯醚成员CAS；仍按多溴二苯醚组级限制判定,2011/65/EU Annex II,多溴二苯醚,member
+30,阻燃剂,八溴二苯醚,Octabromodiphenyl ether,32536-52-0,251-087-9,0.10%,1000,可识别的多溴二苯醚成员CAS；仍按多溴二苯醚组级限制判定,2011/65/EU Annex II,多溴二苯醚,member
+31,阻燃剂,十溴二苯醚,Decabromodiphenyl ether,1163-19-5,214-604-9,0.10%,1000,可识别的多溴二苯醚成员CAS；仍按多溴二苯醚组级限制判定,2011/65/EU Annex II,多溴二苯醚,member
+32,阻燃剂,二溴苯基二溴苯醚,2-4-Dibromo-1-2-4-dibromophenoxy benzene,5436-43-1,690-137-8,0.10%,1000,可识别的多溴二苯醚成员CAS；仍按多溴二苯醚组级限制判定,2011/65/EU Annex II,多溴二苯醚,member
+33,阻燃剂,二溴苯基二溴苯醚异构体,1-2-Dibromo-4-2-6-dibromophenoxy benzene,189084-62-6,620-888-9,0.10%,1000,可识别的多溴二苯醚成员CAS；仍按多溴二苯醚组级限制判定,2011/65/EU Annex II,多溴二苯醚,member
+34,阻燃剂,二溴苯基二溴苯醚异构体,1-2-Dibromo-4-2-4-dibromophenoxy benzene,189084-61-5,621-543-5,0.10%,1000,可识别的多溴二苯醚成员CAS；仍按多溴二苯醚组级限制判定,2011/65/EU Annex II,多溴二苯醚,member
+35,阻燃剂,二溴苯基三溴苯醚,2-4-Dibromo-1-4-bromophenoxy benzene,41318-75-6,868-402-6,0.10%,1000,可识别的多溴二苯醚成员CAS；仍按多溴二苯醚组级限制判定,2011/65/EU Annex II,多溴二苯醚,member
+36,阻燃剂,二溴苯基三溴苯醚,1-2-Dibromo-4-3-4-dibromophenoxy benzene,93703-48-1,621-837-3,0.10%,1000,可识别的多溴二苯醚成员CAS；仍按多溴二苯醚组级限制判定,2011/65/EU Annex II,多溴二苯醚,member
+37,阻燃剂,三溴苯基三溴苯醚,Tribromo tribromophenoxy benzene,31153-30-7,,0.10%,1000,可识别的多溴二苯醚成员CAS；仍按多溴二苯醚组级限制判定,2011/65/EU Annex II,多溴二苯醚,member
+38,阻燃剂,三溴苯基三溴苯醚,1-2-3-Tribromo-4-2-4-5-tribromophenoxy benzene,182677-30-1,621-550-3,0.10%,1000,可识别的多溴二苯醚成员CAS；仍按多溴二苯醚组级限制判定,2011/65/EU Annex II,多溴二苯醚,member
+39,阻燃剂,三溴苯基三溴苯醚,1-2-3-Tribromo-4-2-4-dibromophenoxy benzene,182346-21-0,621-547-7,0.10%,1000,可识别的多溴二苯醚成员CAS；仍按多溴二苯醚组级限制判定,2011/65/EU Annex II,多溴二苯醚,member
+40,阻燃剂,三溴苯基四溴苯醚,1-3-5-Tribromo-2-3-4-dibromophenoxy benzene,189084-66-0,620-889-4,0.10%,1000,可识别的多溴二苯醚成员CAS；仍按多溴二苯醚组级限制判定,2011/65/EU Annex II,多溴二苯醚,member
+41,阻燃剂,三溴苯基四溴苯醚,1-3-5-Tribromo-2-4-bromophenoxy benzene,189084-63-7,621-541-4,0.10%,1000,可识别的多溴二苯醚成员CAS；仍按多溴二苯醚组级限制判定,2011/65/EU Annex II,多溴二苯醚,member
+42,阻燃剂,四溴苯基三溴苯醚,Benzene 1-2-3-5-tetrabromo-4-2-4-6-tribromophenoxy,117948-63-7,,0.10%,1000,可识别的多溴二苯醚成员CAS；仍按多溴二苯醚组级限制判定,2011/65/EU Annex II,多溴二苯醚,member
+43,阻燃剂,四溴苯基苯醚,Benzene 1-3-dibromo-2-phenoxy derivative,51930-04-2,,0.10%,1000,可识别的多溴二苯醚成员CAS；仍按多溴二苯醚组级限制判定,2011/65/EU Annex II,多溴二苯醚,member
+44,阻燃剂,四溴苯基苯醚,Benzene 1-bromo-3-4-bromophenoxy derivative,83694-71-7,,0.10%,1000,可识别的多溴二苯醚成员CAS；仍按多溴二苯醚组级限制判定,2011/65/EU Annex II,多溴二苯醚,member
+45,阻燃剂,二苯醚溴代衍生物,Benzene 1-1'-oxybis bromo derivatives,90193-67-2,290-570-9,0.10%,1000,可识别的多溴二苯醚成员CAS；仍按多溴二苯醚组级限制判定,2011/65/EU Annex II,多溴二苯醚,member
+46,阻燃剂,四溴二苯醚（对称异构体）,Bis(4-bromophenyl) ether,2050-47-7,218-090-7,0.10%,1000,可识别的多溴二苯醚成员CAS；仍按多溴二苯醚组级限制判定,2011/65/EU Annex II,多溴二苯醚,member
+47,阻燃剂,二溴二苯醚衍生物,Benzene 1-1'-oxybis 2-bromo derivative,51452-87-0,,0.10%,1000,可识别的多溴二苯醚成员CAS；仍按多溴二苯醚组级限制判定,2011/65/EU Annex II,多溴二苯醚,member
+48,邻苯二甲酸酯,邻苯二甲酸二（2-乙基己）酯,DEHP - Bis(2-ethylhexyl) phthalate,117-81-7,204-211-0,0.10%,1000,单一受限物质；按均质材料限值判定,2015/863/EU,邻苯二甲酸二（2-乙基己）酯,single
+49,邻苯二甲酸酯,邻苯二甲酸丁苄酯,BBP - Butyl benzyl phthalate,85-68-7,201-622-7,0.10%,1000,单一受限物质；按均质材料限值判定,2015/863/EU,邻苯二甲酸丁苄酯,single
+50,邻苯二甲酸酯,邻苯二甲酸二丁酯,DBP - Dibutyl phthalate,84-74-2,201-557-4,0.10%,1000,单一受限物质；按均质材料限值判定,2015/863/EU,邻苯二甲酸二丁酯,single
+51,邻苯二甲酸酯,邻苯二甲酸二异丁酯,DIBP - Diisobutyl phthalate,84-69-5,201-553-2,0.10%,1000,单一受限物质；按均质材料限值判定,2015/863/EU,邻苯二甲酸二异丁酯,single
+52,重金属,一氧化铅,Lead monoxide,1317-36-8,215-267-0,0.10%,1000,ECHA RoHS组成员CAS；具体物质按铅组级限值判定,2011/65/EU Annex II,铅及其化合物,member
+53,重金属,二氧化铅,Lead dioxide,1309-60-0,215-174-5,0.10%,1000,ECHA RoHS组成员CAS；具体物质按铅组级限值判定,2011/65/EU Annex II,铅及其化合物,member
+54,重金属,一氧化二铅,Dilead oxide,12059-89-1,235-036-8,0.10%,1000,ECHA RoHS组成员CAS；具体物质按铅组级限值判定,2011/65/EU Annex II,铅及其化合物,member
+55,重金属,碳酸铅,Carbonic acid lead salt,13427-42-4,,0.10%,1000,ECHA RoHS组成员CAS；具体物质按铅组级限值判定,2011/65/EU Annex II,铅及其化合物,member
+56,重金属,硫酸铅,Lead sulphate,7446-14-2,231-198-9,0.10%,1000,ECHA RoHS组成员CAS；具体物质按铅组级限值判定,2011/65/EU Annex II,铅及其化合物,member
+57,重金属,磷酸氢铅,Lead hydrogenorthophosphate,15845-52-0,239-952-9,0.10%,1000,ECHA RoHS组成员CAS；具体物质按铅组级限值判定,2011/65/EU Annex II,铅及其化合物,member
+58,重金属,三铅双正磷酸盐,Trilead bis orthophosphate,7446-27-7,231-205-5,0.10%,1000,ECHA RoHS组成员CAS；具体物质按铅组级限值判定,2011/65/EU Annex II,铅及其化合物,member
+59,重金属,氟化铅,Lead difluoride,7783-46-2,231-998-8,0.10%,1000,ECHA RoHS组成员CAS；具体物质按铅组级限值判定,2011/65/EU Annex II,铅及其化合物,member
+60,重金属,砷酸铅,Lead arsenite,10031-13-7,233-083-9,0.10%,1000,ECHA RoHS组成员CAS；具体物质按铅组级限值判定,2011/65/EU Annex II,铅及其化合物,member
+61,重金属,铬酸铅,Lead chromate,7758-97-6,231-846-0,0.10%,1000,ECHA RoHS组成员CAS；具体物质按铅组级限值判定,2011/65/EU Annex II,铅及其化合物,member
+62,重金属,铬酸铅钾,Chromic acid lead potassium salt,13845-31-3,,0.10%,1000,ECHA RoHS组成员CAS；具体物质按铅组级限值判定,2011/65/EU Annex II,铅及其化合物,member
+63,重金属,铅锡三氧化物,Lead tin trioxide,12036-31-6,234-844-8,0.10%,1000,ECHA RoHS组成员CAS；具体物质按铅组级限值判定,2011/65/EU Annex II,铅及其化合物,member
+64,重金属,硅酸铅,Lead silicate,22569-74-0,245-090-4,0.10%,1000,ECHA RoHS组成员CAS；具体物质按铅组级限值判定,2011/65/EU Annex II,铅及其化合物,member
+65,重金属,丙烯酸铅,Lead acrylate,867-47-0,212-760-2,0.10%,1000,ECHA RoHS组成员CAS；具体物质按铅组级限值判定,2011/65/EU Annex II,铅及其化合物,member
+66,重金属,苹果酸铅,Lead malate,816-68-2,212-436-0,0.10%,1000,ECHA RoHS组成员CAS；具体物质按铅组级限值判定,2011/65/EU Annex II,铅及其化合物,member
+67,重金属,双（2-乙基己酸）铅,Lead bis 2-ethylhexanoate,301-08-6,206-107-0,0.10%,1000,ECHA RoHS组成员CAS；具体物质按铅组级限值判定,2011/65/EU Annex II,铅及其化合物,member
+68,重金属,二月桂酸铅,Lead dilaurate,15773-55-4,239-869-8,0.10%,1000,ECHA RoHS组成员CAS；具体物质按铅组级限值判定,2011/65/EU Annex II,铅及其化合物,member
+69,重金属,癸酸铅,Lead decanoate,15773-52-1,239-867-7,0.10%,1000,ECHA RoHS组成员CAS；具体物质按铅组级限值判定,2011/65/EU Annex II,铅及其化合物,member
+70,重金属,己酸铅,Lead dihexanoate,15773-53-2,239-868-2,0.10%,1000,ECHA RoHS组成员CAS；具体物质按铅组级限值判定,2011/65/EU Annex II,铅及其化合物,member
+71,重金属,油酸铅,Lead dioleate,1120-46-3,214-310-0,0.10%,1000,ECHA RoHS组成员CAS；具体物质按铅组级限值判定,2011/65/EU Annex II,铅及其化合物,member
+72,重金属,四乙基铅,Tetraethyllead,78-00-2,201-075-4,0.10%,1000,ECHA RoHS组成员CAS；具体物质按铅组级限值判定,2011/65/EU Annex II,铅及其化合物,member
+73,重金属,二硫氰酸铅,Lead dithiocyanate,592-87-0,209-774-6,0.10%,1000,ECHA RoHS组成员CAS；具体物质按铅组级限值判定,2011/65/EU Annex II,铅及其化合物,member
+74,重金属,橙铅,Orange lead,1314-41-6,215-235-6,0.10%,1000,ECHA RoHS组成员CAS；具体物质按铅组级限值判定,2011/65/EU Annex II,铅及其化合物,member
+75,重金属,二亚油酸铅,Lead dilinoleate,33627-12-2,251-602-7,0.10%,1000,ECHA RoHS组成员CAS；具体物质按铅组级限值判定,2011/65/EU Annex II,铅及其化合物,member
+76,重金属,12-羟基硬脂酸铅,Lead 12-hydroxyoctadecanoate,65127-78-8,265-492-3,0.10%,1000,ECHA RoHS组成员CAS；具体物质按铅组级限值判定,2011/65/EU Annex II,铅及其化合物,member
+77,重金属,铅酞菁,Lead phthalocyanine,15187-16-3,628-401-1,0.10%,1000,ECHA RoHS组成员CAS；具体物质按铅组级限值判定,2011/65/EU Annex II,铅及其化合物,member
+78,重金属,亚硝酸铅,Lead nitrite,13826-65-8,237-528-8,0.10%,1000,ECHA RoHS组成员CAS；具体物质按铅组级限值判定,2011/65/EU Annex II,铅及其化合物,member
+79,重金属,氧化汞,Mercury monoxide,21908-53-2,244-654-7,0.10%,1000,ECHA RoHS组成员CAS；具体物质按汞组级限值判定,2011/65/EU Annex II,汞及其化合物,member
+80,重金属,氧化亚汞,Mercurous oxide,15829-53-5,239-934-0,0.10%,1000,ECHA RoHS组成员CAS；具体物质按汞组级限值判定,2011/65/EU Annex II,汞及其化合物,member
+81,重金属,氯化汞,Mercury dichloride,7487-94-7,231-299-8,0.10%,1000,ECHA RoHS组成员CAS；具体物质按汞组级限值判定,2011/65/EU Annex II,汞及其化合物,member
+82,重金属,硫化汞,Mercury sulfide,1344-48-5,215-696-3,0.10%,1000,ECHA RoHS组成员CAS；具体物质按汞组级限值判定,2011/65/EU Annex II,汞及其化合物,member
+83,重金属,硫酸汞,Mercury sulfate,7783-35-9,231-992-5,0.10%,1000,ECHA RoHS组成员CAS；具体物质按汞组级限值判定,2011/65/EU Annex II,汞及其化合物,member
+84,重金属,碘化汞,Mercury diiodide,7774-29-0,231-873-8,0.10%,1000,ECHA RoHS组成员CAS；具体物质按汞组级限值判定,2011/65/EU Annex II,汞及其化合物,member
+85,重金属,氰化汞,Mercury dicyanide,592-04-1,209-741-6,0.10%,1000,ECHA RoHS组成员CAS；具体物质按汞组级限值判定,2011/65/EU Annex II,汞及其化合物,member
+86,重金属,硫氰酸汞,Mercury dithiocyanate,592-85-8,209-773-0,0.10%,1000,ECHA RoHS组成员CAS；具体物质按汞组级限值判定,2011/65/EU Annex II,汞及其化合物,member
+87,重金属,醋酸汞,Mercury diacetate,1600-27-7,216-491-1,0.10%,1000,ECHA RoHS组成员CAS；具体物质按汞组级限值判定,2011/65/EU Annex II,汞及其化合物,member
+88,重金属,琥珀酸汞,Mercury succinate,589-65-1,209-656-4,0.10%,1000,ECHA RoHS组成员CAS；具体物质按汞组级限值判定,2011/65/EU Annex II,汞及其化合物,member
+89,重金属,硒化汞,Mercury selenide,20601-83-6,243-910-5,0.10%,1000,ECHA RoHS组成员CAS；具体物质按汞组级限值判定,2011/65/EU Annex II,汞及其化合物,member
+90,重金属,碲化汞,Mercury telluride,12068-90-5,235-108-9,0.10%,1000,ECHA RoHS组成员CAS；具体物质按汞组级限值判定,2011/65/EU Annex II,汞及其化合物,member
+91,重金属,重铬酸汞,Mercury dichromate,7789-10-8,232-144-7,0.10%,1000,ECHA RoHS组成员CAS；同时属于六价铬化合物交叉成员,2011/65/EU Annex II,汞及其化合物,member
+92,重金属,碘乙基汞,Ethyliodomercury,2440-42-8,219-471-0,0.10%,1000,ECHA RoHS组成员CAS；具体物质按汞组级限值判定,2011/65/EU Annex II,汞及其化合物,member
+93,重金属,氯化苯汞,Phenylmercury chloride,100-56-1,202-865-1,0.10%,1000,ECHA RoHS组成员CAS；具体物质按汞组级限值判定,2011/65/EU Annex II,汞及其化合物,member
+94,重金属,醋酸苯汞,Phenylmercury acetate,62-38-4,200-532-5,0.10%,1000,ECHA RoHS组成员CAS；具体物质按汞组级限值判定,2011/65/EU Annex II,汞及其化合物,member
+95,重金属,氢氧化苯汞,Phenylmercury hydroxide,100-57-2,202-866-7,0.10%,1000,ECHA RoHS组成员CAS；具体物质按汞组级限值判定,2011/65/EU Annex II,汞及其化合物,member
+96,重金属,水杨酸苯汞,Phenylmercury salicylate,28086-13-7,248-828-3,0.10%,1000,ECHA RoHS组成员CAS；具体物质按汞组级限值判定,2011/65/EU Annex II,汞及其化合物,member
+97,重金属,氢氧化甲基汞,Methylmercury hydroxide,1184-57-2,214-667-2,0.10%,1000,ECHA RoHS组成员CAS；具体物质按汞组级限值判定,2011/65/EU Annex II,汞及其化合物,member
+98,重金属,溴化亚汞,Mercury(I) bromide,15385-58-7,621-489-2,0.10%,1000,ECHA RoHS组成员CAS；具体物质按汞组级限值判定,2011/65/EU Annex II,汞及其化合物,member
+99,重金属,硝酸汞水合物,Mercury nitrate hydrate,13465-31-1,,0.10%,1000,ECHA RoHS组成员CAS；具体物质按汞组级限值判定,2011/65/EU Annex II,汞及其化合物,member
+100,重金属,二甲基汞,Dimethylmercury,593-74-8,209-805-3,0.10%,1000,ECHA RoHS组成员CAS；具体物质按汞组级限值判定,2011/65/EU Annex II,汞及其化合物,member
+101,重金属,硫柳汞,Thiomersal,54-64-8,200-210-4,0.10%,1000,ECHA RoHS组成员CAS；具体物质按汞组级限值判定,2011/65/EU Annex II,汞及其化合物,member
+102,重金属,砷酸氢汞,Mercury hydrogenarsenate,7784-37-4,232-062-1,0.10%,1000,ECHA RoHS组成员CAS；具体物质按汞组级限值判定,2011/65/EU Annex II,汞及其化合物,member
+103,重金属,苯甲酸汞,Mercury dibenzoate,583-15-3,209-499-1,0.10%,1000,ECHA RoHS组成员CAS；具体物质按汞组级限值判定,2011/65/EU Annex II,汞及其化合物,member
+104,重金属,碘酸汞,Mercury diiodate,7783-32-6,231-989-9,0.10%,1000,ECHA RoHS组成员CAS；具体物质按汞组级限值判定,2011/65/EU Annex II,汞及其化合物,member
+105,重金属,葡萄糖酸亚汞,Mercurous gluconate,63937-14-4,,0.10%,1000,ECHA RoHS组成员CAS；具体物质按汞组级限值判定,2011/65/EU Annex II,汞及其化合物,member
+106,重金属,苯甲酸甲基汞,Methylmercury benzoate,3626-13-9,222-834-6,0.10%,1000,ECHA RoHS组成员CAS；具体物质按汞组级限值判定,2011/65/EU Annex II,汞及其化合物,member
+107,重金属,亚硒酸汞,Mercury selenite,14459-36-0,,0.10%,1000,ECHA RoHS组成员CAS；具体物质按汞组级限值判定,2011/65/EU Annex II,汞及其化合物,member
+108,重金属,氧化镉,Cadmium oxide,1306-19-0,215-146-2,0.01%,100,ECHA RoHS组成员CAS；具体物质按镉组级限值判定,2011/65/EU Annex II,镉及其化合物,member
+109,重金属,硫化镉,Cadmium sulfide,1306-23-6,215-147-8,0.01%,100,ECHA RoHS组成员CAS；具体物质按镉组级限值判定,2011/65/EU Annex II,镉及其化合物,member
+110,重金属,硒化镉,Cadmium selenide,1306-24-7,215-148-3,0.01%,100,ECHA RoHS组成员CAS；具体物质按镉组级限值判定,2011/65/EU Annex II,镉及其化合物,member
+111,重金属,碲化镉,Cadmium telluride,1306-25-8,215-149-9,0.01%,100,ECHA RoHS组成员CAS；具体物质按镉组级限值判定,2011/65/EU Annex II,镉及其化合物,member
+112,重金属,氯化镉,Cadmium chloride,10108-64-2,233-296-7,0.01%,100,ECHA RoHS组成员CAS；具体物质按镉组级限值判定,2011/65/EU Annex II,镉及其化合物,member
+113,重金属,硫酸镉,Cadmium sulfate,10124-36-4,233-331-6,0.01%,100,ECHA RoHS组成员CAS；具体物质按镉组级限值判定,2011/65/EU Annex II,镉及其化合物,member
+114,重金属,硫酸镉四水合物,Cadmium sulfate tetrahydrate,13477-21-9,,0.01%,100,ECHA RoHS组成员CAS；具体物质按镉组级限值判定,2011/65/EU Annex II,镉及其化合物,member
+115,重金属,硝酸镉,Cadmium nitrate,10325-94-7,233-710-6,0.01%,100,ECHA RoHS组成员CAS；具体物质按镉组级限值判定,2011/65/EU Annex II,镉及其化合物,member
+116,重金属,溴化镉,Cadmium bromide,7789-42-6,232-165-1,0.01%,100,ECHA RoHS组成员CAS；具体物质按镉组级限值判定,2011/65/EU Annex II,镉及其化合物,member
+117,重金属,碳酸镉,Cadmium carbonate,513-78-0,208-168-9,0.01%,100,ECHA RoHS组成员CAS；具体物质按镉组级限值判定,2011/65/EU Annex II,镉及其化合物,member
+118,重金属,氢氧化镉,Cadmium hydroxide,21041-95-2,244-168-5,0.01%,100,ECHA RoHS组成员CAS；具体物质按镉组级限值判定,2011/65/EU Annex II,镉及其化合物,member
+119,重金属,亚硫酸镉,Cadmium sulphite,13477-23-1,236-767-5,0.01%,100,ECHA RoHS组成员CAS；具体物质按镉组级限值判定,2011/65/EU Annex II,镉及其化合物,member
+120,重金属,焦磷酸镉,Cadmium pyrophosphate,19262-93-2,,0.01%,100,ECHA RoHS组成员CAS；具体物质按镉组级限值判定,2011/65/EU Annex II,镉及其化合物,member
+121,重金属,月桂酸镉,Cadmium dilaurate,2605-44-9,220-017-9,0.01%,100,ECHA RoHS组成员CAS；具体物质按镉组级限值判定,2011/65/EU Annex II,镉及其化合物,member
+122,重金属,癸二酸镉,Cadmium didecanoate,2847-16-7,220-650-0,0.01%,100,ECHA RoHS组成员CAS；具体物质按镉组级限值判定,2011/65/EU Annex II,镉及其化合物,member
+123,重金属,二乙基镉,Cadmium diethyl,592-02-9,804-213-7,0.01%,100,ECHA RoHS组成员CAS；具体物质按镉组级限值判定,2011/65/EU Annex II,镉及其化合物,member
+124,重金属,肉桂酸镉,Cadmium cinnamate,4390-97-0,224-509-4,0.01%,100,ECHA RoHS组成员CAS；具体物质按镉组级限值判定,2011/65/EU Annex II,镉及其化合物,member
+125,重金属,癸二酸镉,Cadmium sebacate,4476-04-4,224-754-7,0.01%,100,ECHA RoHS组成员CAS；具体物质按镉组级限值判定,2011/65/EU Annex II,镉及其化合物,member
+126,重金属,双（对壬基酚）镉,Cadmium bis p-nonylphenolate,93894-08-7,299-703-5,0.01%,100,ECHA RoHS组成员CAS；具体物质按镉组级限值判定,2011/65/EU Annex II,镉及其化合物,member
+127,重金属,双（邻壬基酚）镉,Cadmium bis o-nonylphenolate,93894-07-6,299-701-4,0.01%,100,ECHA RoHS组成员CAS；具体物质按镉组级限值判定,2011/65/EU Annex II,镉及其化合物,member
+128,重金属,硫化镉汞,Cadmium mercury sulfide,1345-09-1,215-717-6,0.01%,100,ECHA RoHS组成员CAS；属于镉组交叉成员，实际判定按具体物质组成执行,2011/65/EU Annex II,镉及其化合物,member
+129,重金属,三氧化钛镉,Cadmium titanium trioxide,12014-14-1,234-593-4,0.01%,100,ECHA RoHS组成员CAS；具体物质按镉组级限值判定,2011/65/EU Annex II,镉及其化合物,member
+130,重金属,间甲苯酸镉,Cadmium m-toluate,68092-45-5,268-458-6,0.01%,100,ECHA RoHS组成员CAS；具体物质按镉组级限值判定,2011/65/EU Annex II,镉及其化合物,member
+131,重金属,硼酸镉,Boric acid cadmium salt,51222-60-7,257-067-6,0.01%,100,ECHA RoHS组成员CAS；具体物质按镉组级限值判定,2011/65/EU Annex II,镉及其化合物,member
+132,六价铬,六价铬,Chromium (VI),18540-29-9,606-053-1,0.10%,1000,ECHA Cr(VI)组成员CAS；按六价铬组级限值判定；实际判定需确认价态,2011/65/EU Annex II,六价铬化合物,member
+133,六价铬,铬酸,Chromic acid,7738-94-5,231-801-5,0.10%,1000,ECHA Cr(VI)组成员CAS；按六价铬组级限值判定；实际判定需确认价态,2011/65/EU Annex II,六价铬化合物,member
+134,六价铬,三氧化铬,Chromium trioxide,1333-82-0,215-607-8,0.10%,1000,ECHA Cr(VI)组成员CAS；按六价铬组级限值判定；实际判定需确认价态,2011/65/EU Annex II,六价铬化合物,member
+135,六价铬,铬酸钠,Sodium chromate,7775-11-3,231-889-5,0.10%,1000,ECHA Cr(VI)组成员CAS；按六价铬组级限值判定；实际判定需确认价态,2011/65/EU Annex II,六价铬化合物,member
+136,六价铬,铬酸钾,Potassium chromate,7789-00-6,232-140-5,0.10%,1000,ECHA Cr(VI)组成员CAS；按六价铬组级限值判定；实际判定需确认价态,2011/65/EU Annex II,六价铬化合物,member
+137,六价铬,铬酸铵,Ammonium chromate,7788-98-9,232-138-4,0.10%,1000,ECHA Cr(VI)组成员CAS；按六价铬组级限值判定；实际判定需确认价态,2011/65/EU Annex II,六价铬化合物,member
+138,六价铬,重铬酸钠,Sodium dichromate,10588-01-9,234-190-3,0.10%,1000,ECHA Cr(VI)组成员CAS；按六价铬组级限值判定；实际判定需确认价态,2011/65/EU Annex II,六价铬化合物,member
+139,六价铬,重铬酸钾,Potassium dichromate,7778-50-9,231-906-6,0.10%,1000,ECHA Cr(VI)组成员CAS；按六价铬组级限值判定；实际判定需确认价态,2011/65/EU Annex II,六价铬化合物,member
+140,六价铬,重铬酸铵,Ammonium dichromate,7789-09-5,232-143-1,0.10%,1000,ECHA Cr(VI)组成员CAS；按六价铬组级限值判定；实际判定需确认价态,2011/65/EU Annex II,六价铬化合物,member
+141,六价铬,铬酸锂,Lithium chromate,14307-35-8,238-244-7,0.10%,1000,ECHA Cr(VI)组成员CAS；按六价铬组级限值判定；实际判定需确认价态,2011/65/EU Annex II,六价铬化合物,member
+142,六价铬,重铬酸镁,Magnesium dichromate,14104-85-9,237-959-1,0.10%,1000,ECHA Cr(VI)组成员CAS；按六价铬组级限值判定；实际判定需确认价态,2011/65/EU Annex II,六价铬化合物,member
+143,六价铬,铬酸银,Silver chromate,7784-01-2,232-043-8,0.10%,1000,ECHA Cr(VI)组成员CAS；按六价铬组级限值判定；实际判定需确认价态,2011/65/EU Annex II,六价铬化合物,member
+144,六价铬,重铬酸银,Silver dichromate,7784-02-3,232-044-3,0.10%,1000,ECHA Cr(VI)组成员CAS；按六价铬组级限值判定；实际判定需确认价态,2011/65/EU Annex II,六价铬化合物,member
+145,六价铬,铬酸锌,Zinc chromate,13530-65-9,236-878-9,0.10%,1000,ECHA Cr(VI)组成员CAS；按六价铬组级限值判定；实际判定需确认价态,2011/65/EU Annex II,六价铬化合物,member
+146,六价铬,铬酸铜,Copper chromate,13548-42-0,236-922-7,0.10%,1000,ECHA Cr(VI)组成员CAS；按六价铬组级限值判定；实际判定需确认价态,2011/65/EU Annex II,六价铬化合物,member
+147,六价铬,铬酸氧化二铜,Dicopper chromate oxide,18906-50-8,242-656-2,0.10%,1000,ECHA Cr(VI)组成员CAS；按六价铬组级限值判定；实际判定需确认价态,2011/65/EU Annex II,六价铬化合物,member
+148,六价铬,四羟基铬酸三铜,Tricopper chromate tetrahydroxide,12433-14-6,235-662-1,0.10%,1000,ECHA Cr(VI)组成员CAS；按六价铬组级限值判定；实际判定需确认价态,2011/65/EU Annex II,六价铬化合物,member
+149,六价铬,重铬酸,Dichromic acid,13530-68-2,236-881-5,0.10%,1000,ECHA Cr(VI)组成员CAS；按六价铬组级限值判定；实际判定需确认价态,2011/65/EU Annex II,六价铬化合物,member
+150,六价铬,碱式铬酸铅,Dilead chromate dihydroxide,12017-86-6,234-628-3,0.10%,1000,ECHA Cr(VI)组成员CAS；与铅组交叉成员；按六价铬组级限值判定,2011/65/EU Annex II,六价铬化合物,member
+151,六价铬,铬酸铅,Lead chromate,7758-97-6,231-846-0,0.10%,1000,ECHA Cr(VI)组成员CAS；与铅组交叉成员；按六价铬组级限值判定,2011/65/EU Annex II,六价铬化合物,member
+152,六价铬,重铬酸汞,Mercury dichromate,7789-10-8,232-144-7,0.10%,1000,ECHA Cr(VI)组成员CAS；与汞组交叉成员；按六价铬组级限值判定,2011/65/EU Annex II,六价铬化合物,member
+153,六价铬,铬酸铜,Chromium copper oxide,11104-65-7,234-335-0,0.10%,1000,ECHA Cr(VI)组成员CAS；按六价铬组级限值判定；实际判定需确认价态,2011/65/EU Annex II,六价铬化合物,member
+154,六价铬,铬酸铜锌,Chromium copper zinc oxide,1336-14-7,215-645-5,0.10%,1000,ECHA Cr(VI)组成员CAS；按六价铬组级限值判定；实际判定需确认价态,2011/65/EU Annex II,六价铬化合物,member
+155,六价铬,氢氧基八氧代二锌酸铬酸钾,Potassium hydroxyoctaoxodizincatedichromate,11103-86-9,234-329-8,0.10%,1000,ECHA Cr(VI)组成员CAS；按六价铬组级限值判定；实际判定需确认价态,2011/65/EU Annex II,六价铬化合物,member
+156,六价铬,铬酸铁,Diiron tris(chromate),10294-52-7,233-661-0,0.10%,1000,ECHA Cr(VI)组成员CAS；按六价铬组级限值判定；实际判定需确认价态,2011/65/EU Annex II,六价铬化合物,member
+157,六价铬,碱式铬酸铅,Lead chromate hydroxide,12017-94-6,234-629-9,0.10%,1000,ECHA Cr(VI)组成员CAS；与铅组交叉成员；按六价铬组级限值判定,2011/65/EU Annex II,六价铬化合物,member
+158,六价铬,三氧化二铬铝,Aluminium chromium oxide,1344-38-3,215-687-6,0.10%,1000,ECHA Cr(VI)组成员CAS；按六价铬组级限值判定；实际判定需确认价态,2011/65/EU Annex II,六价铬化合物,member
+159,六价铬,铬酸铷,Rubidium chromate,13446-72-5,236-601-1,0.10%,1000,ECHA Cr(VI)组成员CAS；按六价铬组级限值判定；实际判定需确认价态,2011/65/EU Annex II,六价铬化合物,member
+160,六价铬,铬酸亚铊,Dithallium chromate,13473-75-1,236-750-2,0.10%,1000,ECHA Cr(VI)组成员CAS；按六价铬组级限值判定；实际判定需确认价态,2011/65/EU Annex II,六价铬化合物,member
